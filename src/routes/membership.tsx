@@ -218,7 +218,7 @@ function Membership() {
               </div>
             </Section>
 
-            <Section title="Choose Your Plan" number="04">
+            <Section title="Choose Your Plan" number="03">
               <div className="grid md:grid-cols-2 gap-4">
                 {plans.map((p) => {
                   const active = planId === p.id;
