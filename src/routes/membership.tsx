@@ -155,11 +155,38 @@ function Membership() {
         </p>
 
         {done ? (
-          <div className="mt-16 p-10 rounded-2xl bg-brand-green text-brand-paper">
-            <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
-            <p className="mt-3 text-brand-paper/80">
-              Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. A chapter coordinator will reach out within 7 days.
-            </p>
+          <div className="mt-16 space-y-6">
+            <div className="p-10 rounded-2xl bg-brand-green text-brand-paper">
+              <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
+              <p className="mt-3 text-brand-paper/80">
+                Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. Your Member ID is{" "}
+                <span className="font-mono font-semibold">{done.memberCode}</span>.
+              </p>
+            </div>
+            <div className="p-8 rounded-2xl bg-brand-paper-warm ring-1 ring-brand-saffron/30">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-brand-saffron font-semibold">
+                Save these login details
+              </p>
+              <p className="mt-2 text-sm text-brand-ink/70">
+                Use these to sign in for the first time. You'll be asked to set your own password right after.
+              </p>
+              <dl className="mt-5 grid sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <dt className="text-brand-ink/50 text-xs uppercase tracking-wider">Email</dt>
+                  <dd className="mt-1 font-mono text-brand-ink">{done.email}</dd>
+                </div>
+                <div>
+                  <dt className="text-brand-ink/50 text-xs uppercase tracking-wider">Temporary password</dt>
+                  <dd className="mt-1 font-mono text-brand-ink select-all">{done.tempPassword}</dd>
+                </div>
+              </dl>
+              <Link
+                to="/login"
+                className="mt-6 inline-block bg-brand-green text-brand-paper px-6 py-2.5 rounded-full text-sm font-medium hover:bg-brand-green-deep transition-colors"
+              >
+                Go to login →
+              </Link>
+            </div>
           </div>
         ) : (
           <form
