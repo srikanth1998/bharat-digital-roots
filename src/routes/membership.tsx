@@ -157,12 +157,13 @@ function Membership() {
 
             <Section title="Personal Information" number="01">
               <div className="grid md:grid-cols-2 gap-6">
-                <Field label="Full Name" required />
-                <Field label="Father / Mother Name" required />
-                <Field label="Primary Mobile Number" type="tel" required />
-                <Field label="Alternate Mobile Number" type="tel" />
-                <Field label="Primary Email ID" type="email" required />
-                <Field label="Secondary Email ID" type="email" />
+                <Field label="Full Name" name="fullName" required />
+                <Field label="Father / Mother Name" name="parentName" required />
+                <Field label="Primary Mobile Number" name="mobile" type="tel" required />
+                <Field label="Alternate Mobile Number" name="altMobile" type="tel" />
+                <Field label="Primary Email ID" name="email" type="email" required />
+                <Field label="Secondary Email ID" name="altEmail" type="email" />
+
               </div>
             </Section>
 
@@ -284,11 +285,13 @@ function Membership() {
                 <p className="mt-1 font-serif text-2xl text-brand-ink">
                   ₹{selectedPlan.price}.00 <span className="text-sm text-brand-ink/60">/ 1 year · {selectedPlan.name}</span>
                 </p>
+                {payError && <p className="mt-2 text-sm text-red-600">{payError}</p>}
               </div>
-              <button type="submit" className="bg-brand-saffron text-white px-8 py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all">
-                Pay ₹{selectedPlan.price} & Submit
+              <button type="submit" disabled={paying} className="bg-brand-saffron text-white px-8 py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                {paying ? "Processing…" : `Pay ₹${selectedPlan.price} & Submit`}
               </button>
             </div>
+
           </form>
         )}
 
@@ -309,13 +312,14 @@ function Section({ title, number, children }: { title: string; number: string; c
   );
 }
 
-function Field({ label, type = "text", required = false }: { label: string; type?: string; required?: boolean }) {
+function Field({ label, type = "text", required = false, name }: { label: string; type?: string; required?: boolean; name?: string }) {
   return (
     <div>
       <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
         {label} {required && <span className="text-brand-saffron">*</span>}
       </label>
-      <input type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+      <input name={name} type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
     </div>
   );
+
 }
