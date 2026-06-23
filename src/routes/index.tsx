@@ -400,7 +400,7 @@ function Index() {
         <Hero />
         <Pillars />
         <Metrics />
-        <Stories />
+        
         <CTA />
       </main>
       <Footer />
