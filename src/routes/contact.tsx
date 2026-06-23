@@ -17,6 +17,17 @@ export const Route = createFileRoute("/contact")({
 
 function Contact() {
   const [sent, setSent] = useState(false);
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState("");
+  const [district, setDistrict] = useState("");
+
+  const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
+  const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === state), [selectedCountry, state]);
+  const districts = selectedState?.districts ?? [];
+
+  const fieldCls = "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
+  const selectCls = fieldCls + " appearance-none cursor-pointer";
+
   return (
     <div className="min-h-screen bg-brand-paper">
       <div className="max-w-4xl mx-auto px-6 py-24">
