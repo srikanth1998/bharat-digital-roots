@@ -36,13 +36,6 @@ export const Route = createFileRoute("/membership")({
   component: Membership,
 });
 
-const membershipTypes = [
-  "Farmer",
-  "Entrepreneur",
-  "Community Partner",
-  "Mentor / Investor",
-  "Student / Youth",
-];
 
 const plans = [
   {
@@ -63,7 +56,7 @@ const plans = [
 
 
 function Membership() {
-  const [membershipType, setMembershipType] = useState(membershipTypes[0]);
+  
   const [planId, setPlanId] = useState<(typeof plans)[number]["id"]>("active");
   const [done, setDone] = useState(false);
   const [country, setCountry] = useState("India");
@@ -222,26 +215,6 @@ function Membership() {
                   )}
                 </div>
                 <Field label="Town / Village (Place)" required />
-              </div>
-            </Section>
-
-
-            <Section title="Membership Type" number="03">
-              <div className="flex flex-wrap gap-2">
-                {membershipTypes.map((r) => (
-                  <button
-                    type="button"
-                    key={r}
-                    onClick={() => setMembershipType(r)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium ring-1 transition-all ${
-                      membershipType === r
-                        ? "bg-brand-green text-brand-paper ring-brand-green"
-                        : "bg-transparent text-brand-ink/70 ring-brand-ink/15 hover:ring-brand-green/40"
-                    }`}
-                  >
-                    {r}
-                  </button>
-                ))}
               </div>
             </Section>
 
