@@ -1,49 +1,108 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import founderAsset from "@/assets/founder-akr-kali.jpg.asset.json";
 
 export const Route = createFileRoute("/about-founder")({
   head: () => ({
     meta: [
-      { title: "About the Founder — Vanya" },
-      { name: "description", content: "Meet the founder behind Vanya — a movement empowering Indian farmers, rural entrepreneurs, and village communities." },
-      { property: "og:title", content: "About the Founder — Vanya" },
-      { property: "og:description", content: "The story behind Vanya's mission to bridge ancestral wisdom with modern entrepreneurship." },
+      { title: "About AKR Kali — Founder, Feathers Community Forum" },
+      { name: "description", content: "Anand Kumar Kali (AKR Kali) — Founder of Feathers Community Forum and FEA Business Corporations. Entrepreneur, trainer, and civil servant empowering students and professionals." },
+      { property: "og:title", content: "About AKR Kali — Founder, Feathers Community Forum" },
+      { property: "og:description", content: "The story of Anand Kumar Kali — entrepreneur, IT mentor, and founder of Feathers Community Forum." },
+      { property: "og:image", content: founderAsset.url },
     ],
   }),
   component: AboutFounder,
 });
 
+const pillars = [
+  "Training Programs",
+  "Skills Development",
+  "Opportunities",
+  "Entrepreneurship",
+  "Networking",
+  "Community Services",
+  "Awareness & Advocacy",
+];
+
 function AboutFounder() {
   return (
     <div className="min-h-screen bg-brand-paper">
-      <div className="max-w-4xl mx-auto px-6 py-24">
+      <div className="max-w-5xl mx-auto px-6 py-24">
         <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
-        <span className="mt-10 block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">The Founder</span>
+
+        <span className="mt-10 block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">
+          The Founder
+        </span>
         <h1 className="mt-4 font-serif text-4xl md:text-6xl font-medium tracking-tight text-balance">
-          A life between the <span className="italic text-brand-green">field</span> and the future.
+          About <span className="italic text-brand-green">AKR Kali</span>
         </h1>
+        <p className="mt-4 text-brand-ink/60 text-lg">
+          Anand Kumar Kali IFS — alias AKR Kali. Founder of Feathers Community
+          Forum, Founder of FEA Business Corporations and FEA Companies.
+        </p>
+
         <div className="mt-12 grid md:grid-cols-[1fr_2fr] gap-12 items-start">
-          <div className="aspect-[3/4] rounded-2xl bg-brand-paper-warm ring-1 ring-black/5 flex items-center justify-center text-[10px] uppercase tracking-[0.2em] text-brand-ink/30">
-            Portrait
-          </div>
+          <img
+            src={founderAsset.url}
+            alt="Anand Kumar Kali, Founder of Feathers Community Forum"
+            className="w-full aspect-[3/4] object-cover rounded-2xl ring-1 ring-black/5"
+            loading="lazy"
+          />
+
           <div className="space-y-6 text-brand-ink/75 leading-relaxed text-lg">
             <p>
-              Vanya was founded on a single conviction: India's villages are
-              not a problem to be solved — they are a frontier to be unlocked.
+              In his career spanning over 10 years as an entrepreneur, 5 years
+              in the IT industry, and 5 years as a civil servant, he has
+              conducted more than <strong className="text-brand-ink">7,000 hours</strong> of high-end
+              technology and interpersonal skills training for college students
+              and corporate clients. As a career guidance expert, he has striven
+              to always keep himself within the reach of students.
             </p>
             <p>
-              Raised on a small family farm and trained in technology across
-              three continents, our founder returned home with one question —
-              what would happen if the world's best tools were placed in the
-              hands of those who feed the world?
+              The brain and voice behind the mega hit{" "}
+              <em>“IT TIPS BY BE-PRACTICAL”</em> for career guidance, people
+              have always thronged at his seminars and lecture sessions.
+              Developing his team into a world-class team of technical and
+              non-technical talent is his passion, and over the years he has
+              pursued it by conducting several mentoring sessions for employees
+              on Management, Team Building, and Leadership. An avid reader with
+              a spiritual bend, he exudes superior people management and
+              analytical skills.
             </p>
             <p>
-              The answer became Vanya: a movement that honors tradition while
-              opening doors to global markets, capital, and craft.
+              Natural charisma and the honesty in his approach have made him a
+              noted figure in the IT circles of Chennai and Bangalore. He won
+              the <strong className="text-brand-ink">“Udhyog Rathan” Award in 2007</strong> for his
+              entrepreneurial ventures, instituted by the Indian Institute of
+              Economics, New Delhi, along with several awards from various
+              social and industrial bodies.
             </p>
-            <blockquote className="border-l-2 border-brand-saffron pl-6 font-serif italic text-2xl text-brand-green">
-              “We are not building for villages. We are building with them.”
-            </blockquote>
           </div>
+        </div>
+
+        <div className="mt-24 border-t border-black/10 pt-16">
+          <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">
+            The Forum
+          </span>
+          <h2 className="mt-4 font-serif text-3xl md:text-4xl font-medium tracking-tight max-w-3xl">
+            Feathers Community Forum
+          </h2>
+          <p className="mt-6 text-brand-ink/75 leading-relaxed text-lg max-w-3xl">
+            A platform where individuals can discuss, promote, and collaborate
+            on entrepreneurial ventures, community services, initiatives, and
+            volunteer opportunities.
+          </p>
+
+          <ul className="mt-10 grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {pillars.map((p) => (
+              <li
+                key={p}
+                className="rounded-xl bg-brand-paper-warm ring-1 ring-black/5 px-5 py-4 text-sm font-medium text-brand-ink"
+              >
+                {p}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
