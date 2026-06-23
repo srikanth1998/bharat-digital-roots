@@ -209,7 +209,13 @@ function Membership() {
             <Section title="Address Details" number="02">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <Field label="Address" required />
+                  <label className={labelCls}>Address <span className="text-brand-saffron">*</span></label>
+                  <input
+                    required
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className={inputCls}
+                  />
                 </div>
                 <div>
                   <label className={labelCls}>Country <span className="text-brand-saffron">*</span></label>
