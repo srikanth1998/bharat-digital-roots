@@ -79,12 +79,59 @@ function Membership() {
                 <div className="md:col-span-2">
                   <Field label="Address" required />
                 </div>
+                <div>
+                  <label className={labelCls}>Country <span className="text-brand-saffron">*</span></label>
+                  <select
+                    required
+                    value={country}
+                    onChange={(e) => { setCountry(e.target.value); setStateName(""); setDistrict(""); }}
+                    className={selectCls}
+                  >
+                    <option value="" disabled>Select country</option>
+                    {countries.map((c) => <option key={c.name} value={c.name}>{c.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className={labelCls}>State <span className="text-brand-saffron">*</span></label>
+                  <select
+                    required
+                    value={stateName}
+                    onChange={(e) => { setStateName(e.target.value); setDistrict(""); }}
+                    disabled={!selectedCountry || selectedCountry.states.length === 0}
+                    className={selectCls + " disabled:opacity-40"}
+                  >
+                    <option value="" disabled>{selectedCountry?.states.length ? "Select state" : "—"}</option>
+                    {selectedCountry?.states.map((s) => <option key={s.name} value={s.name}>{s.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className={labelCls}>District <span className="text-brand-saffron">*</span></label>
+                  {districts.length > 0 ? (
+                    <select
+                      required
+                      value={district}
+                      onChange={(e) => setDistrict(e.target.value)}
+                      disabled={!stateName}
+                      className={selectCls + " disabled:opacity-40"}
+                    >
+                      <option value="" disabled>Select district</option>
+                      {districts.map((d) => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  ) : (
+                    <input
+                      required
+                      value={district}
+                      onChange={(e) => setDistrict(e.target.value)}
+                      disabled={!stateName}
+                      placeholder={stateName ? "Enter district" : "—"}
+                      className={inputCls + " disabled:opacity-40"}
+                    />
+                  )}
+                </div>
                 <Field label="Town / Village (Place)" required />
-                <Field label="District" required />
-                <Field label="State" required />
-                <Field label="Country" required />
               </div>
             </Section>
+
 
             <Section title="Membership Type" number="03">
               <div className="flex flex-wrap gap-2">
