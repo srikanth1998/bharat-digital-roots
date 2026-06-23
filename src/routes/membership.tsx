@@ -43,10 +43,14 @@ const plans = [
 
 function Membership() {
   const [membershipType, setMembershipType] = useState(membershipTypes[0]);
+  const [planId, setPlanId] = useState<(typeof plans)[number]["id"]>("active");
   const [done, setDone] = useState(false);
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
   const [district, setDistrict] = useState("");
+
+  const selectedPlan = plans.find((p) => p.id === planId)!;
+
 
   const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
   const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === stateName), [selectedCountry, stateName]);
