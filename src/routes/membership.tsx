@@ -266,7 +266,15 @@ function Membership() {
                     />
                   )}
                 </div>
-                <Field label="Town / Village (Place)" required />
+                <div>
+                  <label className={labelCls}>Town / Village (Place) <span className="text-brand-saffron">*</span></label>
+                  <input
+                    required
+                    value={town}
+                    onChange={(e) => setTown(e.target.value)}
+                    className={inputCls}
+                  />
+                </div>
               </div>
             </Section>
 
