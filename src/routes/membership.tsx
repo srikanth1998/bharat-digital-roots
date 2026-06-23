@@ -1,6 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { useEffect, useMemo, useState } from "react";
 import { countries } from "@/data/locations";
+import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/razorpay.functions";
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => { open: () => void };
+  }
+}
+
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") return resolve(false);
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
 
 
 export const Route = createFileRoute("/membership")({
@@ -48,9 +69,59 @@ function Membership() {
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
   const [district, setDistrict] = useState("");
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
+
+  const createOrder = useServerFn(createRazorpayOrder);
+  const verifyPayment = useServerFn(verifyRazorpayPayment);
+
+  useEffect(() => { void loadRazorpayScript(); }, []);
 
   const selectedPlan = plans.find((p) => p.id === planId)!;
 
+  async function handlePayment(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setPayError(null);
+    setPaying(true);
+    const form = e.currentTarget;
+    try {
+      const ok = await loadRazorpayScript();
+      if (!ok || !window.Razorpay) throw new Error("Could not load Razorpay. Check your connection.");
+
+      const order = await createOrder({ data: { amount: selectedPlan.price, planId } });
+
+      const fd = new FormData(form);
+      const name = String(fd.get("fullName") || "");
+      const email = String(fd.get("email") || "");
+      const contact = String(fd.get("mobile") || "");
+
+      const rzp = new window.Razorpay({
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.orderId,
+        name: "Vanya · Feathers Forum",
+        description: `${selectedPlan.name} — 1 year`,
+        prefill: { name, email, contact },
+        theme: { color: "#0a6b3b" },
+        handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
+          try {
+            await verifyPayment({ data: response });
+            setDone(true);
+          } catch (err) {
+            setPayError(err instanceof Error ? err.message : "Payment verification failed");
+          } finally {
+            setPaying(false);
+          }
+        },
+        modal: { ondismiss: () => setPaying(false) },
+      });
+      rzp.open();
+    } catch (err) {
+      setPayError(err instanceof Error ? err.message : "Payment could not be started");
+      setPaying(false);
+    }
+  }
 
   const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
   const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === stateName), [selectedCountry, stateName]);
@@ -58,7 +129,6 @@ function Membership() {
   const inputCls = "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
   const selectCls = inputCls + " appearance-none cursor-pointer";
   const labelCls = "text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold";
-
 
   return (
     <div className="min-h-screen bg-brand-paper">
@@ -81,20 +151,19 @@ function Membership() {
           </div>
         ) : (
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setDone(true);
-            }}
+            onSubmit={handlePayment}
             className="mt-12 space-y-10 bg-brand-paper-warm/50 p-8 md:p-10 rounded-2xl ring-1 ring-black/5"
           >
+
             <Section title="Personal Information" number="01">
               <div className="grid md:grid-cols-2 gap-6">
-                <Field label="Full Name" required />
-                <Field label="Father / Mother Name" required />
-                <Field label="Primary Mobile Number" type="tel" required />
-                <Field label="Alternate Mobile Number" type="tel" />
-                <Field label="Primary Email ID" type="email" required />
-                <Field label="Secondary Email ID" type="email" />
+                <Field label="Full Name" name="fullName" required />
+                <Field label="Father / Mother Name" name="parentName" required />
+                <Field label="Primary Mobile Number" name="mobile" type="tel" required />
+                <Field label="Alternate Mobile Number" name="altMobile" type="tel" />
+                <Field label="Primary Email ID" name="email" type="email" required />
+                <Field label="Secondary Email ID" name="altEmail" type="email" />
+
               </div>
             </Section>
 
@@ -216,11 +285,13 @@ function Membership() {
                 <p className="mt-1 font-serif text-2xl text-brand-ink">
                   ₹{selectedPlan.price}.00 <span className="text-sm text-brand-ink/60">/ 1 year · {selectedPlan.name}</span>
                 </p>
+                {payError && <p className="mt-2 text-sm text-red-600">{payError}</p>}
               </div>
-              <button type="submit" className="bg-brand-saffron text-white px-8 py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all">
-                Pay ₹{selectedPlan.price} & Submit
+              <button type="submit" disabled={paying} className="bg-brand-saffron text-white px-8 py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                {paying ? "Processing…" : `Pay ₹${selectedPlan.price} & Submit`}
               </button>
             </div>
+
           </form>
         )}
 
@@ -241,13 +312,14 @@ function Section({ title, number, children }: { title: string; number: string; c
   );
 }
 
-function Field({ label, type = "text", required = false }: { label: string; type?: string; required?: boolean }) {
+function Field({ label, type = "text", required = false, name }: { label: string; type?: string; required?: boolean; name?: string }) {
   return (
     <div>
       <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
         {label} {required && <span className="text-brand-saffron">*</span>}
       </label>
-      <input type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+      <input name={name} type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
     </div>
   );
+
 }
