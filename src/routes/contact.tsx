@@ -59,9 +59,28 @@ function Contact() {
               <input type="email" required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
             </div>
             <div>
+              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Address</label>
+              <input required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">District</label>
+                <input required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+              </div>
+              <div>
+                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">State</label>
+                <input required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+              </div>
+            </div>
+            <div>
+              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Country</label>
+              <input required defaultValue="India" className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+            </div>
+            <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Message</label>
               <textarea required rows={4} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors resize-none" />
             </div>
+
             <button type="submit" className="w-full bg-brand-green text-brand-paper py-3 rounded-full font-medium hover:bg-brand-green-deep transition-colors">
               {sent ? "Thank you — we'll be in touch." : "Send Message"}
             </button>
