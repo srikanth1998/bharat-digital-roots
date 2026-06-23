@@ -123,8 +123,38 @@ function Membership() {
     }
   }
 
+  const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
+  const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === stateName), [selectedCountry, stateName]);
+  const districts = selectedState?.districts ?? [];
+  const inputCls = "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
+  const selectCls = inputCls + " appearance-none cursor-pointer";
+  const labelCls = "text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold";
+
+  return (
+    <div className="min-h-screen bg-brand-paper">
+      <div className="max-w-4xl mx-auto px-6 py-24">
+        <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
+        <span className="mt-10 block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">Join the Movement</span>
+        <h1 className="mt-4 font-serif text-4xl md:text-6xl font-medium tracking-tight text-balance">
+          Membership <span className="italic text-brand-green">Registration.</span>
+        </h1>
+        <p className="mt-6 text-lg text-brand-ink/70 max-w-xl">
+          One application. A lifetime of belonging. Every member is reviewed by our regional chapter team.
+        </p>
+
+        {done ? (
+          <div className="mt-16 p-10 rounded-2xl bg-brand-green text-brand-paper">
+            <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
+            <p className="mt-3 text-brand-paper/80">
+              Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. A chapter coordinator will reach out within 7 days.
+            </p>
+          </div>
+        ) : (
+          <form
+            onSubmit={handlePayment}
             className="mt-12 space-y-10 bg-brand-paper-warm/50 p-8 md:p-10 rounded-2xl ring-1 ring-black/5"
           >
+
             <Section title="Personal Information" number="01">
               <div className="grid md:grid-cols-2 gap-6">
                 <Field label="Full Name" required />
