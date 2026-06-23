@@ -174,11 +174,54 @@ function Membership() {
               </div>
             </Section>
 
-            <button type="submit" className="w-full bg-brand-saffron text-white py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all">
-              Submit Application
-            </button>
+            <Section title="Choose Your Plan" number="04">
+              <div className="grid md:grid-cols-2 gap-4">
+                {plans.map((p) => {
+                  const active = planId === p.id;
+                  return (
+                    <button
+                      type="button"
+                      key={p.id}
+                      onClick={() => setPlanId(p.id)}
+                      className={`text-left p-6 rounded-2xl ring-1 transition-all ${
+                        active
+                          ? "bg-brand-green text-brand-paper ring-brand-green shadow-lg shadow-brand-green/20"
+                          : "bg-white text-brand-ink ring-brand-ink/10 hover:ring-brand-green/40"
+                      }`}
+                    >
+                      <div className="flex items-baseline justify-between">
+                        <span className="font-serif text-xl">{p.name}</span>
+                        <span className="font-mono text-2xl">₹{p.price}</span>
+                      </div>
+                      <p className={`mt-1 text-sm ${active ? "text-brand-paper/80" : "text-brand-ink/60"}`}>{p.tagline}</p>
+                      <ul className={`mt-4 space-y-1.5 text-sm ${active ? "text-brand-paper/90" : "text-brand-ink/70"}`}>
+                        {p.perks.map((perk) => (
+                          <li key={perk} className="flex gap-2">
+                            <span className={active ? "text-brand-saffron" : "text-brand-green"}>✓</span>
+                            {perk}
+                          </li>
+                        ))}
+                      </ul>
+                    </button>
+                  );
+                })}
+              </div>
+            </Section>
+
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-5 rounded-xl bg-brand-paper ring-1 ring-brand-ink/10">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Total payable</p>
+                <p className="mt-1 font-serif text-2xl text-brand-ink">
+                  ₹{selectedPlan.price}.00 <span className="text-sm text-brand-ink/60">/ 1 year · {selectedPlan.name}</span>
+                </p>
+              </div>
+              <button type="submit" className="bg-brand-saffron text-white px-8 py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all">
+                Pay ₹{selectedPlan.price} & Submit
+              </button>
+            </div>
           </form>
         )}
+
       </div>
     </div>
   );
