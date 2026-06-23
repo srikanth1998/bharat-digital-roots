@@ -41,11 +41,51 @@ function Logo() {
 }
 
 const navLinks = [
-  { to: "/", label: "Home Page" },
   { to: "/about-founder", label: "About Founder" },
   { to: "/contact", label: "Contact Us" },
   { to: "/membership", label: "Membership Registration" },
 ] as const;
+
+const homeModules = [
+  { to: "/fea", code: "FEA", desc: "Group of Companies" },
+  { to: "/feswa", code: "FESWA", desc: "Social Welfare Federation" },
+  { to: "/fesya", code: "FESYA", desc: "Youth & Enterprise" },
+] as const;
+
+function HomeMenu() {
+  return (
+    <div className="relative group">
+      <Link
+        to="/"
+        activeOptions={{ exact: true }}
+        activeProps={{ className: "text-brand-green" }}
+        inactiveProps={{ className: "text-brand-ink/60 group-hover:text-brand-ink" }}
+        className="text-sm font-medium transition-colors inline-flex items-center gap-1"
+      >
+        Home Page
+        <span aria-hidden className="text-[10px] opacity-60">▾</span>
+      </Link>
+      {/* hover bridge */}
+      <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
+        <div className="bg-brand-paper/95 backdrop-blur-xl ring-1 ring-black/10 rounded-2xl shadow-2xl shadow-brand-ink/15 p-2">
+          {homeModules.map((m) => (
+            <Link
+              key={m.to}
+              to={m.to}
+              className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm transition-colors group/item"
+            >
+              <div>
+                <p className="font-serif text-lg font-semibold text-brand-green leading-none">{m.code}</p>
+                <p className="text-xs text-brand-ink/55 mt-1">{m.desc}</p>
+              </div>
+              <span aria-hidden className="text-brand-saffron opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all">→</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Nav() {
   return (
@@ -53,6 +93,7 @@ function Nav() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
         <Logo />
         <div className="hidden md:flex items-center gap-7">
+          <HomeMenu />
           {navLinks.map((item) => (
             <Link
               key={item.to}
