@@ -132,7 +132,7 @@ function Membership() {
           Membership <span className="italic text-brand-green">Registration.</span>
         </h1>
         <p className="mt-6 text-lg text-brand-ink/70 max-w-xl">
-          One application. A lifetime of belonging. Every member is reviewed by our regional chapter team.
+          One application. One year of belonging. Every member is reviewed by our regional chapter team and renews annually.
         </p>
 
         {done ? (
