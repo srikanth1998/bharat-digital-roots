@@ -58,10 +58,12 @@ const plans = [
 function Membership() {
   
   const [planId, setPlanId] = useState<(typeof plans)[number]["id"]>("active");
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<null | { memberCode: string; tempPassword: string; email: string }>(null);
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
   const [district, setDistrict] = useState("");
+  const [town, setTown] = useState("");
+  const [address, setAddress] = useState("");
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
 
@@ -81,12 +83,22 @@ function Membership() {
       const ok = await loadRazorpayScript();
       if (!ok || !window.Razorpay) throw new Error("Could not load Razorpay. Check your connection.");
 
-      const order = await createOrder({ data: { amount: selectedPlan.price, planId } });
-
       const fd = new FormData(form);
-      const name = String(fd.get("fullName") || "");
-      const email = String(fd.get("email") || "");
-      const contact = String(fd.get("mobile") || "");
+      const profile = {
+        fullName: String(fd.get("fullName") || "").trim(),
+        parentName: String(fd.get("parentName") || "").trim(),
+        mobile: String(fd.get("mobile") || "").trim(),
+        altMobile: String(fd.get("altMobile") || "").trim(),
+        email: String(fd.get("email") || "").trim(),
+        altEmail: String(fd.get("altEmail") || "").trim(),
+        address: address.trim(),
+        country: country.trim(),
+        state: stateName.trim(),
+        district: district.trim(),
+        town: town.trim(),
+      };
+
+      const order = await createOrder({ data: { amount: selectedPlan.price, planId } });
 
       const rzp = new window.Razorpay({
         key: order.keyId,
@@ -95,12 +107,19 @@ function Membership() {
         order_id: order.orderId,
         name: "Vanya · Feathers Forum",
         description: `${selectedPlan.name} — 1 year`,
-        prefill: { name, email, contact },
+        prefill: { name: profile.fullName, email: profile.email, contact: profile.mobile },
         theme: { color: "#0a6b3b" },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           try {
-            await verifyPayment({ data: response });
-            setDone(true);
+            const result = await verifyPayment({
+              data: {
+                ...response,
+                planId,
+                amount: selectedPlan.price,
+                profile,
+              },
+            });
+            setDone({ memberCode: result.memberCode, tempPassword: result.tempPassword, email: result.email });
           } catch (err) {
             setPayError(err instanceof Error ? err.message : "Payment verification failed");
           } finally {
