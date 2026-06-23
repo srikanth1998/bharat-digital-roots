@@ -23,6 +23,24 @@ const membershipTypes = [
   "Student / Youth",
 ];
 
+const plans = [
+  {
+    id: "active",
+    name: "Active Membership",
+    price: 100,
+    tagline: "For changemakers on the ground",
+    perks: ["Voting rights in chapter", "Event participation", "Member ID card", "Valid for 1 year"],
+  },
+  {
+    id: "passive",
+    name: "Passive Membership",
+    price: 500,
+    tagline: "For supporters & well-wishers",
+    perks: ["Supporter recognition", "Quarterly impact reports", "Member ID card", "Valid for 1 year"],
+  },
+] as const;
+
+
 function Membership() {
   const [membershipType, setMembershipType] = useState(membershipTypes[0]);
   const [done, setDone] = useState(false);
