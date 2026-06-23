@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FesyaRouteImport } from './routes/fesya'
@@ -16,8 +17,16 @@ import { Route as FeswaRouteImport } from './routes/feswa'
 import { Route as FeaRouteImport } from './routes/fea'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutFounderRouteImport } from './routes/about-founder'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 
+const SetPasswordRoute = SetPasswordRouteImport.update({
+  id: '/set-password',
+  path: '/set-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MembershipRoute = MembershipRouteImport.update({
   id: '/membership',
   path: '/membership',
@@ -53,10 +62,24 @@ const AboutFounderRoute = AboutFounderRouteImport.update({
   path: '/about-founder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -68,6 +91,9 @@ export interface FileRoutesByFullPath {
   '/fesya': typeof FesyaRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
+  '/set-password': typeof SetPasswordRoute
+  '/account': typeof AuthenticatedAccountRoute
+  '/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,10 +104,14 @@ export interface FileRoutesByTo {
   '/fesya': typeof FesyaRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
+  '/set-password': typeof SetPasswordRoute
+  '/account': typeof AuthenticatedAccountRoute
+  '/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about-founder': typeof AboutFounderRoute
   '/contact': typeof ContactRoute
   '/fea': typeof FeaRoute
@@ -89,6 +119,9 @@ export interface FileRoutesById {
   '/fesya': typeof FesyaRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
+  '/set-password': typeof SetPasswordRoute
+  '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +134,9 @@ export interface FileRouteTypes {
     | '/fesya'
     | '/login'
     | '/membership'
+    | '/set-password'
+    | '/account'
+    | '/admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,9 +147,13 @@ export interface FileRouteTypes {
     | '/fesya'
     | '/login'
     | '/membership'
+    | '/set-password'
+    | '/account'
+    | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about-founder'
     | '/contact'
     | '/fea'
@@ -121,10 +161,14 @@ export interface FileRouteTypes {
     | '/fesya'
     | '/login'
     | '/membership'
+    | '/set-password'
+    | '/_authenticated/account'
+    | '/_authenticated/admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutFounderRoute: typeof AboutFounderRoute
   ContactRoute: typeof ContactRoute
   FeaRoute: typeof FeaRoute
@@ -132,10 +176,18 @@ export interface RootRouteChildren {
   FesyaRoute: typeof FesyaRoute
   LoginRoute: typeof LoginRoute
   MembershipRoute: typeof MembershipRoute
+  SetPasswordRoute: typeof SetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/set-password': {
+      id: '/set-password'
+      path: '/set-password'
+      fullPath: '/set-password'
+      preLoaderRoute: typeof SetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/membership': {
       id: '/membership'
       path: '/membership'
@@ -185,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutFounderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -192,11 +251,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutFounderRoute: AboutFounderRoute,
   ContactRoute: ContactRoute,
   FeaRoute: FeaRoute,
@@ -204,6 +291,7 @@ const rootRouteChildren: RootRouteChildren = {
   FesyaRoute: FesyaRoute,
   LoginRoute: LoginRoute,
   MembershipRoute: MembershipRoute,
+  SetPasswordRoute: SetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

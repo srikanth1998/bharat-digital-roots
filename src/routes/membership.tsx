@@ -58,10 +58,12 @@ const plans = [
 function Membership() {
   
   const [planId, setPlanId] = useState<(typeof plans)[number]["id"]>("active");
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<null | { memberCode: string; tempPassword: string; email: string }>(null);
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
   const [district, setDistrict] = useState("");
+  const [town, setTown] = useState("");
+  const [address, setAddress] = useState("");
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
 
@@ -81,12 +83,22 @@ function Membership() {
       const ok = await loadRazorpayScript();
       if (!ok || !window.Razorpay) throw new Error("Could not load Razorpay. Check your connection.");
 
-      const order = await createOrder({ data: { amount: selectedPlan.price, planId } });
-
       const fd = new FormData(form);
-      const name = String(fd.get("fullName") || "");
-      const email = String(fd.get("email") || "");
-      const contact = String(fd.get("mobile") || "");
+      const profile = {
+        fullName: String(fd.get("fullName") || "").trim(),
+        parentName: String(fd.get("parentName") || "").trim(),
+        mobile: String(fd.get("mobile") || "").trim(),
+        altMobile: String(fd.get("altMobile") || "").trim(),
+        email: String(fd.get("email") || "").trim(),
+        altEmail: String(fd.get("altEmail") || "").trim(),
+        address: address.trim(),
+        country: country.trim(),
+        state: stateName.trim(),
+        district: district.trim(),
+        town: town.trim(),
+      };
+
+      const order = await createOrder({ data: { amount: selectedPlan.price, planId } });
 
       const rzp = new window.Razorpay({
         key: order.keyId,
@@ -95,12 +107,19 @@ function Membership() {
         order_id: order.orderId,
         name: "Vanya · Feathers Forum",
         description: `${selectedPlan.name} — 1 year`,
-        prefill: { name, email, contact },
+        prefill: { name: profile.fullName, email: profile.email, contact: profile.mobile },
         theme: { color: "#0a6b3b" },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           try {
-            await verifyPayment({ data: response });
-            setDone(true);
+            const result = await verifyPayment({
+              data: {
+                ...response,
+                planId,
+                amount: selectedPlan.price,
+                profile,
+              },
+            });
+            setDone({ memberCode: result.memberCode, tempPassword: result.tempPassword, email: result.email });
           } catch (err) {
             setPayError(err instanceof Error ? err.message : "Payment verification failed");
           } finally {
@@ -136,11 +155,38 @@ function Membership() {
         </p>
 
         {done ? (
-          <div className="mt-16 p-10 rounded-2xl bg-brand-green text-brand-paper">
-            <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
-            <p className="mt-3 text-brand-paper/80">
-              Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. A chapter coordinator will reach out within 7 days.
-            </p>
+          <div className="mt-16 space-y-6">
+            <div className="p-10 rounded-2xl bg-brand-green text-brand-paper">
+              <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
+              <p className="mt-3 text-brand-paper/80">
+                Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. Your Member ID is{" "}
+                <span className="font-mono font-semibold">{done.memberCode}</span>.
+              </p>
+            </div>
+            <div className="p-8 rounded-2xl bg-brand-paper-warm ring-1 ring-brand-saffron/30">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-brand-saffron font-semibold">
+                Save these login details
+              </p>
+              <p className="mt-2 text-sm text-brand-ink/70">
+                Use these to sign in for the first time. You'll be asked to set your own password right after.
+              </p>
+              <dl className="mt-5 grid sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <dt className="text-brand-ink/50 text-xs uppercase tracking-wider">Email</dt>
+                  <dd className="mt-1 font-mono text-brand-ink">{done.email}</dd>
+                </div>
+                <div>
+                  <dt className="text-brand-ink/50 text-xs uppercase tracking-wider">Temporary password</dt>
+                  <dd className="mt-1 font-mono text-brand-ink select-all">{done.tempPassword}</dd>
+                </div>
+              </dl>
+              <Link
+                to="/login"
+                className="mt-6 inline-block bg-brand-green text-brand-paper px-6 py-2.5 rounded-full text-sm font-medium hover:bg-brand-green-deep transition-colors"
+              >
+                Go to login →
+              </Link>
+            </div>
           </div>
         ) : (
           <form
@@ -163,7 +209,13 @@ function Membership() {
             <Section title="Address Details" number="02">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <Field label="Address" required />
+                  <label className={labelCls}>Address <span className="text-brand-saffron">*</span></label>
+                  <input
+                    required
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className={inputCls}
+                  />
                 </div>
                 <div>
                   <label className={labelCls}>Country <span className="text-brand-saffron">*</span></label>
@@ -214,7 +266,15 @@ function Membership() {
                     />
                   )}
                 </div>
-                <Field label="Town / Village (Place)" required />
+                <div>
+                  <label className={labelCls}>Town / Village (Place) <span className="text-brand-saffron">*</span></label>
+                  <input
+                    required
+                    value={town}
+                    onChange={(e) => setTown(e.target.value)}
+                    className={inputCls}
+                  />
+                </div>
               </div>
             </Section>
 
