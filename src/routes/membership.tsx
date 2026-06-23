@@ -74,8 +74,10 @@ function Membership() {
 
         {done ? (
           <div className="mt-16 p-10 rounded-2xl bg-brand-green text-brand-paper">
-            <p className="font-serif text-3xl">Welcome to Vanya.</p>
-            <p className="mt-3 text-brand-paper/80">Your application is in. A chapter coordinator will reach out within 7 days.</p>
+            <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
+            <p className="mt-3 text-brand-paper/80">
+              Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. A chapter coordinator will reach out within 7 days.
+            </p>
           </div>
         ) : (
           <form
