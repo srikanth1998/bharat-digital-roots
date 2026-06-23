@@ -1,23 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroGrain from "@/assets/hero-grain.jpg";
-import storyAnanya from "@/assets/story-ananya.jpg";
-import storyKala from "@/assets/story-kala.jpg";
-import storyRajbir from "@/assets/story-rajbir.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vanya — Rooted in Indian Soil, Bound by Global Prosperity" },
+      { title: "Feathers Community Forum — Empowering People, Building Bharat" },
       {
         name: "description",
         content:
-          "A movement empowering Indian farmers, rural entrepreneurs, and village communities — bridging ancestral wisdom with world-class technology.",
+          "Feathers Community Forum, founded by AKR Kali, is a platform for entrepreneurship, training, networking, and community service across India.",
       },
-      { property: "og:title", content: "Vanya — Rooted in Indian Soil" },
+      { property: "og:title", content: "Feathers Community Forum" },
       {
         property: "og:description",
         content:
-          "Bridging ancestral village wisdom with modern entrepreneurship across Bharat.",
+          "A platform to discuss, promote, and collaborate on entrepreneurial ventures, community service, and skill-building initiatives.",
       },
       { property: "og:image", content: heroGrain },
       { name: "twitter:image", content: heroGrain },
@@ -34,7 +31,7 @@ function Logo() {
         className="inline-block size-2.5 rounded-full bg-brand-saffron ring-4 ring-brand-saffron/15 transition-all group-hover:ring-brand-saffron/30"
       />
       <span className="font-serif text-xl tracking-tight text-brand-green font-semibold">
-        Vanya
+        Feathers Forum
       </span>
     </Link>
   );
@@ -65,7 +62,6 @@ function HomeMenu() {
         Home Page
         <span aria-hidden className="text-[10px] opacity-60">▾</span>
       </Link>
-      {/* hover bridge */}
       <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
         <div className="bg-brand-paper/95 backdrop-blur-xl ring-1 ring-black/10 rounded-2xl shadow-2xl shadow-brand-ink/15 p-2">
           {homeModules.map((m) => (
@@ -126,30 +122,33 @@ function Hero() {
           <div className="space-y-8 animate-reveal-up">
             <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">
               <span className="size-1.5 rounded-full bg-brand-saffron" />
-              A Movement for Bharat
+              Feathers Community Forum
             </span>
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl leading-[1.02] text-balance font-medium tracking-tight">
-              Rooted in Indian Soil,
+              Empowering People.
               <br />
-              Bound by Global{" "}
-              <span className="italic text-brand-green">Prosperity.</span>
+              Building{" "}
+              <span className="italic text-brand-green">Bharat.</span>
             </h1>
             <p className="text-lg lg:text-xl text-brand-ink/70 max-w-[52ch] text-pretty leading-relaxed">
-              We are bridge-builders between the ancestral wisdom of our
-              villages and the frontier of modern entrepreneurship — empowering
-              farmers, founders, and communities across India.
+              A platform where individuals discuss, promote, and collaborate on
+              entrepreneurial ventures, community services, and volunteer
+              opportunities — founded by AKR Kali.
             </p>
             <div className="flex flex-wrap items-center gap-5">
-              <a
-                href="#story"
+              <Link
+                to="/membership"
                 className="inline-flex items-center gap-2 bg-brand-saffron text-white py-3 px-6 rounded-full font-medium text-sm ring-1 ring-brand-saffron hover:shadow-xl hover:shadow-brand-saffron/20 hover:-translate-y-0.5 transition-all"
               >
-                Explore Our Story
+                Join the Forum
                 <span aria-hidden>→</span>
-              </a>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/40">
-                Est. 2024 • Bharat
-              </span>
+              </Link>
+              <Link
+                to="/about-founder"
+                className="text-sm font-medium text-brand-ink/70 hover:text-brand-green border-b border-brand-ink/20 hover:border-brand-green pb-0.5 transition-colors"
+              >
+                Meet the Founder →
+              </Link>
             </div>
           </div>
           <div className="relative animate-fade-in">
@@ -162,11 +161,10 @@ function Hero() {
             />
             <div className="absolute -bottom-6 -left-6 bg-brand-paper/80 backdrop-blur-xl p-6 ring-1 ring-black/5 rounded-xl max-w-xs hidden md:block shadow-xl">
               <p className="font-serif italic text-brand-green text-lg leading-snug">
-                “The future of innovation isn't just in our cities — it's in
-                our soil.”
+                “We rise by lifting the community we belong to.”
               </p>
               <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-ink/40">
-                — Vanya Manifesto
+                — AKR Kali, Founder
               </p>
             </div>
           </div>
@@ -180,39 +178,57 @@ const pillars = [
   {
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
-    title: "Regenerative Agriculture",
-    body: "Empowering 10,000+ farmers with climate-resilient techniques that preserve heritage seeds, soil, and seasonal wisdom.",
+    title: "Training Programs",
+    body: "High-end technology and interpersonal skills training for students and corporate professionals.",
   },
   {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
-    title: "Rural Micro-Ventures",
-    body: "Scaling village-born startups through patient capital, world-class digital mentorship, and global market access.",
+    title: "Skills Development",
+    body: "Building career-ready talent through hands-on workshops, mentoring, and the IT TIPS by BE-PRACTICAL series.",
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
-    title: "Community Commons",
-    body: "A trusted digital fabric for shared resources, collective trade, and the panchayat reborn for a connected era.",
+    title: "Opportunities",
+    body: "Connecting members to internships, jobs, and growth tracks aligned with their potential.",
+  },
+  {
+    swatch: "bg-brand-saffron",
+    bg: "bg-brand-saffron/10",
+    title: "Entrepreneurship",
+    body: "Backing first-time founders with mentorship, network, and clarity to turn ideas into ventures.",
+  },
+  {
+    swatch: "bg-brand-green",
+    bg: "bg-brand-green/5",
+    title: "Networking",
+    body: "A trusted circle of entrepreneurs, professionals, civil servants, and community leaders.",
+  },
+  {
+    swatch: "bg-brand-gold",
+    bg: "bg-brand-gold/10",
+    title: "Community Service & Advocacy",
+    body: "Volunteer initiatives, awareness drives, and grassroots advocacy that move Bharat forward.",
   },
 ];
 
 function Pillars() {
   return (
     <section
-      id="agriculture"
+      id="pillars"
       className="py-24 bg-brand-paper-warm/60 border-y border-zinc-950/5"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-2xl mb-16">
           <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/40">
-            Three Pillars
+            What We Do
           </span>
           <h2 className="mt-4 font-serif text-3xl md:text-5xl font-medium tracking-tight text-balance">
-            Where ancestral wisdom meets modern scaffolding.
+            Seven pillars of the Feathers Forum.
           </h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-px bg-zinc-200/70 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-200/70 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
           {pillars.map((p, i) => (
             <div
               key={p.title}
@@ -225,7 +241,7 @@ function Pillars() {
                   <div className={`size-4 ${p.swatch} rounded-sm`} />
                 </div>
                 <span className="font-serif text-sm text-brand-ink/30 tabular-nums">
-                  0{i + 1}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
               <h3 className="font-serif text-2xl font-medium tracking-tight">
@@ -243,10 +259,10 @@ function Pillars() {
 }
 
 const metrics = [
-  { value: "124k", label: "Acres Restored", color: "text-brand-green" },
-  { value: "₹12 Cr", label: "Capital Deployed", color: "text-brand-saffron" },
-  { value: "850+", label: "Entrepreneurs", color: "text-brand-gold" },
-  { value: "14", label: "States Reached", color: "text-brand-ink" },
+  { value: "7,000+", label: "Training Hours", color: "text-brand-green" },
+  { value: "10 Yrs", label: "As Entrepreneur", color: "text-brand-saffron" },
+  { value: "5 Yrs", label: "Civil Service", color: "text-brand-gold" },
+  { value: "2007", label: "Udhyog Rathan Award", color: "text-brand-ink" },
 ];
 
 function Metrics() {
@@ -272,94 +288,26 @@ function Metrics() {
   );
 }
 
-const stories = [
-  {
-    img: storyAnanya,
-    location: "Ananya, Telangana",
-    title: "The Seed Guardian",
-    body: "How Ananya revived three extinct millet varieties in her village — and built a co-op around them.",
-  },
-  {
-    img: storyKala,
-    location: "Kala Collective, Odisha",
-    title: "Hyperlocal Commerce",
-    body: "Bridging the gap between tribal weavers and global luxury markets, one block-print at a time.",
-  },
-  {
-    img: storyRajbir,
-    location: "Rajbir, Punjab",
-    title: "Legacy Transformed",
-    body: "Integrating IoT sensors into 50-year-old family farming traditions without losing the rhythm of the land.",
-  },
-];
-
-function Stories() {
-  return (
-    <section id="story" className="py-24 px-6 bg-brand-ink text-brand-paper">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <h2 className="font-serif text-3xl md:text-5xl font-medium max-w-[15ch] leading-tight tracking-tight">
-            Voices from the ground.
-          </h2>
-          <a
-            href="#"
-            className="text-sm font-medium border-b border-brand-paper/20 pb-1 hover:border-brand-paper transition-colors self-start md:self-auto"
-          >
-            View Archive →
-          </a>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {stories.map((s) => (
-            <article key={s.title} className="group space-y-6">
-              <div className="relative overflow-hidden rounded-xl ring-1 ring-white/10">
-                <img
-                  src={s.img}
-                  alt={s.title}
-                  width={800}
-                  height={1024}
-                  loading="lazy"
-                  className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80">
-                    {s.location}
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-serif text-xl font-medium">{s.title}</h4>
-                <p className="text-sm text-brand-paper/60 text-pretty leading-relaxed">
-                  {s.body}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function CTA() {
   return (
     <section id="join" className="py-32 px-6">
       <div className="max-w-3xl mx-auto text-center space-y-10">
         <h2 className="font-serif text-4xl lg:text-5xl font-medium leading-tight text-balance italic text-brand-green">
-          The journey of a thousand harvests begins with a single seed.
+          Be part of a community that builds, mentors, and lifts.
         </h2>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#"
+          <Link
+            to="/membership"
             className="w-full sm:w-auto bg-brand-green text-brand-paper px-8 py-3.5 rounded-full font-medium ring-1 ring-brand-green hover:shadow-xl hover:shadow-brand-green/20 hover:-translate-y-0.5 transition-all"
           >
-            Become a Partner
-          </a>
-          <a
-            href="#"
+            Become a Member
+          </Link>
+          <Link
+            to="/contact"
             className="w-full sm:w-auto bg-transparent text-brand-ink px-8 py-3.5 rounded-full font-medium ring-1 ring-zinc-950/10 hover:bg-zinc-100 transition-colors"
           >
-            Read the Manifesto
-          </a>
+            Contact the Forum
+          </Link>
         </div>
       </div>
     </section>
@@ -373,19 +321,19 @@ function Footer() {
         <div className="space-y-4">
           <Logo />
           <p className="text-xs text-zinc-500 uppercase tracking-[0.2em]">
-            © 2024 Vanya Collective. Built for Bharat.
+            © 2026 Feathers Community Forum. Founded by AKR Kali.
           </p>
         </div>
         <div className="flex gap-8 text-sm font-medium text-zinc-500">
-          <a href="#" className="hover:text-brand-green transition-colors">
-            Privacy
-          </a>
-          <a href="#" className="hover:text-brand-green transition-colors">
-            Ethics
-          </a>
-          <a href="#" className="hover:text-brand-green transition-colors">
+          <Link to="/about-founder" className="hover:text-brand-green transition-colors">
+            Founder
+          </Link>
+          <Link to="/membership" className="hover:text-brand-green transition-colors">
+            Membership
+          </Link>
+          <Link to="/contact" className="hover:text-brand-green transition-colors">
             Contact
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
@@ -400,7 +348,6 @@ function Index() {
         <Hero />
         <Pillars />
         <Metrics />
-        
         <CTA />
       </main>
       <Footer />
