@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import heroGrain from "@/assets/hero-grain.jpg";
 import storyAnanya from "@/assets/story-ananya.jpg";
 import storyKala from "@/assets/story-kala.jpg";
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
 
 function Logo() {
   return (
-    <a href="#" className="flex items-center gap-2 group">
+    <Link to="/" className="flex items-center gap-2 group">
       <span
         aria-hidden
         className="inline-block size-2.5 rounded-full bg-brand-saffron ring-4 ring-brand-saffron/15 transition-all group-hover:ring-brand-saffron/30"
@@ -36,34 +36,42 @@ function Logo() {
       <span className="font-serif text-xl tracking-tight text-brand-green font-semibold">
         Vanya
       </span>
-    </a>
+    </Link>
   );
 }
+
+const navLinks = [
+  { to: "/", label: "Home Page" },
+  { to: "/about-founder", label: "About Founder" },
+  { to: "/contact", label: "Contact Us" },
+  { to: "/membership", label: "Membership Registration" },
+] as const;
 
 function Nav() {
   return (
     <nav className="sticky top-0 z-50 w-full bg-brand-paper/75 backdrop-blur-md border-b border-zinc-950/5">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-10">
-          <Logo />
-          <div className="hidden md:flex gap-7">
-            {["Agriculture", "Ventures", "Community", "Impact"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-sm font-medium text-brand-ink/60 hover:text-brand-ink transition-colors"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+        <Logo />
+        <div className="hidden md:flex items-center gap-7">
+          {navLinks.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              activeOptions={{ exact: true }}
+              activeProps={{ className: "text-brand-green" }}
+              inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+              className="text-sm font-medium transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
-        <a
-          href="#join"
+        <Link
+          to="/login"
           className="text-sm font-medium bg-brand-green text-brand-paper px-5 py-2 rounded-full ring-1 ring-brand-green hover:bg-brand-green-deep transition-all hover:-translate-y-0.5"
         >
-          Join Movement
-        </a>
+          Login Portal
+        </Link>
       </div>
     </nav>
   );
