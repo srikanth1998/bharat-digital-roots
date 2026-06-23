@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { countries } from "@/data/locations";
+
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -15,6 +17,17 @@ export const Route = createFileRoute("/contact")({
 
 function Contact() {
   const [sent, setSent] = useState(false);
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState("");
+  const [district, setDistrict] = useState("");
+
+  const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
+  const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === state), [selectedCountry, state]);
+  const districts = selectedState?.districts ?? [];
+
+  const fieldCls = "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
+  const selectCls = fieldCls + " appearance-none cursor-pointer";
+
   return (
     <div className="min-h-screen bg-brand-paper">
       <div className="max-w-4xl mx-auto px-6 py-24">
@@ -60,30 +73,72 @@ function Contact() {
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Address</label>
-              <input required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">District</label>
-                <input required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
-              </div>
-              <div>
-                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">State</label>
-                <input required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
-              </div>
+              <input required className={fieldCls} />
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Country</label>
-              <input required defaultValue="India" className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+              <select
+                required
+                value={country}
+                onChange={(e) => { setCountry(e.target.value); setState(""); setDistrict(""); }}
+                className={selectCls}
+              >
+                <option value="" disabled>Select country</option>
+                {countries.map((c) => <option key={c.name} value={c.name}>{c.name}</option>)}
+              </select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">State</label>
+                <select
+                  required
+                  value={state}
+                  onChange={(e) => { setState(e.target.value); setDistrict(""); }}
+                  disabled={!selectedCountry || selectedCountry.states.length === 0}
+                  className={selectCls + " disabled:opacity-40"}
+                >
+                  <option value="" disabled>{selectedCountry?.states.length ? "Select state" : "—"}</option>
+                  {selectedCountry?.states.map((s) => <option key={s.name} value={s.name}>{s.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">District</label>
+                {districts.length > 0 ? (
+                  <select
+                    required
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    disabled={!state}
+                    className={selectCls + " disabled:opacity-40"}
+                  >
+                    <option value="" disabled>Select district</option>
+                    {districts.map((d) => <option key={d} value={d}>{d}</option>)}
+                  </select>
+                ) : (
+                  <input
+                    required
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    disabled={!state}
+                    placeholder={state ? "Enter district" : "—"}
+                    className={fieldCls + " disabled:opacity-40"}
+                  />
+                )}
+              </div>
+            </div>
+            <div>
+              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Village / Town</label>
+              <input required placeholder="Type your village or town" className={fieldCls} />
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Message</label>
-              <textarea required rows={4} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors resize-none" />
+              <textarea required rows={4} className={fieldCls + " resize-none"} />
             </div>
 
             <button type="submit" className="w-full bg-brand-green text-brand-paper py-3 rounded-full font-medium hover:bg-brand-green-deep transition-colors">
               {sent ? "Thank you — we'll be in touch." : "Send Message"}
             </button>
+
           </form>
         </div>
       </div>
