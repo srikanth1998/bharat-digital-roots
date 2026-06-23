@@ -1,6 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { useEffect, useMemo, useState } from "react";
 import { countries } from "@/data/locations";
+import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/razorpay.functions";
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => { open: () => void };
+  }
+}
+
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") return resolve(false);
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
 
 
 export const Route = createFileRoute("/membership")({
@@ -48,43 +69,60 @@ function Membership() {
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
   const [district, setDistrict] = useState("");
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
+
+  const createOrder = useServerFn(createRazorpayOrder);
+  const verifyPayment = useServerFn(verifyRazorpayPayment);
+
+  useEffect(() => { void loadRazorpayScript(); }, []);
 
   const selectedPlan = plans.find((p) => p.id === planId)!;
 
+  async function handlePayment(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setPayError(null);
+    setPaying(true);
+    const form = e.currentTarget;
+    try {
+      const ok = await loadRazorpayScript();
+      if (!ok || !window.Razorpay) throw new Error("Could not load Razorpay. Check your connection.");
 
-  const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
-  const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === stateName), [selectedCountry, stateName]);
-  const districts = selectedState?.districts ?? [];
-  const inputCls = "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
-  const selectCls = inputCls + " appearance-none cursor-pointer";
-  const labelCls = "text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold";
+      const order = await createOrder({ data: { amount: selectedPlan.price, planId } });
 
+      const fd = new FormData(form);
+      const name = String(fd.get("fullName") || "");
+      const email = String(fd.get("email") || "");
+      const contact = String(fd.get("mobile") || "");
 
-  return (
-    <div className="min-h-screen bg-brand-paper">
-      <div className="max-w-4xl mx-auto px-6 py-24">
-        <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
-        <span className="mt-10 block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">Join the Movement</span>
-        <h1 className="mt-4 font-serif text-4xl md:text-6xl font-medium tracking-tight text-balance">
-          Membership <span className="italic text-brand-green">Registration.</span>
-        </h1>
-        <p className="mt-6 text-lg text-brand-ink/70 max-w-xl">
-          One application. A lifetime of belonging. Every member is reviewed by our regional chapter team.
-        </p>
+      const rzp = new window.Razorpay({
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.orderId,
+        name: "Vanya · Feathers Forum",
+        description: `${selectedPlan.name} — 1 year`,
+        prefill: { name, email, contact },
+        theme: { color: "#0a6b3b" },
+        handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
+          try {
+            await verifyPayment({ data: response });
+            setDone(true);
+          } catch (err) {
+            setPayError(err instanceof Error ? err.message : "Payment verification failed");
+          } finally {
+            setPaying(false);
+          }
+        },
+        modal: { ondismiss: () => setPaying(false) },
+      });
+      rzp.open();
+    } catch (err) {
+      setPayError(err instanceof Error ? err.message : "Payment could not be started");
+      setPaying(false);
+    }
+  }
 
-        {done ? (
-          <div className="mt-16 p-10 rounded-2xl bg-brand-green text-brand-paper">
-            <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
-            <p className="mt-3 text-brand-paper/80">
-              Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. A chapter coordinator will reach out within 7 days.
-            </p>
-          </div>
-        ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setDone(true);
-            }}
             className="mt-12 space-y-10 bg-brand-paper-warm/50 p-8 md:p-10 rounded-2xl ring-1 ring-black/5"
           >
             <Section title="Personal Information" number="01">
