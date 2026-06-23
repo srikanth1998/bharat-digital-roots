@@ -26,6 +26,17 @@ const membershipTypes = [
 function Membership() {
   const [membershipType, setMembershipType] = useState(membershipTypes[0]);
   const [done, setDone] = useState(false);
+  const [country, setCountry] = useState("India");
+  const [stateName, setStateName] = useState("");
+  const [district, setDistrict] = useState("");
+
+  const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
+  const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === stateName), [selectedCountry, stateName]);
+  const districts = selectedState?.districts ?? [];
+  const inputCls = "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
+  const selectCls = inputCls + " appearance-none cursor-pointer";
+  const labelCls = "text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold";
+
 
   return (
     <div className="min-h-screen bg-brand-paper">
