@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { countries } from "@/data/locations";
+
 
 export const Route = createFileRoute("/membership")({
   head: () => ({
