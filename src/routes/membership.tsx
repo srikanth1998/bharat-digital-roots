@@ -13,15 +13,21 @@ export const Route = createFileRoute("/membership")({
   component: Membership,
 });
 
-const roles = ["Farmer", "Entrepreneur", "Community Partner", "Mentor / Investor"];
+const membershipTypes = [
+  "Farmer",
+  "Entrepreneur",
+  "Community Partner",
+  "Mentor / Investor",
+  "Student / Youth",
+];
 
 function Membership() {
-  const [role, setRole] = useState(roles[0]);
+  const [membershipType, setMembershipType] = useState(membershipTypes[0]);
   const [done, setDone] = useState(false);
 
   return (
     <div className="min-h-screen bg-brand-paper">
-      <div className="max-w-3xl mx-auto px-6 py-24">
+      <div className="max-w-4xl mx-auto px-6 py-24">
         <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
         <span className="mt-10 block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">Join the Movement</span>
         <h1 className="mt-4 font-serif text-4xl md:text-6xl font-medium tracking-tight text-balance">
@@ -42,25 +48,40 @@ function Membership() {
               e.preventDefault();
               setDone(true);
             }}
-            className="mt-12 space-y-8 bg-brand-paper-warm/50 p-10 rounded-2xl ring-1 ring-black/5"
+            className="mt-12 space-y-10 bg-brand-paper-warm/50 p-8 md:p-10 rounded-2xl ring-1 ring-black/5"
           >
-            <div className="grid md:grid-cols-2 gap-6">
-              <Field label="Full Name" />
-              <Field label="Email" type="email" />
-              <Field label="Phone" />
-              <Field label="State / Region" />
-            </div>
+            <Section title="Personal Information" number="01">
+              <div className="grid md:grid-cols-2 gap-6">
+                <Field label="Full Name" required />
+                <Field label="Father / Mother Name" required />
+                <Field label="Primary Mobile Number" type="tel" required />
+                <Field label="Alternate Mobile Number" type="tel" />
+                <Field label="Primary Email ID" type="email" required />
+                <Field label="Secondary Email ID" type="email" />
+              </div>
+            </Section>
 
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold mb-4">I'm joining as</p>
+            <Section title="Address Details" number="02">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="md:col-span-2">
+                  <Field label="Address" required />
+                </div>
+                <Field label="Town / Village (Place)" required />
+                <Field label="District" required />
+                <Field label="State" required />
+                <Field label="Country" required />
+              </div>
+            </Section>
+
+            <Section title="Membership Type" number="03">
               <div className="flex flex-wrap gap-2">
-                {roles.map((r) => (
+                {membershipTypes.map((r) => (
                   <button
                     type="button"
                     key={r}
-                    onClick={() => setRole(r)}
+                    onClick={() => setMembershipType(r)}
                     className={`px-4 py-2 rounded-full text-sm font-medium ring-1 transition-all ${
-                      role === r
+                      membershipType === r
                         ? "bg-brand-green text-brand-paper ring-brand-green"
                         : "bg-transparent text-brand-ink/70 ring-brand-ink/15 hover:ring-brand-green/40"
                     }`}
@@ -69,12 +90,7 @@ function Membership() {
                   </button>
                 ))}
               </div>
-            </div>
-
-            <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Tell us about your work</label>
-              <textarea rows={4} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors resize-none" />
-            </div>
+            </Section>
 
             <button type="submit" className="w-full bg-brand-saffron text-white py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all">
               Submit Application
@@ -86,11 +102,25 @@ function Membership() {
   );
 }
 
-function Field({ label, type = "text" }: { label: string; type?: string }) {
+function Section({ title, number, children }: { title: string; number: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">{label}</label>
-      <input type={type} required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+      <div className="flex items-baseline gap-3 mb-6">
+        <span className="text-[11px] font-mono text-brand-saffron">{number}</span>
+        <h2 className="font-serif text-2xl text-brand-ink">{title}</h2>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function Field({ label, type = "text", required = false }: { label: string; type?: string; required?: boolean }) {
+  return (
+    <div>
+      <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
+        {label} {required && <span className="text-brand-saffron">*</span>}
+      </label>
+      <input type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
     </div>
   );
 }
