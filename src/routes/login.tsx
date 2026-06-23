@@ -3,10 +3,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login Portal — Vanya" },
-      { name: "description", content: "Sign in to the Vanya member portal." },
-      { property: "og:title", content: "Login Portal — Vanya" },
-      { property: "og:description", content: "Access your Vanya member account." },
+      { title: "Login Portal — Feathers Community Forum" },
+      { name: "description", content: "Sign in to the Feathers Community Forum member portal." },
+      { property: "og:title", content: "Login Portal — Feathers Community Forum" },
+      { property: "og:description", content: "Access your Feathers Forum member account." },
     ],
   }),
   component: Login,
@@ -18,12 +18,14 @@ function Login() {
       <div className="hidden lg:block relative bg-brand-green overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(212,131,59,0.25),transparent_60%)]" />
         <div className="relative z-10 h-full flex flex-col justify-between p-12 text-brand-paper">
-          <Link to="/" className="font-serif text-xl font-semibold">Vanya</Link>
+          <Link to="/" className="font-serif text-xl font-semibold">
+            Feathers Forum<span className="text-brand-saffron">.</span>
+          </Link>
           <div>
             <p className="font-serif italic text-3xl leading-snug max-w-md">
-              “The soil remembers every hand that has tended it. So does this movement.”
+              "Empowering People. Building Bharat."
             </p>
-            <p className="mt-6 text-[11px] uppercase tracking-[0.2em] text-brand-paper/60">— Vanya Manifesto</p>
+            <p className="mt-6 text-[11px] uppercase tracking-[0.2em] text-brand-paper/60">— AKR Kali, Founder</p>
           </div>
         </div>
       </div>
@@ -33,8 +35,9 @@ function Login() {
           <div>
             <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
             <h1 className="mt-6 font-serif text-4xl font-medium tracking-tight">Welcome back.</h1>
-            <p className="mt-2 text-brand-ink/60">Sign in to your member portal.</p>
+            <p className="mt-2 text-brand-ink/60">Sign in to your Feathers Forum member portal.</p>
           </div>
+
 
           <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
             <div>
