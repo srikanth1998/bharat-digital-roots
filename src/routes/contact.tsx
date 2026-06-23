@@ -76,23 +76,34 @@ function Contact() {
           </div>
 
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              setSent(true);
+              setError(null);
+              setSubmitting(true);
+              try {
+                await submit({ data: { name, email, address, country, state, district, town, message } });
+                setSent(true);
+                setName(""); setEmail(""); setAddress(""); setTown(""); setMessage("");
+                setState(""); setDistrict("");
+              } catch (err) {
+                setError((err as Error).message || "Could not send. Try again.");
+              } finally {
+                setSubmitting(false);
+              }
             }}
             className="space-y-5 bg-brand-paper-warm/50 p-8 rounded-2xl ring-1 ring-black/5"
           >
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Name</label>
-              <input required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+              <input required value={name} onChange={(e) => setName(e.target.value)} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Email</label>
-              <input type="email" required className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Address</label>
-              <input required className={fieldCls} />
+              <input required value={address} onChange={(e) => setAddress(e.target.value)} className={fieldCls} />
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Country</label>
@@ -147,16 +158,19 @@ function Contact() {
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Village / Town</label>
-              <input required placeholder="Type your village or town" className={fieldCls} />
+              <input required value={town} onChange={(e) => setTown(e.target.value)} placeholder="Type your village or town" className={fieldCls} />
             </div>
             <div>
               <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Message</label>
-              <textarea required rows={4} className={fieldCls + " resize-none"} />
+              <textarea required value={message} onChange={(e) => setMessage(e.target.value)} rows={4} className={fieldCls + " resize-none"} />
             </div>
 
-            <button type="submit" className="w-full bg-brand-green text-brand-paper py-3 rounded-full font-medium hover:bg-brand-green-deep transition-colors">
-              {sent ? "Thank you — we'll be in touch." : "Send Message"}
+            {error && <p className="text-sm text-red-600">{error}</p>}
+
+            <button type="submit" disabled={submitting} className="w-full bg-brand-green text-brand-paper py-3 rounded-full font-medium hover:bg-brand-green-deep transition-colors disabled:opacity-60">
+              {sent ? "Thank you — we'll be in touch." : submitting ? "Sending…" : "Send Message"}
             </button>
+
 
           </form>
         </div>
