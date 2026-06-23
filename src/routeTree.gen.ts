@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as FesyaRouteImport } from './routes/fesya'
+import { Route as FeswaRouteImport } from './routes/feswa'
+import { Route as FeaRouteImport } from './routes/fea'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutFounderRouteImport } from './routes/about-founder'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +26,21 @@ const MembershipRoute = MembershipRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FesyaRoute = FesyaRouteImport.update({
+  id: '/fesya',
+  path: '/fesya',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeswaRoute = FeswaRouteImport.update({
+  id: '/feswa',
+  path: '/feswa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeaRoute = FeaRouteImport.update({
+  id: '/fea',
+  path: '/fea',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -45,6 +63,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about-founder': typeof AboutFounderRoute
   '/contact': typeof ContactRoute
+  '/fea': typeof FeaRoute
+  '/feswa': typeof FeswaRoute
+  '/fesya': typeof FesyaRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
 }
@@ -52,6 +73,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about-founder': typeof AboutFounderRoute
   '/contact': typeof ContactRoute
+  '/fea': typeof FeaRoute
+  '/feswa': typeof FeswaRoute
+  '/fesya': typeof FesyaRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
 }
@@ -60,19 +84,41 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about-founder': typeof AboutFounderRoute
   '/contact': typeof ContactRoute
+  '/fea': typeof FeaRoute
+  '/feswa': typeof FeswaRoute
+  '/fesya': typeof FesyaRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about-founder' | '/contact' | '/login' | '/membership'
+  fullPaths:
+    | '/'
+    | '/about-founder'
+    | '/contact'
+    | '/fea'
+    | '/feswa'
+    | '/fesya'
+    | '/login'
+    | '/membership'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about-founder' | '/contact' | '/login' | '/membership'
+  to:
+    | '/'
+    | '/about-founder'
+    | '/contact'
+    | '/fea'
+    | '/feswa'
+    | '/fesya'
+    | '/login'
+    | '/membership'
   id:
     | '__root__'
     | '/'
     | '/about-founder'
     | '/contact'
+    | '/fea'
+    | '/feswa'
+    | '/fesya'
     | '/login'
     | '/membership'
   fileRoutesById: FileRoutesById
@@ -81,6 +127,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutFounderRoute: typeof AboutFounderRoute
   ContactRoute: typeof ContactRoute
+  FeaRoute: typeof FeaRoute
+  FeswaRoute: typeof FeswaRoute
+  FesyaRoute: typeof FesyaRoute
   LoginRoute: typeof LoginRoute
   MembershipRoute: typeof MembershipRoute
 }
@@ -99,6 +148,27 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fesya': {
+      id: '/fesya'
+      path: '/fesya'
+      fullPath: '/fesya'
+      preLoaderRoute: typeof FesyaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feswa': {
+      id: '/feswa'
+      path: '/feswa'
+      fullPath: '/feswa'
+      preLoaderRoute: typeof FeswaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fea': {
+      id: '/fea'
+      path: '/fea'
+      fullPath: '/fea'
+      preLoaderRoute: typeof FeaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -129,6 +199,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutFounderRoute: AboutFounderRoute,
   ContactRoute: ContactRoute,
+  FeaRoute: FeaRoute,
+  FeswaRoute: FeswaRoute,
+  FesyaRoute: FesyaRoute,
   LoginRoute: LoginRoute,
   MembershipRoute: MembershipRoute,
 }
