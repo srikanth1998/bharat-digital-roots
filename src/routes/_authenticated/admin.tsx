@@ -43,6 +43,12 @@ function Admin() {
             <p className="mt-1 text-brand-ink/60">
               {q.data ? `${q.data.length} total · ${filtered.length} shown` : "Loading…"}
             </p>
+            <div className="mt-3 flex gap-3 text-sm">
+              <span className="text-brand-ink font-semibold">Members</span>
+              <span className="text-brand-ink/30">·</span>
+              <Link to="/admin-messages" className="text-brand-green/80 hover:text-brand-green underline-offset-4 hover:underline">Messages</Link>
+            </div>
+
           </div>
           <input
             type="search"

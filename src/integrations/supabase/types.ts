@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_messages: {
+        Row: {
+          address: string | null
+          country: string | null
+          created_at: string
+          district: string | null
+          email: string
+          id: string
+          message: string
+          name: string
+          state: string | null
+          town: string | null
+        }
+        Insert: {
+          address?: string | null
+          country?: string | null
+          created_at?: string
+          district?: string | null
+          email: string
+          id?: string
+          message: string
+          name: string
+          state?: string | null
+          town?: string | null
+        }
+        Update: {
+          address?: string | null
+          country?: string | null
+          created_at?: string
+          district?: string | null
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          state?: string | null
+          town?: string | null
+        }
+        Relationships: []
+      }
       members: {
         Row: {
           address: string
