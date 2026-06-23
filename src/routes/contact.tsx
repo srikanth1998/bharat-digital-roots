@@ -19,10 +19,19 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const submit = useServerFn(submitContactMessage);
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [town, setTown] = useState("");
+  const [message, setMessage] = useState("");
   const [country, setCountry] = useState("India");
   const [state, setState] = useState("");
   const [district, setDistrict] = useState("");
+
 
   const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
   const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === state), [selectedCountry, state]);
