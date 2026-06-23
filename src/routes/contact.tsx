@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { countries } from "@/data/locations";
+import { submitContactMessage } from "@/lib/contact.functions";
+
 
 
 export const Route = createFileRoute("/contact")({
