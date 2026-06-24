@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { renderAsync } from '@react-email/components'
+import { render } from '@react-email/components'
 import { createClient } from '@supabase/supabase-js'
 import { createFileRoute } from '@tanstack/react-router'
 import { TEMPLATES } from '@/lib/email-templates/registry'
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
     handlers: {
       POST: async ({ request }) => {
         const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SB_SERVICE_ROLE_KEY
 
         if (!supabaseUrl || !supabaseServiceKey) {
           console.error('Missing required environment variables')
@@ -253,8 +253,8 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
 
         // 4. Render React Email template to HTML and plain text
         const element = React.createElement(template.component, templateData)
-        const html = await renderAsync(element)
-        const plainText = await renderAsync(element, { plainText: true })
+        const html = await render(element)
+        const plainText = await render(element, { plainText: true })
 
         // Resolve subject — supports static string or dynamic function
         const resolvedSubject =
