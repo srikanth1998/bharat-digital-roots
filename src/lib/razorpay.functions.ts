@@ -218,15 +218,7 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
         import("@/lib/email-templates/membership-welcome"),
       ]);
 
-      const origin = (() => {
-        try {
-          const { getRequestHost } = require("@tanstack/react-start/server");
-          const host = getRequestHost();
-          return host ? `https://${host}` : "https://bharat-digital-roots.lovable.app";
-        } catch {
-          return "https://bharat-digital-roots.lovable.app";
-        }
-      })();
+      const origin = "https://bharat-digital-roots.lovable.app";
 
       const templateData = {
         fullName: data.profile.fullName,
