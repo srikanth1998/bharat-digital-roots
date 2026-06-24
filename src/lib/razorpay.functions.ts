@@ -252,12 +252,6 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
           { token: unsubscribeToken, email: normalizedEmail },
           { onConflict: "email", ignoreDuplicates: true },
         );
-      const { data: tokRow } = await supabaseAdmin
-        .from("email_unsubscribe_tokens")
-        .select("token")
-        .eq("email", normalizedEmail)
-        .maybeSingle();
-      const finalUnsubToken = tokRow?.token ?? unsubscribeToken;
 
       const messageId = `welcome-${userId}-${Date.now()}`;
       await supabaseAdmin.from("email_send_log").insert({
@@ -267,27 +261,52 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
         status: "pending",
       });
 
-      await (supabaseAdmin.rpc as any)("enqueue_email", {
-        queue_name: "transactional_emails",
-        payload: {
-          message_id: messageId,
-          to: data.profile.email,
-          from: `Vanya · Feathers Forum <noreply@notify.oniondistribution.com>`,
-          sender_domain: "notify.oniondistribution.com",
+      // Send via Resend (through Lovable connector gateway)
+      const lovableApiKey = process.env.LOVABLE_API_KEY;
+      const resendApiKey = process.env.RESEND_API_KEY;
+      if (!lovableApiKey || !resendApiKey) {
+        throw new Error("Resend connector not configured");
+      }
+
+      const resendRes = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${lovableApiKey}`,
+          "X-Connection-Api-Key": resendApiKey,
+        },
+        body: JSON.stringify({
+          from: "Vanya Feathers Forum <noreply@evian-flow-commerce.com>",
+          to: [data.profile.email],
           subject,
           html,
           text: plainText,
-          purpose: "transactional",
-          label: "membership-welcome",
-          idempotency_key: `welcome-${userId}`,
-          unsubscribe_token: finalUnsubToken,
-          queued_at: new Date().toISOString(),
-        },
+        }),
+      });
+
+      if (!resendRes.ok) {
+        const errBody = await resendRes.text();
+        await supabaseAdmin.from("email_send_log").insert({
+          message_id: messageId,
+          template_name: "membership-welcome",
+          recipient_email: data.profile.email,
+          status: "failed",
+          error_message: `Resend ${resendRes.status}: ${errBody.slice(0, 500)}`,
+        });
+        throw new Error(`Resend send failed: ${resendRes.status} ${errBody}`);
+      }
+
+      await supabaseAdmin.from("email_send_log").insert({
+        message_id: messageId,
+        template_name: "membership-welcome",
+        recipient_email: data.profile.email,
+        status: "sent",
       });
     } catch (mailErr) {
       // Email failure must NOT roll back the paid membership — log and continue.
-      console.error("Failed to enqueue welcome email:", mailErr);
+      console.error("Failed to send welcome email via Resend:", mailErr);
     }
+
 
 
     return {
