@@ -1,5 +1,37 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 import founderAsset from "@/assets/founder-akr-kali.jpg.asset.json";
+
+function FounderImage({ src }: { src: string }) {
+  const [errored, setErrored] = useState(false);
+  const ref = useRef<HTMLImageElement>(null);
+  // SSR gotcha: if the image 404s before React hydrates, the onError event is missed.
+  // On mount, detect an already-broken image (loaded but zero intrinsic size).
+  useEffect(() => {
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) setErrored(true);
+  }, []);
+  if (errored) {
+    return (
+      <div
+        role="img"
+        aria-label="Anand Kumar Kali, Founder of Feathers Community Forum"
+        className="w-full aspect-[3/4] rounded-2xl ring-1 ring-black/5 bg-brand-green/10 flex items-center justify-center"
+      >
+        <span className="font-serif text-7xl text-brand-green/70 select-none">AK</span>
+      </div>
+    );
+  }
+  return (
+    <img
+      ref={ref}
+      src={src}
+      alt="Anand Kumar Kali, Founder of Feathers Community Forum"
+      className="w-full aspect-[3/4] object-cover rounded-2xl ring-1 ring-black/5"
+      onError={() => setErrored(true)}
+    />
+  );
+}
 
 export const Route = createFileRoute("/about-founder")({
   head: () => ({
@@ -42,12 +74,7 @@ function AboutFounder() {
         </p>
 
         <div className="mt-12 grid md:grid-cols-[1fr_2fr] gap-12 items-start">
-          <img
-            src={founderAsset.url}
-            alt="Anand Kumar Kali, Founder of Feathers Community Forum"
-            className="w-full aspect-[3/4] object-cover rounded-2xl ring-1 ring-black/5"
-            loading="lazy"
-          />
+          <FounderImage src={founderAsset.url} />
 
           <div className="space-y-6 text-brand-ink/75 leading-relaxed text-lg">
             <p>

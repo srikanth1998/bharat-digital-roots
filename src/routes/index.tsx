@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import heroGrain from "@/assets/hero-grain.jpg";
 
 export const Route = createFileRoute("/")({
@@ -50,6 +51,9 @@ const homeModules = [
 ] as const;
 
 function HomeMenu() {
+  // Opens on hover AND on keyboard focus-within. Because the panel becomes visible
+  // the moment the trigger is focused, keyboard users can then Tab into its links
+  // (UX-03 — previously the panel was `invisible`, so it was unreachable by keyboard).
   return (
     <div className="relative group">
       <Link
@@ -58,17 +62,18 @@ function HomeMenu() {
         activeProps={{ className: "text-brand-green" }}
         inactiveProps={{ className: "text-brand-ink/60 group-hover:text-brand-ink" }}
         className="text-sm font-medium transition-colors inline-flex items-center gap-1"
+        aria-haspopup="true"
       >
         Home Page
         <span aria-hidden className="text-[10px] opacity-60">▾</span>
       </Link>
-      <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
+      <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200 z-50">
         <div className="bg-brand-paper/95 backdrop-blur-xl ring-1 ring-black/10 rounded-2xl shadow-2xl shadow-brand-ink/15 p-2">
           {homeModules.map((m) => (
             <Link
               key={m.to}
               to={m.to}
-              className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm transition-colors group/item"
+              className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm focus:bg-brand-paper-warm focus:outline-none transition-colors group/item"
             >
               <div>
                 <p className="font-serif text-lg font-semibold text-brand-green leading-none">{m.code}</p>
@@ -84,6 +89,9 @@ function HomeMenu() {
 }
 
 function Nav() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const close = () => setMobileOpen(false);
+
   return (
     <nav className="sticky top-0 z-50 w-full bg-brand-paper/75 backdrop-blur-md border-b border-zinc-950/5">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
@@ -103,13 +111,55 @@ function Nav() {
             </Link>
           ))}
         </div>
-        <Link
-          to="/login"
-          className="text-sm font-medium bg-brand-green text-brand-paper px-5 py-2 rounded-full ring-1 ring-brand-green hover:bg-brand-green-deep transition-all hover:-translate-y-0.5"
-        >
-          Login Portal
-        </Link>
+
+        <div className="flex items-center gap-2">
+          <Link
+            to="/login"
+            className="hidden md:inline-flex text-sm font-medium bg-brand-green text-brand-paper px-5 py-2 rounded-full ring-1 ring-brand-green hover:bg-brand-green-deep transition-all hover:-translate-y-0.5"
+          >
+            Login Portal
+          </Link>
+          <button
+            type="button"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            className="md:hidden inline-flex items-center justify-center size-10 -mr-2 rounded-lg text-brand-ink hover:bg-brand-paper-warm transition-colors"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              {mobileOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <><path d="M3 6h18" /><path d="M3 12h18" /><path d="M3 18h18" /></>}
+            </svg>
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu panel */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-zinc-950/5 bg-brand-paper/95 backdrop-blur-xl">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col">
+            <Link to="/" onClick={close} className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green">
+              Home Page
+            </Link>
+            {homeModules.map((m) => (
+              <Link key={m.to} to={m.to} onClick={close} className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green">
+                <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
+              </Link>
+            ))}
+            {navLinks.map((item) => (
+              <Link key={item.to} to={item.to} onClick={close} className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green">
+                {item.label}
+              </Link>
+            ))}
+            <Link
+              to="/login"
+              onClick={close}
+              className="mt-3 inline-flex items-center justify-center text-sm font-medium bg-brand-green text-brand-paper px-5 py-2.5 rounded-full hover:bg-brand-green-deep transition-colors"
+            >
+              Login Portal
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
@@ -163,7 +213,7 @@ function Hero() {
               <p className="font-serif italic text-brand-green text-lg leading-snug">
                 “We rise by lifting the community we belong to.”
               </p>
-              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-ink/40">
+              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">
                 — AKR Kali, Founder
               </p>
             </div>
@@ -221,7 +271,7 @@ function Pillars() {
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-2xl mb-16">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/40">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">
             What We Do
           </span>
           <h2 className="mt-4 font-serif text-3xl md:text-5xl font-medium tracking-tight text-balance">
@@ -277,7 +327,7 @@ function Metrics() {
               >
                 {m.value}
               </span>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/40">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">
                 {m.label}
               </span>
             </div>

@@ -6,9 +6,15 @@ export type MemberRow = {
   user_id: string;
   member_code: string;
   full_name: string;
+  parent_name: string | null;
   email: string;
+  alt_email: string | null;
   mobile: string;
+  alt_mobile: string | null;
   plan_id: "active" | "passive";
+  amount_inr: number;
+  address: string;
+  town: string;
   district: string;
   state: string;
   country: string;
@@ -42,9 +48,10 @@ export const getAllMembers = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("members")
       .select(
-        "id, user_id, member_code, full_name, email, mobile, plan_id, district, state, country, joined_at, expires_at",
+        "id, user_id, member_code, full_name, parent_name, email, alt_email, mobile, alt_mobile, plan_id, amount_inr, address, town, district, state, country, joined_at, expires_at",
       )
-      .order("joined_at", { ascending: false });
+      .order("joined_at", { ascending: false })
+      .limit(1000);
     if (error) throw new Error(error.message);
     return (data ?? []) as MemberRow[];
   });

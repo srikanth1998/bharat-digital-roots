@@ -1,8 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+// SEC-01: Prices are authoritative on the server. The client never supplies an
+// amount — it only chooses a plan — so it cannot pay ₹1 for a ₹100/₹500 plan.
+const PLAN_PRICES_INR: Record<"active" | "passive", number> = {
+  active: 100,
+  passive: 500,
+};
+
 const createOrderInput = z.object({
-  amount: z.number().int().positive(), // in INR rupees
   planId: z.enum(["active", "passive"]),
 });
 
@@ -15,6 +21,8 @@ export const createRazorpayOrder = createServerFn({ method: "POST" })
       throw new Error("Razorpay keys are not configured. Add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.");
     }
 
+    const amountInr = PLAN_PRICES_INR[data.planId];
+
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
     const res = await fetch("https://api.razorpay.com/v1/orders", {
       method: "POST",
@@ -23,7 +31,7 @@ export const createRazorpayOrder = createServerFn({ method: "POST" })
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount: data.amount * 100, // paise
+        amount: amountInr * 100, // paise
         currency: "INR",
         receipt: `vanya_${data.planId}_${Date.now()}`,
         notes: { planId: data.planId },
@@ -44,14 +52,13 @@ const verifyInput = z.object({
   razorpay_payment_id: z.string(),
   razorpay_signature: z.string(),
   planId: z.enum(["active", "passive"]),
-  amount: z.number().int().positive(),
   profile: z.object({
     fullName: z.string().trim().min(1).max(120),
     parentName: z.string().trim().max(120).optional().default(""),
     mobile: z.string().trim().min(5).max(20),
     altMobile: z.string().trim().max(20).optional().default(""),
     email: z.string().trim().email().max(160),
-    altEmail: z.string().trim().max(160).optional().default(""),
+    altEmail: z.string().trim().email().max(160).optional().or(z.literal("")).default(""),
     address: z.string().trim().min(1).max(400),
     country: z.string().trim().min(1).max(80),
     state: z.string().trim().min(1).max(80),
@@ -70,8 +77,9 @@ function generateTempPassword(): string {
 export const verifyRazorpayPayment = createServerFn({ method: "POST" })
   .inputValidator((data) => verifyInput.parse(data))
   .handler(async ({ data }) => {
+    const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    if (!keySecret) throw new Error("Razorpay secret not configured");
+    if (!keyId || !keySecret) throw new Error("Razorpay keys not configured");
 
     const { createHmac, timingSafeEqual } = await import("crypto");
     const expected = createHmac("sha256", keySecret)
@@ -82,6 +90,29 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
     const b = Buffer.from(data.razorpay_signature);
     const valid = a.length === b.length && timingSafeEqual(a, b);
     if (!valid) throw new Error("Invalid payment signature");
+
+    // SEC-01: the amount is the server-side canonical price, never a client value.
+    const amountInr = PLAN_PRICES_INR[data.planId];
+
+    // SEC-01 (defense in depth): confirm the order really exists, is paid, and was
+    // created for the canonical amount/plan — so a tampered or replayed order is rejected.
+    const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
+    const orderRes = await fetch(`https://api.razorpay.com/v1/orders/${data.razorpay_order_id}`, {
+      headers: { Authorization: `Basic ${auth}` },
+    });
+    if (!orderRes.ok) throw new Error("Could not verify payment order with Razorpay");
+    const order = (await orderRes.json()) as {
+      amount: number;
+      amount_paid: number;
+      status: string;
+      notes?: { planId?: string };
+    };
+    if (order.amount !== amountInr * 100 || order.amount_paid < amountInr * 100) {
+      throw new Error("Payment amount does not match the selected plan");
+    }
+    if (order.notes?.planId && order.notes.planId !== data.planId) {
+      throw new Error("Payment plan mismatch");
+    }
 
     // ---- Create account + member ----
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -133,7 +164,7 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
       district: data.profile.district,
       town: data.profile.town,
       plan_id: data.planId,
-      amount_inr: data.amount,
+      amount_inr: amountInr,
       razorpay_order_id: data.razorpay_order_id,
       razorpay_payment_id: data.razorpay_payment_id,
     });

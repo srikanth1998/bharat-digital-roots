@@ -98,7 +98,7 @@ function Membership() {
         town: town.trim(),
       };
 
-      const order = await createOrder({ data: { amount: selectedPlan.price, planId } });
+      const order = await createOrder({ data: { planId } });
 
       const rzp = new window.Razorpay({
         key: order.keyId,
@@ -115,7 +115,6 @@ function Membership() {
               data: {
                 ...response,
                 planId,
-                amount: selectedPlan.price,
                 profile,
               },
             });
@@ -209,8 +208,9 @@ function Membership() {
             <Section title="Address Details" number="02">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <label className={labelCls}>Address <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-address" className={labelCls}>Address <span className="text-brand-saffron">*</span></label>
                   <input
+                    id="mem-address"
                     required
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
@@ -218,8 +218,9 @@ function Membership() {
                   />
                 </div>
                 <div>
-                  <label className={labelCls}>Country <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-country" className={labelCls}>Country <span className="text-brand-saffron">*</span></label>
                   <select
+                    id="mem-country"
                     required
                     value={country}
                     onChange={(e) => { setCountry(e.target.value); setStateName(""); setDistrict(""); }}
@@ -230,8 +231,9 @@ function Membership() {
                   </select>
                 </div>
                 <div>
-                  <label className={labelCls}>State <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-state" className={labelCls}>State <span className="text-brand-saffron">*</span></label>
                   <select
+                    id="mem-state"
                     required
                     value={stateName}
                     onChange={(e) => { setStateName(e.target.value); setDistrict(""); }}
@@ -243,9 +245,10 @@ function Membership() {
                   </select>
                 </div>
                 <div>
-                  <label className={labelCls}>District <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-district" className={labelCls}>District <span className="text-brand-saffron">*</span></label>
                   {districts.length > 0 ? (
                     <select
+                      id="mem-district"
                       required
                       value={district}
                       onChange={(e) => setDistrict(e.target.value)}
@@ -257,6 +260,7 @@ function Membership() {
                     </select>
                   ) : (
                     <input
+                      id="mem-district"
                       required
                       value={district}
                       onChange={(e) => setDistrict(e.target.value)}
@@ -267,8 +271,9 @@ function Membership() {
                   )}
                 </div>
                 <div>
-                  <label className={labelCls}>Town / Village (Place) <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-town" className={labelCls}>Town / Village (Place) <span className="text-brand-saffron">*</span></label>
                   <input
+                    id="mem-town"
                     required
                     value={town}
                     onChange={(e) => setTown(e.target.value)}
@@ -346,12 +351,13 @@ function Section({ title, number, children }: { title: string; number: string; c
 }
 
 function Field({ label, type = "text", required = false, name }: { label: string; type?: string; required?: boolean; name?: string }) {
+  const id = name ?? label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <div>
-      <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
+      <label htmlFor={id} className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
         {label} {required && <span className="text-brand-saffron">*</span>}
       </label>
-      <input name={name} type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+      <input id={id} name={name} type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
     </div>
   );
 

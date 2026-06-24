@@ -94,20 +94,21 @@ function Contact() {
             className="space-y-5 bg-brand-paper-warm/50 p-8 rounded-2xl ring-1 ring-black/5"
           >
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Name</label>
-              <input required value={name} onChange={(e) => setName(e.target.value)} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+              <label htmlFor="contact-name" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Name</label>
+              <input id="contact-name" required value={name} onChange={(e) => setName(e.target.value)} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Email</label>
-              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+              <label htmlFor="contact-email" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Email</label>
+              <input id="contact-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Address</label>
-              <input required value={address} onChange={(e) => setAddress(e.target.value)} className={fieldCls} />
+              <label htmlFor="contact-address" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Address</label>
+              <input id="contact-address" required value={address} onChange={(e) => setAddress(e.target.value)} className={fieldCls} />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Country</label>
+              <label htmlFor="contact-country" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Country</label>
               <select
+                id="contact-country"
                 required
                 value={country}
                 onChange={(e) => { setCountry(e.target.value); setState(""); setDistrict(""); }}
@@ -119,8 +120,9 @@ function Contact() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">State</label>
+                <label htmlFor="contact-state" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">State</label>
                 <select
+                  id="contact-state"
                   required
                   value={state}
                   onChange={(e) => { setState(e.target.value); setDistrict(""); }}
@@ -132,9 +134,10 @@ function Contact() {
                 </select>
               </div>
               <div>
-                <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">District</label>
+                <label htmlFor="contact-district" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">District</label>
                 {districts.length > 0 ? (
                   <select
+                    id="contact-district"
                     required
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
@@ -146,6 +149,7 @@ function Contact() {
                   </select>
                 ) : (
                   <input
+                    id="contact-district"
                     required
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
@@ -157,12 +161,12 @@ function Contact() {
               </div>
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Village / Town</label>
-              <input required value={town} onChange={(e) => setTown(e.target.value)} placeholder="Type your village or town" className={fieldCls} />
+              <label htmlFor="contact-town" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Village / Town</label>
+              <input id="contact-town" required value={town} onChange={(e) => setTown(e.target.value)} placeholder="Type your village or town" className={fieldCls} />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Message</label>
-              <textarea required value={message} onChange={(e) => setMessage(e.target.value)} rows={4} className={fieldCls + " resize-none"} />
+              <label htmlFor="contact-message" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Message</label>
+              <textarea id="contact-message" required value={message} onChange={(e) => setMessage(e.target.value)} rows={4} className={fieldCls + " resize-none"} />
             </div>
 
             {error && <p className="text-sm text-red-600">{error}</p>}

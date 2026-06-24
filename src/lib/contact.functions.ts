@@ -1,6 +1,19 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { createClient } from "@supabase/supabase-js";
+
+// SEC-04: validate + bound contact input server-side (DB CHECK constraints are the backstop).
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required.").max(120),
+  email: z.string().trim().email("Enter a valid email.").max(160),
+  message: z.string().trim().min(1, "Message is required.").max(5000),
+  address: z.string().trim().max(400).optional(),
+  country: z.string().trim().max(80).optional(),
+  state: z.string().trim().max(80).optional(),
+  district: z.string().trim().max(80).optional(),
+  town: z.string().trim().max(120).optional(),
+});
 
 export type ContactMessage = {
   id: string;
@@ -28,10 +41,11 @@ export type ContactInput = {
 
 export const submitContactMessage = createServerFn({ method: "POST" })
   .inputValidator((input: ContactInput) => {
-    if (!input?.name?.trim() || !input?.email?.trim() || !input?.message?.trim()) {
-      throw new Error("Name, email, and message are required.");
+    const result = contactSchema.safeParse(input);
+    if (!result.success) {
+      throw new Error(result.error.issues[0]?.message ?? "Invalid contact submission.");
     }
-    return input;
+    return result.data;
   })
   .handler(async ({ data }) => {
     const supabase = createClient(
@@ -66,7 +80,8 @@ export const getAllContactMessages = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("contact_messages")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(1000);
     if (error) throw new Error(error.message);
     return (data ?? []) as ContactMessage[];
   });

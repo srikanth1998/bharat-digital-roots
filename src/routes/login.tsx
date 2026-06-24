@@ -85,8 +85,9 @@ function Login() {
 
           <form className="space-y-5" onSubmit={onSubmit}>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Email</label>
+              <label htmlFor="login-email" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Email</label>
               <input
+                id="login-email"
                 name="email"
                 type="email"
                 autoComplete="email"
@@ -95,14 +96,20 @@ function Login() {
               />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Password</label>
+              <label htmlFor="login-password" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Password</label>
               <input
+                id="login-password"
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 required
                 className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors"
               />
+            </div>
+            <div className="text-right -mt-2">
+              <Link to="/forgot-password" className="text-xs text-brand-ink/50 hover:text-brand-green">
+                Forgot password?
+              </Link>
             </div>
             {error && <p className="text-sm text-red-600">{error}</p>}
             <button
