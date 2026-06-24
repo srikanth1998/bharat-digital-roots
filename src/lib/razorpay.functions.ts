@@ -275,7 +275,7 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
         status: "pending",
       });
 
-      await supabaseAdmin.rpc("enqueue_email", {
+      await (supabaseAdmin.rpc as any)("enqueue_email", {
         queue_name: "transactional_emails",
         payload: {
           message_id: messageId,
