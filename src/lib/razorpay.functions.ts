@@ -12,6 +12,31 @@ const createOrderInput = z.object({
   planId: z.enum(["active", "passive"]),
 });
 
+export const checkEmailAvailable = createServerFn({ method: "POST" })
+  .inputValidator((data) => z.object({ email: z.string().trim().email().max(160) }).parse(data))
+  .handler(async ({ data }) => {
+    const email = data.email.toLowerCase();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Check the members table first (case-insensitive)
+    const { data: existingMember, error: memErr } = await supabaseAdmin
+      .from("members")
+      .select("id")
+      .ilike("email", email)
+      .maybeSingle();
+    if (memErr) throw new Error(`Could not check email: ${memErr.message}`);
+    if (existingMember) return { available: false as const };
+
+    // Check auth users as well, so a registered (but not-yet-paid) account is also blocked
+    const { data: list, error: listErr } = await supabaseAdmin.auth.admin.listUsers({
+      page: 1,
+      perPage: 200,
+    });
+    if (listErr) throw new Error(`Could not check email: ${listErr.message}`);
+    const taken = list.users.some((u) => (u.email ?? "").toLowerCase() === email);
+    return { available: !taken };
+  });
+
 export const createRazorpayOrder = createServerFn({ method: "POST" })
   .inputValidator((data) => createOrderInput.parse(data))
   .handler(async ({ data }) => {

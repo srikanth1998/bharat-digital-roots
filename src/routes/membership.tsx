@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { countries } from "@/data/locations";
-import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/razorpay.functions";
+import { createRazorpayOrder, verifyRazorpayPayment, checkEmailAvailable } from "@/lib/razorpay.functions";
 
 declare global {
   interface Window {
@@ -69,6 +69,7 @@ function Membership() {
 
   const createOrder = useServerFn(createRazorpayOrder);
   const verifyPayment = useServerFn(verifyRazorpayPayment);
+  const checkEmail = useServerFn(checkEmailAvailable);
 
   useEffect(() => { void loadRazorpayScript(); }, []);
 
@@ -97,6 +98,12 @@ function Membership() {
         district: district.trim(),
         town: town.trim(),
       };
+
+      // Block known-registered emails before opening Razorpay checkout
+      const { available } = await checkEmail({ data: { email: profile.email } });
+      if (!available) {
+        throw new Error("This email is already registered. Please log in instead.");
+      }
 
       const order = await createOrder({ data: { planId } });
 
