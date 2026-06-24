@@ -202,7 +202,93 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
     // Grant the 'member' role
     await supabaseAdmin.from("user_roles").insert({ user_id: userId, role: "member" });
 
-    // TODO: enqueue welcome email with memberCode + tempPassword once email domain is verified.
+    // Read the member's expires_at to put on the ID card in the email
+    const { data: memberRow } = await supabaseAdmin
+      .from("members")
+      .select("expires_at")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    // Enqueue welcome email — render the React Email template and push it onto
+    // the transactional_emails queue. The Lovable email cron picks it up.
+    try {
+      const [{ render }, React, { template: welcomeTpl }] = await Promise.all([
+        import("@react-email/components"),
+        import("react"),
+        import("@/lib/email-templates/membership-welcome"),
+      ]);
+
+      const origin = "https://bharat-digital-roots.lovable.app";
+
+      const templateData = {
+        fullName: data.profile.fullName,
+        memberCode,
+        email: data.profile.email,
+        tempPassword,
+        planName: data.planId === "active" ? "Active Membership" : "Passive Membership",
+        amountInr,
+        razorpayPaymentId: data.razorpay_payment_id,
+        razorpayOrderId: data.razorpay_order_id,
+        expiresAt: memberRow?.expires_at ?? "",
+        loginUrl: `${origin}/login`,
+      };
+
+      const element = React.createElement(welcomeTpl.component, templateData);
+      const html = await render(element);
+      const plainText = await render(element, { plainText: true });
+      const subject =
+        typeof welcomeTpl.subject === "function"
+          ? welcomeTpl.subject(templateData)
+          : welcomeTpl.subject;
+
+      // Ensure an unsubscribe token exists for this recipient
+      const normalizedEmail = data.profile.email.toLowerCase();
+      const unsubscribeToken = Array.from(crypto.getRandomValues(new Uint8Array(32)))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+      await supabaseAdmin
+        .from("email_unsubscribe_tokens")
+        .upsert(
+          { token: unsubscribeToken, email: normalizedEmail },
+          { onConflict: "email", ignoreDuplicates: true },
+        );
+      const { data: tokRow } = await supabaseAdmin
+        .from("email_unsubscribe_tokens")
+        .select("token")
+        .eq("email", normalizedEmail)
+        .maybeSingle();
+      const finalUnsubToken = tokRow?.token ?? unsubscribeToken;
+
+      const messageId = `welcome-${userId}-${Date.now()}`;
+      await supabaseAdmin.from("email_send_log").insert({
+        message_id: messageId,
+        template_name: "membership-welcome",
+        recipient_email: data.profile.email,
+        status: "pending",
+      });
+
+      await (supabaseAdmin.rpc as any)("enqueue_email", {
+        queue_name: "transactional_emails",
+        payload: {
+          message_id: messageId,
+          to: data.profile.email,
+          from: `Vanya · Feathers Forum <noreply@notify.oniondistribution.com>`,
+          sender_domain: "notify.oniondistribution.com",
+          subject,
+          html,
+          text: plainText,
+          purpose: "transactional",
+          label: "membership-welcome",
+          idempotency_key: `welcome-${userId}`,
+          unsubscribe_token: finalUnsubToken,
+          queued_at: new Date().toISOString(),
+        },
+      });
+    } catch (mailErr) {
+      // Email failure must NOT roll back the paid membership — log and continue.
+      console.error("Failed to enqueue welcome email:", mailErr);
+    }
+
 
     return {
       verified: true,
