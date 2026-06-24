@@ -13,6 +13,7 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FesyaRouteImport } from './routes/fesya'
 import { Route as FeswaRouteImport } from './routes/feswa'
 import { Route as FeaRouteImport } from './routes/fea'
@@ -46,6 +47,11 @@ const MembershipRoute = MembershipRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FesyaRoute = FesyaRouteImport.update({
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/fea': typeof FeaRoute
   '/feswa': typeof FeswaRoute
   '/fesya': typeof FesyaRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
   '/set-password': typeof SetPasswordRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/fea': typeof FeaRoute
   '/feswa': typeof FeswaRoute
   '/fesya': typeof FesyaRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
   '/set-password': typeof SetPasswordRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/fea': typeof FeaRoute
   '/feswa': typeof FeswaRoute
   '/fesya': typeof FesyaRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/membership': typeof MembershipRoute
   '/set-password': typeof SetPasswordRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/fea'
     | '/feswa'
     | '/fesya'
+    | '/forgot-password'
     | '/login'
     | '/membership'
     | '/set-password'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/fea'
     | '/feswa'
     | '/fesya'
+    | '/forgot-password'
     | '/login'
     | '/membership'
     | '/set-password'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/fea'
     | '/feswa'
     | '/fesya'
+    | '/forgot-password'
     | '/login'
     | '/membership'
     | '/set-password'
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   FeaRoute: typeof FeaRoute
   FeswaRoute: typeof FeswaRoute
   FesyaRoute: typeof FesyaRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   MembershipRoute: typeof MembershipRoute
   SetPasswordRoute: typeof SetPasswordRoute
@@ -287,6 +300,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fesya': {
@@ -413,6 +433,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeaRoute: FeaRoute,
   FeswaRoute: FeswaRoute,
   FesyaRoute: FesyaRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   MembershipRoute: MembershipRoute,
   SetPasswordRoute: SetPasswordRoute,
