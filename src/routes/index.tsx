@@ -390,62 +390,12 @@ function Footer() {
   );
 }
 
-function WelcomeBanner() {
-  return (
-    <section className="px-6 pb-12 lg:pb-24">
-      <div className="max-w-7xl mx-auto">
-        <div className="relative overflow-hidden rounded-3xl ring-1 ring-black/5 shadow-2xl shadow-brand-ink/20">
-          <img
-            src={heroFounder.url}
-            alt="AKR Kali planting a sapling with children holding the Feathers Community Forum sign"
-            className="absolute inset-0 w-full h-full object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-ink/80 via-brand-ink/55 to-brand-ink/85 md:bg-gradient-to-r md:from-brand-ink/85 md:via-brand-ink/55 md:to-brand-ink/20" />
-          <div className="relative z-10 px-6 py-14 sm:px-12 sm:py-20 lg:px-16 lg:py-28 max-w-3xl text-white">
-            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-brand-saffron">
-              <span className="size-1.5 rounded-full bg-brand-saffron" />
-              Welcome
-            </span>
-            <h2 className="mt-5 font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.1] font-medium tracking-tight text-balance">
-              Welcome to Feathers Community Forum
-            </h2>
-            <div className="mt-6 space-y-5 text-[15px] sm:text-base lg:text-lg leading-relaxed text-white/85 text-pretty">
-              <p>
-                Feathers Community Forum is a community-driven platform dedicated
-                to empowering individuals and transforming communities through
-                innovation, service, sustainability, and cultural renewal. We
-                bring together people, ideas, and action to create meaningful
-                opportunities, support vulnerable groups, strengthen
-                livelihoods, protect the environment, and preserve the heritage
-                that shapes our identity.
-              </p>
-              <p>
-                At Feathers Community Forum, we believe that strong communities
-                are built when people are equipped with the right skills,
-                connected to opportunities, inspired to serve, and rooted in
-                values that sustain collective progress. Through our programs,
-                outreach, partnerships, and volunteer-driven initiatives, we
-                work to build a future where communities are more inclusive,
-                resilient, compassionate, and self-reliant.
-              </p>
-            </div>
-            <p className="mt-8 font-serif italic text-lg sm:text-xl lg:text-2xl text-brand-gold">
-              Empowering People. Building Communities. Reviving Heritage.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Index() {
   return (
     <div className="min-h-screen bg-brand-paper font-sans text-brand-ink">
       <Nav />
       <main>
         <Hero />
-        <WelcomeBanner />
         <Pillars />
         <Metrics />
         <CTA />
