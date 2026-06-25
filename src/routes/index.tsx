@@ -32,7 +32,7 @@ function Logo() {
       <img
         src={feathersLogo.url}
         alt="Feathers Community Forum International"
-        className="h-20 w-auto md:h-24 object-contain transition-opacity group-hover:opacity-90"
+        className="h-40 w-auto md:h-48 object-contain transition-opacity group-hover:opacity-90"
       />
     </Link>
   );
