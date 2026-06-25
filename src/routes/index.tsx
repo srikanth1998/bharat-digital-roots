@@ -27,14 +27,12 @@ export const Route = createFileRoute("/")({
 
 function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2 group">
-      <span
-        aria-hidden
-        className="inline-block size-2.5 rounded-full bg-brand-saffron ring-4 ring-brand-saffron/15 transition-all group-hover:ring-brand-saffron/30"
+    <Link to="/" className="flex items-center group" aria-label="Feathers Community Forum International — Home">
+      <img
+        src={feathersLogo.url}
+        alt="Feathers Community Forum International"
+        className="h-10 w-auto md:h-12 transition-opacity group-hover:opacity-90"
       />
-      <span className="font-serif text-xl tracking-tight text-brand-green font-semibold">
-        Feathers Forum
-      </span>
     </Link>
   );
 }
