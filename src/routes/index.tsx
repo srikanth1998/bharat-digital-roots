@@ -51,28 +51,41 @@ const homeModules = [
 ] as const;
 
 function HomeMenu() {
-  // Opens on hover AND on keyboard focus-within. Because the panel becomes visible
-  // the moment the trigger is focused, keyboard users can then Tab into its links
-  // (UX-03 — previously the panel was `invisible`, so it was unreachable by keyboard).
+  const [open, setOpen] = useState(false);
   return (
-    <div className="relative group">
-      <Link
-        to="/"
-        activeOptions={{ exact: true }}
-        activeProps={{ className: "text-brand-green" }}
-        inactiveProps={{ className: "text-brand-ink/60 group-hover:text-brand-ink" }}
-        className="text-sm font-medium transition-colors inline-flex items-center gap-1"
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
+        aria-expanded={open}
+        className="text-sm font-medium transition-colors inline-flex items-center gap-1 text-brand-ink/60 hover:text-brand-ink"
       >
         Home Page
         <span aria-hidden className="text-[10px] opacity-60">▾</span>
-      </Link>
-      <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200 z-50">
+      </button>
+      <div
+        className={`absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 transition-all duration-200 z-50 ${
+          open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-1"
+        }`}
+      >
         <div className="bg-brand-paper/95 backdrop-blur-xl ring-1 ring-black/10 rounded-2xl shadow-2xl shadow-brand-ink/15 p-2">
+          <Link
+            to="/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm transition-colors"
+          >
+            <p className="text-sm font-medium text-brand-ink/80">Home Page</p>
+          </Link>
           {homeModules.map((m) => (
             <Link
               key={m.to}
               to={m.to}
+              onClick={() => setOpen(false)}
               className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm focus:bg-brand-paper-warm focus:outline-none transition-colors group/item"
             >
               <div>
@@ -87,6 +100,7 @@ function HomeMenu() {
     </div>
   );
 }
+
 
 function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
