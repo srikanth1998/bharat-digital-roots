@@ -172,19 +172,35 @@ function Hero() {
           <div className="space-y-8 animate-reveal-up">
             <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">
               <span className="size-1.5 rounded-full bg-brand-saffron" />
-              Feathers Community Forum
+              Welcome to Feathers Community Forum
             </span>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl leading-[1.02] text-balance font-medium tracking-tight">
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-balance font-medium tracking-tight">
               Empowering People.
               <br />
-              Building{" "}
-              <span className="italic text-brand-green">Bharat.</span>
+              Building Communities.
+              <br />
+              Reviving{" "}
+              <span className="italic text-brand-green">Heritage.</span>
             </h1>
-            <p className="text-lg lg:text-xl text-brand-ink/70 max-w-[52ch] text-pretty leading-relaxed">
-              A platform where individuals discuss, promote, and collaborate on
-              entrepreneurial ventures, community services, and volunteer
-              opportunities — founded by AKR Kali.
-            </p>
+            <div className="space-y-5 text-base lg:text-lg text-brand-ink/70 max-w-[58ch] text-pretty leading-relaxed">
+              <p>
+                Feathers Community Forum is a community-driven platform
+                dedicated to empowering individuals and transforming
+                communities through innovation, service, sustainability, and
+                cultural renewal. We bring together people, ideas, and action
+                to create meaningful opportunities, support vulnerable groups,
+                strengthen livelihoods, protect the environment, and preserve
+                the heritage that shapes our identity.
+              </p>
+              <p>
+                We believe strong communities are built when people are
+                equipped with the right skills, connected to opportunities,
+                inspired to serve, and rooted in values that sustain
+                collective progress — building a future that is more
+                inclusive, resilient, compassionate, and self-reliant.
+              </p>
+            </div>
+
             <div className="flex flex-wrap items-center gap-5">
               <Link
                 to="/membership"
