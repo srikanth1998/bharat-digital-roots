@@ -31,7 +31,7 @@ function Logo() {
       <img
         src={feathersLogo.url}
         alt="Feathers Community Forum International"
-        className="h-20 w-auto md:h-24 transition-opacity group-hover:opacity-90"
+        className="h-20 w-auto md:h-24 object-contain transition-opacity group-hover:opacity-90"
       />
     </Link>
   );
@@ -93,7 +93,7 @@ function Nav() {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-brand-paper/75 backdrop-blur-md border-b border-zinc-950/5">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-6 h-24 md:h-28 flex items-center justify-between gap-6">
         <Logo />
         <div className="hidden md:flex items-center gap-7">
           <HomeMenu />
