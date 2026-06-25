@@ -39,6 +39,7 @@ function Logo() {
 }
 
 const navLinks = [
+  { to: "/about", label: "About Us" },
   { to: "/about-founder", label: "About Founder" },
   { to: "/contact", label: "Contact Us" },
   { to: "/membership", label: "Membership Registration" },
