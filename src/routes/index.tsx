@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import heroGrain from "@/assets/hero-grain.jpg";
 import heroFounder from "@/assets/hero-founder-kids.jpeg.asset.json";
-import feathersLogo from "@/assets/feathers-logo.png.asset.json";
+import feathersLogo from "@/assets/feathers-logo-black.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
