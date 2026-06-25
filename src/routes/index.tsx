@@ -203,11 +203,11 @@ function Hero() {
           </div>
           <div className="relative animate-fade-in">
             <img
-              src={heroGrain}
-              alt="Hands cupping wheat grain at sunset in a rural Indian field"
+              src={heroFounder.url}
+              alt="AKR Kali planting a sapling with two children holding the Feathers Community Forum sign"
               width={1088}
-              height={1344}
-              className="w-full aspect-[4/5] object-cover rounded-2xl shadow-2xl shadow-brand-ink/10 ring-1 ring-black/5"
+              height={1240}
+              className="w-full aspect-[7/8] object-cover object-top rounded-2xl shadow-2xl shadow-brand-ink/10 ring-1 ring-black/5"
             />
             <div className="absolute -bottom-6 -left-6 bg-brand-paper/80 backdrop-blur-xl p-6 ring-1 ring-black/5 rounded-xl max-w-xs hidden md:block shadow-xl">
               <p className="font-serif italic text-brand-green text-lg leading-snug">
