@@ -290,8 +290,8 @@ function Pillars() {
           <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">
             What We Do
           </span>
-          <h2 className="mt-4 font-serif text-3xl md:text-5xl font-medium tracking-tight text-balance">
-            Seven pillars of the Feathers Forum.
+          <h2 className="mt-4 font-serif text-2xl md:text-4xl font-medium tracking-tight text-balance">
+            Our work is centered around seven key areas of community transformation.
           </h2>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-200/70 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
