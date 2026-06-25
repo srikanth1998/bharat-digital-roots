@@ -242,42 +242,49 @@ function Hero() {
 
 const pillars = [
   {
-    swatch: "bg-brand-green",
-    bg: "bg-brand-green/5",
-    title: "Training Programs",
-    body: "High-end technology and interpersonal skills training for students and corporate professionals.",
-  },
-  {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
+    title: "Entrepreneurship Development",
+    body: "Supporting aspiring entrepreneurs, startups, and small businesses with mentorship, business learning, and innovation support.",
+  },
+  {
+    swatch: "bg-brand-green",
+    bg: "bg-brand-green/5",
     title: "Skills Development",
-    body: "Building career-ready talent through hands-on workshops, mentoring, and the IT TIPS by BE-PRACTICAL series.",
+    body: "Equipping youth, women, and community members with practical, professional, and life skills for growth and self-reliance.",
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
-    title: "Opportunities",
-    body: "Connecting members to internships, jobs, and growth tracks aligned with their potential.",
+    title: "Opportunities Hub",
+    body: "Connecting people to scholarships, jobs, grants, internships, training, fellowships, and leadership opportunities.",
   },
   {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
-    title: "Entrepreneurship",
-    body: "Backing first-time founders with mentorship, network, and clarity to turn ideas into ventures.",
+    title: "Charity & Community Support",
+    body: "Providing practical support to vulnerable individuals and families through outreach, donations, and community care initiatives.",
   },
   {
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
-    title: "Networking",
-    body: "A trusted circle of entrepreneurs, professionals, civil servants, and community leaders.",
+    title: "Earth Conservation",
+    body: "Promoting environmental awareness, tree planting, clean-up campaigns, and sustainable community practices.",
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
-    title: "Community Service & Advocacy",
-    body: "Volunteer initiatives, awareness drives, and grassroots advocacy that move Bharat forward.",
+    title: "Citizen-Centric Services",
+    body: "Creating people-first support systems through civic awareness, community information, engagement, and access to essential services.",
+  },
+  {
+    swatch: "bg-brand-saffron",
+    bg: "bg-brand-saffron/10",
+    title: "Heritage Revival",
+    body: "Preserving and celebrating culture, traditions, local stories, arts, and community identity for present and future generations.",
   },
 ];
+
 
 function Pillars() {
   return (
