@@ -173,6 +173,40 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* Seven Pillars */}
+      <section className="px-6 py-12 lg:py-20 border-t border-zinc-950/5 bg-brand-paper-warm/60">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-2xl mb-12 space-y-4">
+            <SectionLabel>What We Do</SectionLabel>
+            <h2 className="font-serif text-2xl md:text-4xl font-medium tracking-tight text-balance">
+              Our work is centered around seven key areas of community transformation.
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-200/70 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
+            {pillars.map((p, i) => (
+              <div key={p.title} className="bg-brand-paper p-8 lg:p-10 space-y-5 hover:bg-brand-paper-warm/40 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className={`size-10 ${p.bg} rounded-full flex items-center justify-center`}>
+                    <div className={`size-4 ${p.swatch} rounded-sm`} />
+                  </div>
+                  <span className="font-serif text-sm text-brand-ink/30 tabular-nums">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <h3 className="font-serif text-2xl font-medium tracking-tight">
+                  {p.title}
+                  <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
+                    {p.tag}
+                  </span>
+                </h3>
+                <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">{p.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
       {/* Our Story */}
       <section className="px-6 py-12 lg:py-20 border-t border-zinc-950/5">
         <div className="max-w-5xl mx-auto grid lg:grid-cols-[0.4fr_1fr] gap-10 lg:gap-16">
