@@ -252,12 +252,16 @@ function AboutPage() {
               officer who devoted his career to forest management, biodiversity conservation, and public service.
               Drawing upon his extensive experience in the Indian Forest Service, he envisioned Forum Feathers as a
               space where expertise, practical experience, and community participation could come together to address
-              contemporary environmental challenges. Under his leadership, the forum encourages discussions on forest
-              governance, wildlife conservation, climate resilience, ecological restoration, environmental laws, and
-              sustainable livelihoods. It also supports the exchange of ideas between policymakers, academicians, civil
-              servants, environmental practitioners, and young professionals.In many communities, talent exists but
-              opportunities are limited, needs are visible but support systems are weak, and cultural values are fading
-              under the pressure of change. Feathers Community Forum was created to respond to these realities.
+              contemporary environmental challenges.
+            </p>
+
+            <p>
+              Under his leadership, the forum encourages discussions on forest governance, wildlife conservation,
+              climate resilience, ecological restoration, environmental laws, and sustainable livelihoods. It also
+              supports the exchange of ideas between policymakers, academicians, civil servants, environmental
+              practitioners, and young professionals.In many communities, talent exists but opportunities are limited,
+              needs are visible but support systems are weak, and cultural values are fading under the pressure of
+              change. Feathers Community Forum was created to respond to these realities.
             </p>
             <p>
               We are building a forum where entrepreneurship is nurtured, skills are strengthened, opportunities are
