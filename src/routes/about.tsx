@@ -257,7 +257,7 @@ function AboutPage() {
                 to="/about-founder"
                 className="text-brand-green font-medium underline underline-offset-4 hover:text-brand-saffron transition-colors"
               >
-                Know more →
+                Know more about him →
               </Link>
             </p>
 
