@@ -75,7 +75,9 @@ function AboutPage() {
       {/* Hero */}
       <section className="px-6 py-16 lg:py-24">
         <div className="max-w-5xl mx-auto space-y-8 animate-reveal-up">
+          <Link to="/" className="inline-block text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
           <SectionLabel>About Feathers Community Forum</SectionLabel>
+
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight font-medium text-balance">
             A community built on{" "}
             <span className="italic text-brand-green">purpose</span>,
