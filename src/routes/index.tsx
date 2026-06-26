@@ -286,45 +286,53 @@ const pillars = [
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
     title: "Entrepreneurship Development",
+    tag: "FEA",
     body: "Supporting aspiring entrepreneurs, startups, and small businesses with mentorship, business learning, and innovation support.",
   },
   {
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
     title: "Skills Development",
+    tag: "FESH",
     body: "Equipping youth, women, and community members with practical, professional, and life skills for growth and self-reliance.",
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
     title: "Opportunities Hub",
+    tag: "FESY",
     body: "Connecting people to scholarships, jobs, grants, internships, training, fellowships, and leadership opportunities.",
   },
   {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
     title: "Charity & Community Support",
+    tag: "FESWA",
     body: "Providing practical support to vulnerable individuals and families through outreach, donations, and community care initiatives.",
   },
   {
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
     title: "Earth Conservation",
+    tag: "FESWA",
     body: "Promoting environmental awareness, tree planting, clean-up campaigns, and sustainable community practices.",
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
     title: "Citizen-Centric Services",
+    tag: "FESWA",
     body: "Creating people-first support systems through civic awareness, community information, engagement, and access to essential services.",
   },
   {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
     title: "Heritage Revival",
+    tag: "FESWA",
     body: "Preserving and celebrating culture, traditions, local stories, arts, and community identity for present and future generations.",
   },
 ];
+
 
 function Pillars() {
   return (
@@ -350,7 +358,12 @@ function Pillars() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className="font-serif text-2xl font-medium tracking-tight">{p.title}</h3>
+              <h3 className="font-serif text-2xl font-medium tracking-tight">
+                {p.title}
+                <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
+                  {p.tag}
+                </span>
+              </h3>
               <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">{p.body}</p>
             </div>
           ))}
@@ -365,13 +378,16 @@ const metrics = [
   { value: "10+", label: "Companies", color: "text-brand-saffron" },
   { value: "1,800+", label: "Opportunities", color: "text-brand-gold" },
   { value: "₹20 Cr", label: "Charity", color: "text-brand-ink" },
+  { value: "500+", label: "Cultural", color: "text-brand-saffron" },
+  { value: "100+", label: "Community Services", color: "text-brand-green" },
+  { value: "25K+", label: "Civic-Centric Services", color: "text-brand-gold" },
 ];
 
 function Metrics() {
   return (
     <section id="impact" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 w-full text-center md:text-left">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-10 w-full text-center md:text-left">
           {metrics.map((m) => (
             <div key={m.label} className="space-y-2">
               <span className={`block font-serif text-5xl md:text-6xl ${m.color} font-medium tracking-tight`}>
