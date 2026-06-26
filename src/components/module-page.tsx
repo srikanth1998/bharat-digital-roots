@@ -86,28 +86,23 @@ export function ModulePage({ code, fullName, tagline, heroImage, accent, section
 
       {/* Footer CTA */}
       <section className="px-6 pb-24">
-        <div className="max-w-5xl mx-auto rounded-2xl bg-brand-ink text-brand-paper p-12 text-center">
-          <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight leading-snug text-balance">
-            Be part of the <span className="italic">{code}</span> chapter.
-          </h2>
-          <p className="mt-4 text-brand-paper/60 max-w-xl mx-auto">
-            Join a movement that builds tomorrow's Bharat through excellence, integrity, and community.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="max-w-5xl mx-auto rounded-2xl bg-brand-ink text-brand-paper p-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/membership"
-              className="w-full sm:w-auto bg-brand-saffron text-white px-8 py-3 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 hover:-translate-y-0.5 transition-all"
+              className="w-full sm:w-auto bg-brand-saffron text-white px-8 py-3 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 hover:-translate-y-0.5 transition-all text-center"
             >
               Register as Member
             </Link>
             <Link
               to="/contact"
-              className="w-full sm:w-auto bg-transparent text-brand-paper px-8 py-3 rounded-full font-medium ring-1 ring-white/20 hover:bg-white/5 transition-colors"
+              className="w-full sm:w-auto bg-transparent text-brand-paper px-8 py-3 rounded-full font-medium ring-1 ring-white/20 hover:bg-white/5 transition-colors text-center"
             >
               Contact Us
             </Link>
           </div>
         </div>
+
       </section>
     </div>
   );
