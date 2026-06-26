@@ -77,11 +77,15 @@ function Login() {
             <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">
               ← Back to home
             </Link>
+            <Link to="/" className="mt-6 block">
+              <img src={logoBlack} alt="Feathers Community Forum International" className="h-20 w-auto" />
+            </Link>
             <h1 className="mt-6 font-serif text-4xl font-medium tracking-tight">Welcome back.</h1>
             <p className="mt-2 text-brand-ink/60">
               Sign in with the email and temporary password from your welcome message.
             </p>
           </div>
+
 
           <form className="space-y-5" onSubmit={onSubmit}>
             <div>
