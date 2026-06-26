@@ -255,9 +255,18 @@ function AboutPage() {
               contemporary environmental challenges. Under his leadership, the forum encourages discussions on forest
               governance, wildlife conservation, climate resilience, ecological restoration, environmental laws, and
               sustainable livelihoods. It also supports the exchange of ideas between policymakers, academicians, civil
-              servants, environmental practitioners, and young professionals.In many communities, talent exists but
-              opportunities are limited, needs are visible but support systems are weak, and cultural values are fading
-              under the pressure of change. Feathers Community Forum was created to respond to these realities.
+            </p>
+            <p>
+              Under his leadership, the forum encourages discussions on forest governance, wildlife conservation,
+              climate resilience, ecological restoration, environmental laws, and sustainable livelihoods. It also
+              supports the exchange of ideas between policymakers, academicians, civil servants, environmental
+              practitioners, and young professionals.
+            </p>
+            <p>
+              In many communities, talent exists but opportunities are limited, needs are visible but support systems
+              are weak, and cultural values are fading under the pressure of change. Feathers Community Forum was
+              created to respond to these realities.
+
             </p>
             <p>
               We are building a forum where entrepreneurship is nurtured, skills are strengthened, opportunities are
