@@ -2,6 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import logoBlack from "@/assets/feathers-logo-black.png.asset.json";
+import logoLight from "@/assets/feathers-logo.png.asset.json";
+
 
 
 export const Route = createFileRoute("/login")({
@@ -59,9 +61,10 @@ function Login() {
       <div className="hidden lg:block relative bg-brand-green overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(212,131,59,0.25),transparent_60%)]" />
         <div className="relative z-10 h-full flex flex-col justify-between p-12 text-brand-paper">
-          <Link to="/" className="font-serif text-xl font-semibold">
-            Feathers Forum<span className="text-brand-saffron">.</span>
+          <Link to="/" className="inline-block">
+            <img src={logoLight.url} alt="Feathers Community Forum International" className="h-24 w-auto" />
           </Link>
+
           <div>
             <p className="font-serif italic text-3xl leading-snug max-w-md">
               "We rise by lifting the community we belong to."
