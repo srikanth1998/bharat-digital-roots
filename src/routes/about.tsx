@@ -150,28 +150,6 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="px-6 py-12 lg:py-20 border-t border-zinc-950/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="max-w-3xl mb-12 space-y-4">
-            <SectionLabel>Our Core Values</SectionLabel>
-            <h2 className="font-serif text-3xl lg:text-4xl font-medium">
-              The principles that anchor every program and partnership.
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-950/5 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
-            {values.map((v, i) => (
-              <div key={v.title} className="bg-brand-paper p-7 lg:p-8 flex flex-col gap-3">
-                <span className="font-serif text-xs text-brand-saffron tabular-nums">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="font-serif text-xl text-brand-green font-medium">{v.title}</h3>
-                <p className="text-sm text-brand-ink/70 leading-relaxed">{v.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Seven Pillars */}
       <section className="px-6 py-12 lg:py-20 border-t border-zinc-950/5 bg-brand-paper-warm/60">
