@@ -378,6 +378,9 @@ const metrics = [
   { value: "10+", label: "Companies", color: "text-brand-saffron" },
   { value: "1,800+", label: "Opportunities", color: "text-brand-gold" },
   { value: "₹20 Cr", label: "Charity", color: "text-brand-ink" },
+  { value: "500+", label: "Cultural", color: "text-brand-saffron" },
+  { value: "100+", label: "Community Services", color: "text-brand-green" },
+  { value: "25K+", label: "Civic-Centric Services", color: "text-brand-gold" },
 ];
 
 function Metrics() {
