@@ -417,7 +417,6 @@ function Footer() {
     <footer className="py-12 px-6 border-t border-zinc-950/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         <div className="space-y-4">
-          <Logo />
           <p className="text-xs text-zinc-500 uppercase tracking-[0.2em]">© 2026 Feathers Community Forum.</p>
         </div>
         <div className="flex gap-8 text-sm font-medium text-zinc-500">
