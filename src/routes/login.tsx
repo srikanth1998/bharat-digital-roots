@@ -36,8 +36,7 @@ function Login() {
       return;
     }
 
-    const mustChange =
-      (data.user?.user_metadata as { must_change_password?: boolean } | null)?.must_change_password;
+    const mustChange = (data.user?.user_metadata as { must_change_password?: boolean } | null)?.must_change_password;
     if (mustChange) {
       await navigate({ to: "/set-password" });
       return;
@@ -45,10 +44,7 @@ function Login() {
 
     // Check admin role and route accordingly
     try {
-      const { data: roleRows } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", data.user!.id);
+      const { data: roleRows } = await supabase.from("user_roles").select("role").eq("user_id", data.user!.id);
       const isAdmin = (roleRows ?? []).some((r) => r.role === "admin");
       await navigate({ to: isAdmin ? "/admin" : "/account" });
     } catch {
@@ -66,7 +62,7 @@ function Login() {
           </Link>
           <div>
             <p className="font-serif italic text-3xl leading-snug max-w-md">
-              "Empowering People. Building Bharat."
+              "We rise by lifting the community we belong to."
             </p>
             <p className="mt-6 text-[11px] uppercase tracking-[0.2em] text-brand-paper/60">— AKR Kali, Founder</p>
           </div>
@@ -76,7 +72,9 @@ function Login() {
       <div className="flex items-center justify-center p-8">
         <div className="w-full max-w-sm space-y-8">
           <div>
-            <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
+            <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">
+              ← Back to home
+            </Link>
             <h1 className="mt-6 font-serif text-4xl font-medium tracking-tight">Welcome back.</h1>
             <p className="mt-2 text-brand-ink/60">
               Sign in with the email and temporary password from your welcome message.
@@ -85,7 +83,12 @@ function Login() {
 
           <form className="space-y-5" onSubmit={onSubmit}>
             <div>
-              <label htmlFor="login-email" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Email</label>
+              <label
+                htmlFor="login-email"
+                className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold"
+              >
+                Email
+              </label>
               <input
                 id="login-email"
                 name="email"
@@ -96,7 +99,12 @@ function Login() {
               />
             </div>
             <div>
-              <label htmlFor="login-password" className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Password</label>
+              <label
+                htmlFor="login-password"
+                className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold"
+              >
+                Password
+              </label>
               <input
                 id="login-password"
                 name="password"
