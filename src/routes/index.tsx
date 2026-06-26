@@ -455,7 +455,7 @@ function Index() {
       <Nav />
       <main>
         <Hero />
-        <Pillars />
+        
         <Metrics />
         <CTA />
       </main>
