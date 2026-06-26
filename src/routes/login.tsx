@@ -78,7 +78,7 @@ function Login() {
               ← Back to home
             </Link>
             <Link to="/" className="mt-6 block">
-              <img src={logoBlack} alt="Feathers Community Forum International" className="h-20 w-auto" />
+              <img src={logoBlack.url} alt="Feathers Community Forum International" className="h-20 w-auto" />
             </Link>
             <h1 className="mt-6 font-serif text-4xl font-medium tracking-tight">Welcome back.</h1>
             <p className="mt-2 text-brand-ink/60">
