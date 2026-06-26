@@ -54,11 +54,7 @@ const homeModules = [
 function HomeMenu() {
   const [open, setOpen] = useState(false);
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
+    <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -67,7 +63,9 @@ function HomeMenu() {
         className="text-sm font-medium transition-colors inline-flex items-center gap-1 text-brand-ink/60 hover:text-brand-ink"
       >
         Home Page
-        <span aria-hidden className="text-[10px] opacity-60">▾</span>
+        <span aria-hidden className="text-[10px] opacity-60">
+          ▾
+        </span>
       </button>
       <div
         className={`absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 transition-all duration-200 z-50 ${
@@ -93,7 +91,12 @@ function HomeMenu() {
                 <p className="font-serif text-lg font-semibold text-brand-green leading-none">{m.code}</p>
                 <p className="text-xs text-brand-ink/55 mt-1">{m.desc}</p>
               </div>
-              <span aria-hidden className="text-brand-saffron opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all">→</span>
+              <span
+                aria-hidden
+                className="text-brand-saffron opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all"
+              >
+                →
+              </span>
             </Link>
           ))}
         </div>
@@ -101,7 +104,6 @@ function HomeMenu() {
     </div>
   );
 }
-
 
 function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -141,8 +143,24 @@ function Nav() {
             aria-expanded={mobileOpen}
             className="md:hidden inline-flex items-center justify-center size-10 -mr-2 rounded-lg text-brand-ink hover:bg-brand-paper-warm transition-colors"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              {mobileOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <><path d="M3 6h18" /><path d="M3 12h18" /><path d="M3 18h18" /></>}
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              {mobileOpen ? (
+                <path d="M18 6 6 18M6 6l12 12" />
+              ) : (
+                <>
+                  <path d="M3 6h18" />
+                  <path d="M3 12h18" />
+                  <path d="M3 18h18" />
+                </>
+              )}
             </svg>
           </button>
         </div>
@@ -152,16 +170,30 @@ function Nav() {
       {mobileOpen && (
         <div className="md:hidden border-t border-zinc-950/5 bg-brand-paper/95 backdrop-blur-xl">
           <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col">
-            <Link to="/" onClick={close} className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green">
+            <Link
+              to="/"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
               Home Page
             </Link>
             {homeModules.map((m) => (
-              <Link key={m.to} to={m.to} onClick={close} className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green">
+              <Link
+                key={m.to}
+                to={m.to}
+                onClick={close}
+                className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green"
+              >
                 <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
               </Link>
             ))}
             {navLinks.map((item) => (
-              <Link key={item.to} to={item.to} onClick={close} className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green">
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={close}
+                className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+              >
                 {item.label}
               </Link>
             ))}
@@ -194,25 +226,19 @@ function Hero() {
               <br />
               Building Communities.
               <br />
-              Reviving{" "}
-              <span className="italic text-brand-green">Heritage.</span>
+              Reviving <span className="italic text-brand-green">Heritage.</span>
             </h1>
             <div className="space-y-5 text-base lg:text-lg text-brand-ink/70 max-w-[58ch] text-pretty leading-relaxed">
               <p>
-                Feathers Community Forum is a community-driven platform
-                dedicated to empowering individuals and transforming
-                communities through innovation, service, sustainability, and
-                cultural renewal. We bring together people, ideas, and action
-                to create meaningful opportunities, support vulnerable groups,
-                strengthen livelihoods, protect the environment, and preserve
-                the heritage that shapes our identity.
+                Feathers Community Forum is a community-driven platform dedicated to empowering individuals and
+                transforming communities through innovation, service, sustainability, and cultural renewal. We bring
+                together people, ideas, and action to create meaningful opportunities, support vulnerable groups,
+                strengthen livelihoods, protect the environment, and preserve the heritage that shapes our identity.
               </p>
               <p>
-                We believe strong communities are built when people are
-                equipped with the right skills, connected to opportunities,
-                inspired to serve, and rooted in values that sustain
-                collective progress — building a future that is more
-                inclusive, resilient, compassionate, and self-reliant.
+                We believe strong communities are built when people are equipped with the right skills, connected to
+                opportunities, inspired to serve, and rooted in values that sustain collective progress — building a
+                future that is more inclusive, resilient, compassionate, and self-reliant.
               </p>
             </div>
 
@@ -300,18 +326,12 @@ const pillars = [
   },
 ];
 
-
 function Pillars() {
   return (
-    <section
-      id="pillars"
-      className="py-24 bg-brand-paper-warm/60 border-y border-zinc-950/5"
-    >
+    <section id="pillars" className="py-24 bg-brand-paper-warm/60 border-y border-zinc-950/5">
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-2xl mb-16">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">
-            What We Do
-          </span>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">What We Do</span>
           <h2 className="mt-4 font-serif text-2xl md:text-4xl font-medium tracking-tight text-balance">
             Our work is centered around seven key areas of community transformation.
           </h2>
@@ -323,21 +343,15 @@ function Pillars() {
               className="bg-brand-paper p-10 space-y-6 group hover:bg-brand-paper-warm/40 transition-colors"
             >
               <div className="flex items-center justify-between">
-                <div
-                  className={`size-10 ${p.bg} rounded-full flex items-center justify-center`}
-                >
+                <div className={`size-10 ${p.bg} rounded-full flex items-center justify-center`}>
                   <div className={`size-4 ${p.swatch} rounded-sm`} />
                 </div>
                 <span className="font-serif text-sm text-brand-ink/30 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className="font-serif text-2xl font-medium tracking-tight">
-                {p.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">
-                {p.body}
-              </p>
+              <h3 className="font-serif text-2xl font-medium tracking-tight">{p.title}</h3>
+              <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">{p.body}</p>
             </div>
           ))}
         </div>
@@ -360,14 +374,10 @@ function Metrics() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 w-full text-center md:text-left">
           {metrics.map((m) => (
             <div key={m.label} className="space-y-2">
-              <span
-                className={`block font-serif text-5xl md:text-6xl ${m.color} font-medium tracking-tight`}
-              >
+              <span className={`block font-serif text-5xl md:text-6xl ${m.color} font-medium tracking-tight`}>
                 {m.value}
               </span>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">
-                {m.label}
-              </span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-ink/60">{m.label}</span>
             </div>
           ))}
         </div>
@@ -408,20 +418,12 @@ function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         <div className="space-y-4">
           <Logo />
-          <p className="text-xs text-zinc-500 uppercase tracking-[0.2em]">
-            © 2026 Feathers Community Forum. Founded by AKR Kali.
-          </p>
+          <p className="text-xs text-zinc-500 uppercase tracking-[0.2em]">© 2026 Feathers Community Forum.</p>
         </div>
         <div className="flex gap-8 text-sm font-medium text-zinc-500">
-          <Link to="/about-founder" className="hover:text-brand-green transition-colors">
-            Founder
-          </Link>
-          <Link to="/membership" className="hover:text-brand-green transition-colors">
-            Membership
-          </Link>
-          <Link to="/contact" className="hover:text-brand-green transition-colors">
-            Contact
-          </Link>
+          <Link to="/about-founder" className="hover:text-brand-green transition-colors"></Link>
+          <Link to="/membership" className="hover:text-brand-green transition-colors"></Link>
+          <Link to="/contact" className="hover:text-brand-green transition-colors"></Link>
         </div>
       </div>
     </footer>
