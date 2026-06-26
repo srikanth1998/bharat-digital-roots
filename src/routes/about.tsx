@@ -60,6 +60,16 @@ const howWeWork = [
   "Strategic partnerships and volunteer engagement",
 ];
 
+const pillars = [
+  { swatch: "bg-brand-saffron", bg: "bg-brand-saffron/10", title: "Entrepreneurship Development", tag: "FEA", body: "Supporting aspiring entrepreneurs, startups, and small businesses with mentorship, business learning, and innovation support." },
+  { swatch: "bg-brand-green", bg: "bg-brand-green/5", title: "Skills Development", tag: "FESY", body: "Equipping youth, women, and community members with practical, professional, and life skills for growth and self-reliance." },
+  { swatch: "bg-brand-gold", bg: "bg-brand-gold/10", title: "Opportunities Hub", tag: "FESY", body: "Connecting people to scholarships, jobs, grants, internships, training, fellowships, and leadership opportunities." },
+  { swatch: "bg-brand-saffron", bg: "bg-brand-saffron/10", title: "Charity & Community Support", tag: "FESWA", body: "Providing practical support to vulnerable individuals and families through outreach, donations, and community care initiatives." },
+  { swatch: "bg-brand-green", bg: "bg-brand-green/5", title: "Earth Conservation", tag: "FESWA", body: "Promoting environmental awareness, tree planting, clean-up campaigns, and sustainable community practices." },
+  { swatch: "bg-brand-gold", bg: "bg-brand-gold/10", title: "Citizen-Centric Services", tag: "FESWA", body: "Creating people-first support systems through civic awareness, community information, engagement, and access to essential services." },
+  { swatch: "bg-brand-saffron", bg: "bg-brand-saffron/10", title: "Heritage Revival", tag: "FESWA", body: "Preserving and celebrating culture, traditions, local stories, arts, and community identity for present and future generations." },
+];
+
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">
@@ -162,6 +172,40 @@ function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Seven Pillars */}
+      <section className="px-6 py-12 lg:py-20 border-t border-zinc-950/5 bg-brand-paper-warm/60">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-2xl mb-12 space-y-4">
+            <SectionLabel>What We Do</SectionLabel>
+            <h2 className="font-serif text-2xl md:text-4xl font-medium tracking-tight text-balance">
+              Our work is centered around seven key areas of community transformation.
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-200/70 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
+            {pillars.map((p, i) => (
+              <div key={p.title} className="bg-brand-paper p-8 lg:p-10 space-y-5 hover:bg-brand-paper-warm/40 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className={`size-10 ${p.bg} rounded-full flex items-center justify-center`}>
+                    <div className={`size-4 ${p.swatch} rounded-sm`} />
+                  </div>
+                  <span className="font-serif text-sm text-brand-ink/30 tabular-nums">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <h3 className="font-serif text-2xl font-medium tracking-tight">
+                  {p.title}
+                  <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
+                    {p.tag}
+                  </span>
+                </h3>
+                <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">{p.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* Our Story */}
       <section className="px-6 py-12 lg:py-20 border-t border-zinc-950/5">
