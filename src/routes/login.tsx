@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import logoBlack from "@/assets/feathers-logo-black.png";
+
 
 export const Route = createFileRoute("/login")({
   ssr: false,
