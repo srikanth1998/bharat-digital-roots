@@ -386,9 +386,12 @@ function Metrics() {
   return (
     <section id="impact" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-10 w-full text-center md:text-left">
-          {metrics.map((m) => (
-            <div key={m.label} className="space-y-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-12 w-full text-center md:text-left">
+          {metrics.map((m, i) => (
+            <div
+              key={m.label}
+              className={`space-y-2 ${i === metrics.length - 1 ? "col-span-2 md:col-span-1 md:col-start-2 text-center" : ""}`}
+            >
               <span className={`block font-serif text-5xl md:text-6xl ${m.color} font-medium tracking-tight`}>
                 {m.value}
               </span>
@@ -396,6 +399,7 @@ function Metrics() {
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );
