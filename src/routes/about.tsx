@@ -266,8 +266,17 @@ function AboutPage() {
               In many communities, talent exists but opportunities are limited, needs are visible but support systems
               are weak, and cultural values are fading under the pressure of change. Feathers Community Forum was
               created to respond to these realities.
-
             </p>
+            <div>
+              <Link
+                to="/about-founder"
+                className="inline-flex items-center gap-2 text-sm font-medium bg-brand-green text-brand-paper px-5 py-2.5 rounded-full hover:bg-brand-green-deep transition-all hover:-translate-y-0.5"
+              >
+                Know more about him
+                <span aria-hidden>→</span>
+              </Link>
+            </div>
+
             <p>
               We are building a forum where entrepreneurship is nurtured, skills are strengthened, opportunities are
               shared, vulnerable groups are supported, the environment is protected, citizens are informed and
