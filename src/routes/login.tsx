@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import logoBlack from "@/assets/feathers-logo-black.png";
+import logoBlack from "@/assets/feathers-logo-black.png.asset.json";
 
 
 export const Route = createFileRoute("/login")({
@@ -78,7 +78,7 @@ function Login() {
               ← Back to home
             </Link>
             <Link to="/" className="mt-6 block">
-              <img src={logoBlack} alt="Feathers Community Forum International" className="h-20 w-auto" />
+              <img src={logoBlack.url} alt="Feathers Community Forum International" className="h-20 w-auto" />
             </Link>
             <h1 className="mt-6 font-serif text-4xl font-medium tracking-tight">Welcome back.</h1>
             <p className="mt-2 text-brand-ink/60">
