@@ -293,14 +293,14 @@ const pillars = [
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
     title: "Skills Development",
-    tag: "FESY",
+    tag: "FESYA",
     body: "Equipping youth, women, and community members with practical, professional, and life skills for growth and self-reliance.",
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
     title: "Opportunities Hub",
-    tag: "FESY",
+    tag: "FESYA",
     body: "Connecting people to scholarships, jobs, grants, internships, training, fellowships, and leadership opportunities.",
   },
   {
