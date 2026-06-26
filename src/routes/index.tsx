@@ -293,7 +293,7 @@ const pillars = [
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
     title: "Skills Development",
-    tag: "FESH",
+    tag: "FESY",
     body: "Equipping youth, women, and community members with practical, professional, and life skills for growth and self-reliance.",
   },
   {
@@ -332,7 +332,6 @@ const pillars = [
     body: "Preserving and celebrating culture, traditions, local stories, arts, and community identity for present and future generations.",
   },
 ];
-
 
 function Pillars() {
   return (
