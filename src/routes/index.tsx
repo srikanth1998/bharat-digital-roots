@@ -358,7 +358,12 @@ function Pillars() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className="font-serif text-2xl font-medium tracking-tight">{p.title}</h3>
+              <h3 className="font-serif text-2xl font-medium tracking-tight">
+                {p.title}
+                <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
+                  {p.tag}
+                </span>
+              </h3>
               <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">{p.body}</p>
             </div>
           ))}
