@@ -252,7 +252,13 @@ function AboutPage() {
               officer who devoted his career to forest management, biodiversity conservation, and public service.
               Drawing upon his extensive experience in the Indian Forest Service, he envisioned Forum Feathers as a
               space where expertise, practical experience, and community participation could come together to address
-              contemporary environmental challenges.
+              contemporary environmental challenges.{" "}
+              <Link
+                to="/about-founder"
+                className="text-brand-green font-medium underline underline-offset-4 hover:text-brand-saffron transition-colors"
+              >
+                Know more →
+              </Link>
             </p>
 
             <p>
