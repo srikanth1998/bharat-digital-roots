@@ -373,24 +373,24 @@ function Pillars() {
 }
 
 const metrics = [
+  { value: "25K+", label: "Civic-Centric Services", color: "text-brand-gold" },
   { value: "7,000+", label: "Training Hours", color: "text-brand-green" },
   { value: "10+", label: "Companies", color: "text-brand-saffron" },
   { value: "1,800+", label: "Opportunities", color: "text-brand-gold" },
   { value: "₹20 Cr", label: "Charity", color: "text-brand-ink" },
   { value: "500+", label: "Cultural", color: "text-brand-saffron" },
   { value: "100+", label: "Community Services", color: "text-brand-green" },
-  { value: "25K+", label: "Civic-Centric Services", color: "text-brand-gold" },
 ];
 
 function Metrics() {
   return (
     <section id="impact" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-12 w-full text-center md:text-left">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-12 w-full text-center justify-items-center">
           {metrics.map((m, i) => (
             <div
               key={m.label}
-              className={`space-y-2 ${i === metrics.length - 1 ? "col-span-2 md:col-span-1 md:col-start-2 text-center" : ""}`}
+              className={`space-y-2 ${i === metrics.length - 1 ? "col-span-2 md:col-span-3" : ""}`}
             >
               <span className={`block font-serif text-5xl md:text-6xl ${m.color} font-medium tracking-tight`}>
                 {m.value}
@@ -399,6 +399,7 @@ function Metrics() {
             </div>
           ))}
         </div>
+
 
       </div>
     </section>
