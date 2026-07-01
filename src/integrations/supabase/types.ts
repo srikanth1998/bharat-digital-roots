@@ -120,7 +120,7 @@ export type Database = {
           created_at: string
           district: string
           email: string
-          expires_at: string
+          expires_at: string | null
           full_name: string
           id: string
           joined_at: string
@@ -144,7 +144,7 @@ export type Database = {
           created_at?: string
           district: string
           email: string
-          expires_at?: string
+          expires_at?: string | null
           full_name: string
           id?: string
           joined_at?: string
@@ -168,7 +168,7 @@ export type Database = {
           created_at?: string
           district?: string
           email?: string
-          expires_at?: string
+          expires_at?: string | null
           full_name?: string
           id?: string
           joined_at?: string

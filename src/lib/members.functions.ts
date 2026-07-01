@@ -11,7 +11,7 @@ export type MemberRow = {
   alt_email: string | null;
   mobile: string;
   alt_mobile: string | null;
-  plan_id: "active" | "passive";
+  plan_id: "active_1year" | "active_lifetime" | "passive_1year" | "passive_lifetime";
   amount_inr: number;
   address: string;
   town: string;
@@ -19,8 +19,9 @@ export type MemberRow = {
   state: string;
   country: string;
   joined_at: string;
-  expires_at: string;
+  expires_at: string | null;
 };
+
 
 export const getMyMember = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

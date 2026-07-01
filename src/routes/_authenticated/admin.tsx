@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { Fragment, useMemo, useState } from "react";
 import { getAllMembers, getMyRole } from "@/lib/members.functions";
+import { planDuration, planNameShort } from "@/lib/plans";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -97,12 +98,12 @@ function Admin() {
                       <td className="px-4 py-3">
                         <span
                           className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
-                            m.plan_id === "active"
+                            m.plan_id.startsWith("active")
                               ? "bg-brand-green/10 text-brand-green"
                               : "bg-brand-saffron/10 text-brand-saffron"
                           }`}
                         >
-                          {m.plan_id}
+                          {planNameShort(m.plan_id)}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-brand-ink/70">{m.district}, {m.state}</td>
@@ -121,7 +122,8 @@ function Admin() {
                             <Detail label="Address" value={m.address} className="col-span-2" />
                             <Detail label="Town / Village" value={m.town} />
                             <Detail label="Country" value={m.country} />
-                            <Detail label="Valid until" value={new Date(m.expires_at).toLocaleDateString()} />
+                            <Detail label="Valid until" value={m.expires_at ? new Date(m.expires_at).toLocaleDateString() : "Lifetime"} />
+                            <Detail label="Duration" value={planDuration(m.plan_id)} />
                           </div>
                         </td>
                       </tr>
