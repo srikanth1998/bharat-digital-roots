@@ -85,51 +85,148 @@ const pillars = [
   {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
-    title: "Entrepreneurship Development",
+    title: "Entrepreneurship",
     tag: "FEA",
-    body: "Supporting aspiring entrepreneurs, startups, and small businesses with mentorship, business learning, and innovation support.",
+    subtitle: "Transforming Ideas into Enterprises",
+    body: "We help aspiring entrepreneurs convert innovative ideas into successful businesses.",
+    itemLabel: "Services",
+    items: [
+      "Startup Guidance",
+      "Business Planning",
+      "Business Registration Support",
+      "Marketing Strategy",
+      "Financial Planning",
+      "Funding Awareness",
+      "Investor Connect",
+      "Business Mentorship",
+      "Women Entrepreneurship Programs",
+      "Rural Enterprise Development",
+    ],
   },
   {
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
     title: "Skills Development",
     tag: "FESYA",
-    body: "Equipping youth, women, and community members with practical, professional, and life skills for growth and self-reliance.",
+    subtitle: "Learn. Improve. Excel.",
+    body: "Skill development is the foundation of personal and professional success.",
+    itemLabel: "Training Programs",
+    items: [
+      "Digital Skills",
+      "Artificial Intelligence",
+      "Coding",
+      "Graphic Design",
+      "Public Speaking",
+      "Leadership",
+      "Communication Skills",
+      "Interview Preparation",
+      "Financial Literacy",
+      "Project Management",
+      "Entrepreneurship Skills",
+      "Soft Skills",
+      "Technical Certifications",
+    ],
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
-    title: "Opportunities Hub",
+    title: "Opportunities",
     tag: "FESYA",
-    body: "Connecting people to scholarships, jobs, grants, internships, training, fellowships, and leadership opportunities.",
+    subtitle: "Connecting Talent with Opportunities",
+    body: "We bridge the gap between individuals and opportunities.",
+    itemLabel: "Opportunities Include",
+    items: [
+      "Jobs",
+      "Internships",
+      "Scholarships",
+      "Fellowships",
+      "Startup Funding",
+      "Business Collaborations",
+      "Volunteer Opportunities",
+      "Government Schemes",
+      "Competitions",
+      "Research Projects",
+      "Networking Events",
+    ],
   },
   {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
     title: "Charity & Community Support",
     tag: "All Wings",
-    body: "Providing practical support to vulnerable individuals and families through outreach, donations, and community care initiatives.",
+    subtitle: "Serving Communities with Compassion",
+    body: "Our charity initiatives focus on supporting vulnerable communities through collective action.",
+    itemLabel: "Programs",
+    items: [
+      "Food Drives",
+      "Clothing Distribution",
+      "Educational Support",
+      "Medical Assistance",
+      "Emergency Relief",
+      "Community Kitchens",
+      "School Support",
+      "Women's Welfare",
+      "Child Development",
+      "Elderly Care",
+    ],
   },
   {
     swatch: "bg-brand-green",
     bg: "bg-brand-green/5",
     title: "Earth Conservation",
     tag: "FESWA",
-    body: "Promoting environmental awareness, tree planting, clean-up campaigns, and sustainable community practices.",
+    subtitle: "Protecting Nature for Future Generations",
+    body: "Environmental sustainability is central to our mission.",
+    itemLabel: "Initiatives",
+    items: [
+      "Tree Plantation",
+      "Plastic-Free Campaigns",
+      "Water Conservation",
+      "Biodiversity Protection",
+      "Waste Management",
+      "Recycling Programs",
+      "Climate Awareness",
+      "Eco Clubs",
+      "Green Schools",
+      "Sustainable Living Workshops",
+    ],
   },
   {
     swatch: "bg-brand-gold",
     bg: "bg-brand-gold/10",
     title: "Citizen-Centric Services",
     tag: "FESWA",
-    body: "Creating people-first support systems through civic awareness, community information, engagement, and access to essential services.",
+    subtitle: "Empowering Responsible Citizens",
+    body: "Helping citizens access essential information and public services.",
+    itemLabel: "Services",
+    items: [
+      "Digital Literacy",
+      "Government Scheme Awareness",
+      "Public Grievance Support",
+      "Health Awareness",
+      "Legal Awareness",
+      "Disaster Preparedness",
+      "Community Help Desks",
+      "Public Information Sessions",
+    ],
   },
   {
     swatch: "bg-brand-saffron",
     bg: "bg-brand-saffron/10",
     title: "Heritage Revival",
     tag: "FESWA",
-    body: "Preserving and celebrating culture, traditions, local stories, arts, and community identity for present and future generations.",
+    subtitle: "Preserving Our Rich Heritage",
+    body: "Celebrating culture, traditions, and heritage while encouraging future generations to appreciate and protect them.",
+    itemLabel: "Activities",
+    items: [
+      "Cultural Festivals and Sports",
+      "Heritage Walks",
+      "Traditional Arts Promotion",
+      "Folk Music Programs",
+      "Local Craft Exhibitions",
+      "Cultural Documentation",
+      "Language Preservation",
+    ],
   },
 ];
 
@@ -214,11 +311,11 @@ function AboutPage() {
               Our work is centered around seven key areas of community transformation.
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-200/70 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
+          <div className="grid md:grid-cols-2 gap-6">
             {pillars.map((p, i) => (
               <div
                 key={p.title}
-                className="bg-brand-paper p-8 lg:p-10 space-y-5 hover:bg-brand-paper-warm/40 transition-colors"
+                className="bg-brand-paper rounded-2xl ring-1 ring-zinc-950/5 p-8 lg:p-10 space-y-5 hover:bg-brand-paper-warm/40 transition-colors"
               >
                 <div className="flex items-center justify-between">
                   <div className={`size-10 ${p.bg} rounded-full flex items-center justify-center`}>
@@ -228,13 +325,29 @@ function AboutPage() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="font-serif text-2xl font-medium tracking-tight">
-                  {p.title}
-                  <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
-                    {p.tag}
-                  </span>
-                </h3>
-                <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">{p.body}</p>
+                <div>
+                  <h3 className="font-serif text-2xl font-medium tracking-tight">
+                    {p.title}
+                    <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
+                      {p.tag}
+                    </span>
+                  </h3>
+                  <p className="mt-2 font-medium text-brand-green/80 text-sm lg:text-base">{p.subtitle}</p>
+                </div>
+                <p className="text-sm leading-relaxed text-brand-ink/60 text-pretty">{p.body}</p>
+                <div className="pt-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-brand-ink/40 mb-3">
+                    {p.itemLabel}
+                  </p>
+                  <ul className="grid sm:grid-cols-2 gap-x-4 gap-y-2">
+                    {p.items.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm text-brand-ink/70">
+                        <span aria-hidden className="mt-1.5 size-1.5 rounded-full bg-brand-ink/20 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
