@@ -3,8 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { countries } from "@/data/locations";
 import { createRazorpayOrder, verifyRazorpayPayment, checkEmailAvailable } from "@/lib/razorpay.functions";
-import { planDuration, planName, type PlanId } from "@/lib/plans";
-
+import { type PlanId } from "@/lib/plans";
 import { PLAN_PRICES_INR } from "@/lib/plans";
 
 declare global {
