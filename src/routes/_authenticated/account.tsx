@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyMember, getMyRole } from "@/lib/members.functions";
 import { supabase } from "@/integrations/supabase/client";
+import { planName, planNameShort } from "@/lib/plans";
 
 export const Route = createFileRoute("/_authenticated/account")({
   head: () => ({ meta: [{ title: "My Account — Feathers Forum" }] }),
@@ -70,7 +71,7 @@ function Account() {
                   </p>
                 </div>
                 <span className="px-2 py-0.5 rounded-full bg-brand-saffron text-[10px] font-semibold uppercase tracking-wider text-white">
-                  {m.plan_id}
+                  {planNameShort(m.plan_id)}
                 </span>
               </div>
               <p className="mt-8 font-serif text-3xl leading-tight">{m.full_name}</p>
@@ -82,7 +83,7 @@ function Account() {
                 </div>
                 <div>
                   <p className="text-brand-paper/50 uppercase tracking-wider">Valid Until</p>
-                  <p className="font-mono mt-1">{new Date(m.expires_at).toLocaleDateString()}</p>
+                  <p className="font-mono mt-1">{m.expires_at ? new Date(m.expires_at).toLocaleDateString() : "Lifetime"}</p>
                 </div>
               </div>
             </div>
@@ -91,7 +92,7 @@ function Account() {
             <div className="mt-12 grid md:grid-cols-2 gap-x-12 gap-y-6">
               <Detail label="Email" value={m.email} />
               <Detail label="Mobile" value={m.mobile} />
-              <Detail label="Plan" value={`${m.plan_id === "active" ? "Active" : "Passive"} (₹${m.amount_inr}/year)`} />
+              <Detail label="Plan" value={`${planName(m.plan_id)} · ₹${m.amount_inr}`} />
               <Detail label="Joined" value={new Date(m.joined_at).toLocaleDateString()} />
               <Detail label="Address" value={`${m.address}, ${m.town}`} />
               <Detail label="Region" value={`${m.district}, ${m.state}, ${m.country}`} />

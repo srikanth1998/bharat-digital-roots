@@ -1,15 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-
-// SEC-01: Prices are authoritative on the server. The client never supplies an
-// amount — it only chooses a plan — so it cannot pay ₹1 for a ₹100/₹500 plan.
-const PLAN_PRICES_INR: Record<"active" | "passive", number> = {
-  active: 100,
-  passive: 500,
-};
+import { PLAN_PRICES_INR, planIdSchema, planName, planDuration } from "@/lib/plans";
 
 const createOrderInput = z.object({
-  planId: z.enum(["active", "passive"]),
+  planId: planIdSchema,
 });
 
 export const checkEmailAvailable = createServerFn({ method: "POST" })
@@ -46,6 +40,8 @@ export const createRazorpayOrder = createServerFn({ method: "POST" })
       throw new Error("Razorpay keys are not configured. Add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.");
     }
 
+    // SEC-01: Prices are authoritative on the server. The client never supplies an
+    // amount — it only chooses a plan — so it cannot pay ₹1 for a ₹500/₹6000 plan.
     const amountInr = PLAN_PRICES_INR[data.planId];
 
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
@@ -58,7 +54,7 @@ export const createRazorpayOrder = createServerFn({ method: "POST" })
       body: JSON.stringify({
         amount: amountInr * 100, // paise
         currency: "INR",
-        receipt: `vanya_${data.planId}_${Date.now()}`,
+        receipt: `feathers_${data.planId}_${Date.now()}`,
         notes: { planId: data.planId },
       }),
     });
@@ -76,7 +72,7 @@ const verifyInput = z.object({
   razorpay_order_id: z.string(),
   razorpay_payment_id: z.string(),
   razorpay_signature: z.string(),
-  planId: z.enum(["active", "passive"]),
+  planId: planIdSchema,
   profile: z.object({
     fullName: z.string().trim().min(1).max(120),
     parentName: z.string().trim().max(120).optional().default(""),
@@ -91,6 +87,7 @@ const verifyInput = z.object({
     town: z.string().trim().min(1).max(80),
   }),
 });
+
 
 function generateTempPassword(): string {
   // 10 char base36, easy to type but unguessable
@@ -173,7 +170,8 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
 
     const userId = created.user.id;
 
-    // Insert member row
+    // Insert member row. Lifetime plans have no expiry; 1-year plans use the default.
+    const isLifetime = planDuration(data.planId) === "lifetime";
     const { error: insErr } = await supabaseAdmin.from("members").insert({
       user_id: userId,
       member_code: memberCode,
@@ -192,6 +190,7 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
       amount_inr: amountInr,
       razorpay_order_id: data.razorpay_order_id,
       razorpay_payment_id: data.razorpay_payment_id,
+      expires_at: isLifetime ? null : undefined,
     });
     if (insErr) {
       // best-effort: rollback the auth user
@@ -225,7 +224,7 @@ export const verifyRazorpayPayment = createServerFn({ method: "POST" })
         memberCode,
         email: data.profile.email,
         tempPassword,
-        planName: data.planId === "active" ? "Active Membership" : "Passive Membership",
+        planName: planName(data.planId),
         amountInr,
         razorpayPaymentId: data.razorpay_payment_id,
         razorpayOrderId: data.razorpay_order_id,

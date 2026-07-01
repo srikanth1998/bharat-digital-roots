@@ -45,20 +45,22 @@ const Email = ({
         month: 'long',
         year: 'numeric',
       })
-    : ''
+    : 'Lifetime'
+  const isLifetime = !expiresAt
 
   return (
     <Html lang="en" dir="ltr">
       <Head />
       <Preview>
-        Welcome to Vanya · Feathers Forum — your Member ID {memberCode}
+        Welcome to Feathers Forum — your Member ID {memberCode}
       </Preview>
       <Body style={main}>
         <Container style={container}>
-          <Text style={kicker}>VANYA · FEATHERS FORUM</Text>
+          <Text style={kicker}>FEATHERS FORUM</Text>
           <Heading style={h1}>Welcome, {fullName}.</Heading>
           <Text style={lead}>
-            Your payment is confirmed and your membership is now active for one year.
+            Your payment is confirmed and your membership is now active
+            {isLifetime ? ' for a lifetime' : ' for one year'}.
             Below is your digital Member ID card — keep this email safe.
           </Text>
 
@@ -140,8 +142,8 @@ export const template = {
     memberCode: 'VNY-A-2026-0001',
     email: 'anand@example.com',
     tempPassword: 'a1b2c3d4e5',
-    planName: 'Active Membership',
-    amountInr: 100,
+    planName: 'Active Membership (1 Year)',
+    amountInr: 500,
     razorpayPaymentId: 'pay_TESTabcdef',
     razorpayOrderId: 'order_TESTabcdef',
     expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),

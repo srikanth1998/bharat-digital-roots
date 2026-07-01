@@ -3,6 +3,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { countries } from "@/data/locations";
 import { createRazorpayOrder, verifyRazorpayPayment, checkEmailAvailable } from "@/lib/razorpay.functions";
+import { planDuration, planName, type PlanId } from "@/lib/plans";
+
+import { PLAN_PRICES_INR } from "@/lib/plans";
 
 declare global {
   interface Window {
@@ -22,42 +25,58 @@ function loadRazorpayScript(): Promise<boolean> {
   });
 }
 
-
-
 export const Route = createFileRoute("/membership")({
   head: () => ({
     meta: [
-      { title: "Membership Registration — Vanya" },
-      { name: "description", content: "Join the Vanya movement — register as a farmer, entrepreneur, or community partner." },
-      { property: "og:title", content: "Membership Registration — Vanya" },
+      { title: "Membership Registration — Feathers Forum" },
+      { name: "description", content: "Join the Feathers Forum movement — register as a member and become part of a community empowering Bharat." },
+      { property: "og:title", content: "Membership Registration — Feathers Forum" },
       { property: "og:description", content: "Become part of a movement empowering Bharat." },
     ],
   }),
   component: Membership,
 });
 
-
-const plans = [
+const plans: { id: PlanId; name: string; price: number; duration: string; tagline: string; perks: string[] }[] = [
   {
-    id: "active",
+    id: "active_1year",
     name: "Active Membership",
-    price: 100,
+    price: PLAN_PRICES_INR.active_1year,
+    duration: "1 year",
     tagline: "For changemakers on the ground",
     perks: ["Voting rights in chapter", "Event participation", "Member ID card", "Valid for 1 year"],
   },
   {
-    id: "passive",
+    id: "active_lifetime",
+    name: "Active Membership",
+    price: PLAN_PRICES_INR.active_lifetime,
+    duration: "Lifetime",
+    tagline: "For lifelong changemakers",
+    perks: ["Lifetime voting rights", "Lifetime event access", "Member ID card", "No annual renewal"],
+  },
+  {
+    id: "passive_1year",
     name: "Passive Membership",
-    price: 500,
+    price: PLAN_PRICES_INR.passive_1year,
+    duration: "1 year",
     tagline: "For supporters & well-wishers",
     perks: ["Supporter recognition", "Quarterly impact reports", "Member ID card", "Valid for 1 year"],
   },
-] as const;
+  {
+    id: "passive_lifetime",
+    name: "Passive Membership",
+    price: PLAN_PRICES_INR.passive_lifetime,
+    duration: "Lifetime",
+    tagline: "For lifelong supporters",
+    perks: ["Lifetime supporter recognition", "Lifetime impact updates", "Member ID card", "No annual renewal"],
+  },
+];
+
 
 
 function Membership() {
   
-  const [planId, setPlanId] = useState<(typeof plans)[number]["id"]>("active");
+  const [planId, setPlanId] = useState<PlanId>("active_1year");
   const [done, setDone] = useState<null | { memberCode: string; tempPassword: string; email: string }>(null);
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
@@ -112,8 +131,8 @@ function Membership() {
         amount: order.amount,
         currency: order.currency,
         order_id: order.orderId,
-        name: "Vanya · Feathers Forum",
-        description: `${selectedPlan.name} — 1 year`,
+        name: "Feathers Forum",
+        description: `${selectedPlan.name} — ${selectedPlan.duration}`,
         prefill: { name: profile.fullName, email: profile.email, contact: profile.mobile },
         theme: { color: "#0a6b3b" },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
@@ -157,7 +176,7 @@ function Membership() {
           Membership <span className="italic text-brand-green">Registration.</span>
         </h1>
         <p className="mt-6 text-lg text-brand-ink/70 max-w-xl">
-          One application. One year of belonging. Every member is reviewed by our regional chapter team and renews annually.
+          Choose an annual plan or a lifetime membership and become part of the Feathers Forum family.
         </p>
 
         {done ? (
@@ -165,7 +184,7 @@ function Membership() {
             <div className="p-10 rounded-2xl bg-brand-green text-brand-paper">
               <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
               <p className="mt-3 text-brand-paper/80">
-                Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for 1 year. Your Member ID is{" "}
+                Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for {selectedPlan.duration.toLowerCase()}. Your Member ID is{" "}
                 <span className="font-mono font-semibold">{done.memberCode}</span>.
               </p>
             </div>
@@ -307,7 +326,10 @@ function Membership() {
                     >
                       <div className="flex items-baseline justify-between">
                         <span className="font-serif text-xl">{p.name}</span>
-                        <span className="font-mono text-2xl">₹{p.price}</span>
+                        <div className="text-right">
+                          <span className="font-mono text-2xl">₹{p.price}</span>
+                          <span className={`block text-xs font-medium ${active ? "text-brand-paper/70" : "text-brand-ink/50"}`}>{p.duration}</span>
+                        </div>
                       </div>
                       <p className={`mt-1 text-sm ${active ? "text-brand-paper/80" : "text-brand-ink/60"}`}>{p.tagline}</p>
                       <ul className={`mt-4 space-y-1.5 text-sm ${active ? "text-brand-paper/90" : "text-brand-ink/70"}`}>
@@ -328,7 +350,7 @@ function Membership() {
               <div>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Total payable</p>
                 <p className="mt-1 font-serif text-2xl text-brand-ink">
-                  ₹{selectedPlan.price}.00 <span className="text-sm text-brand-ink/60">/ 1 year · {selectedPlan.name}</span>
+                  ₹{selectedPlan.price}.00 <span className="text-sm text-brand-ink/60">/ {selectedPlan.duration} · {selectedPlan.name}</span>
                 </p>
                 {payError && <p className="mt-2 text-sm text-red-600">{payError}</p>}
               </div>
