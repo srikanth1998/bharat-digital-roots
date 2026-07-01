@@ -210,16 +210,6 @@ function Nav() {
             >
               Home Page
             </Link>
-            {homeModules.map((m) => (
-              <Link
-                key={m.to}
-                to={m.to}
-                onClick={close}
-                className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green"
-              >
-                <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
-              </Link>
-            ))}
             {navLinks.map((item) => (
               <Link
                 key={item.to}
@@ -230,6 +220,38 @@ function Nav() {
                 {item.label}
               </Link>
             ))}
+            <p className="py-2.5 text-sm font-medium text-brand-ink/80">Wings</p>
+            {homeModules.map((m) => (
+              <Link
+                key={m.to}
+                to={m.to}
+                onClick={close}
+                className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green"
+              >
+                <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
+              </Link>
+            ))}
+            <Link
+              to="/about-founder"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              About Founder
+            </Link>
+            <Link
+              to="/contact"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              Contact Us
+            </Link>
+            <Link
+              to="/membership"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              Membership Registration
+            </Link>
             <Link
               to="/login"
               onClick={close}
