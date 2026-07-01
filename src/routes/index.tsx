@@ -42,11 +42,6 @@ const navLinks = [
   { to: "/about", label: "About Us" },
 ] as const;
 
-const homeModules = [
-  { to: "/fea", code: "FEA", desc: "Group of Companies" },
-  { to: "/feswa", code: "FESWA", desc: "Social Welfare Federation" },
-  { to: "/fesya", code: "FESYA", desc: "Youth & Enterprise" },
-] as const;
 
 function HomeLink() {
   return (
