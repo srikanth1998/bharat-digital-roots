@@ -40,9 +40,6 @@ function Logo() {
 
 const navLinks = [
   { to: "/about", label: "About Us" },
-  { to: "/about-founder", label: "About Founder" },
-  { to: "/contact", label: "Contact Us" },
-  { to: "/membership", label: "Membership Registration" },
 ] as const;
 
 const homeModules = [
@@ -51,7 +48,21 @@ const homeModules = [
   { to: "/fesya", code: "FESYA", desc: "Youth & Enterprise" },
 ] as const;
 
-function HomeMenu() {
+function HomeLink() {
+  return (
+    <Link
+      to="/"
+      activeOptions={{ exact: true }}
+      activeProps={{ className: "text-brand-green" }}
+      inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+      className="text-sm font-medium transition-colors"
+    >
+      Home Page
+    </Link>
+  );
+}
+
+function WingsMenu() {
   const [open, setOpen] = useState(false);
   return (
     <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
@@ -62,7 +73,7 @@ function HomeMenu() {
         aria-expanded={open}
         className="text-sm font-medium transition-colors inline-flex items-center gap-1 text-brand-ink/60 hover:text-brand-ink"
       >
-        Home Page
+        Wings
         <span aria-hidden className="text-[10px] opacity-60">
           ▾
         </span>
@@ -73,13 +84,6 @@ function HomeMenu() {
         }`}
       >
         <div className="bg-brand-paper/95 backdrop-blur-xl ring-1 ring-black/10 rounded-2xl shadow-2xl shadow-brand-ink/15 p-2">
-          <Link
-            to="/"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm transition-colors"
-          >
-            <p className="text-sm font-medium text-brand-ink/80">Home Page</p>
-          </Link>
           {homeModules.map((m) => (
             <Link
               key={m.to}
@@ -105,6 +109,7 @@ function HomeMenu() {
   );
 }
 
+
 function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const close = () => setMobileOpen(false);
@@ -114,7 +119,7 @@ function Nav() {
       <div className="max-w-7xl mx-auto px-6 h-36 md:h-44 flex items-center justify-between gap-6">
         <Logo />
         <div className="hidden md:flex items-center gap-7">
-          <HomeMenu />
+          <HomeLink />
           {navLinks.map((item) => (
             <Link
               key={item.to}
@@ -127,6 +132,34 @@ function Nav() {
               {item.label}
             </Link>
           ))}
+          <WingsMenu />
+          <Link
+            to="/about-founder"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "text-brand-green" }}
+            inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+            className="text-sm font-medium transition-colors"
+          >
+            About Founder
+          </Link>
+          <Link
+            to="/contact"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "text-brand-green" }}
+            inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+            className="text-sm font-medium transition-colors"
+          >
+            Contact Us
+          </Link>
+          <Link
+            to="/membership"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "text-brand-green" }}
+            inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+            className="text-sm font-medium transition-colors"
+          >
+            Membership Registration
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
@@ -177,16 +210,6 @@ function Nav() {
             >
               Home Page
             </Link>
-            {homeModules.map((m) => (
-              <Link
-                key={m.to}
-                to={m.to}
-                onClick={close}
-                className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green"
-              >
-                <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
-              </Link>
-            ))}
             {navLinks.map((item) => (
               <Link
                 key={item.to}
@@ -197,6 +220,38 @@ function Nav() {
                 {item.label}
               </Link>
             ))}
+            <p className="py-2.5 text-sm font-medium text-brand-ink/80">Wings</p>
+            {homeModules.map((m) => (
+              <Link
+                key={m.to}
+                to={m.to}
+                onClick={close}
+                className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green"
+              >
+                <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
+              </Link>
+            ))}
+            <Link
+              to="/about-founder"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              About Founder
+            </Link>
+            <Link
+              to="/contact"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              Contact Us
+            </Link>
+            <Link
+              to="/membership"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              Membership Registration
+            </Link>
             <Link
               to="/login"
               onClick={close}
