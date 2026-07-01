@@ -40,9 +40,6 @@ function Logo() {
 
 const navLinks = [
   { to: "/about", label: "About Us" },
-  { to: "/about-founder", label: "About Founder" },
-  { to: "/contact", label: "Contact Us" },
-  { to: "/membership", label: "Membership Registration" },
 ] as const;
 
 const homeModules = [
@@ -51,7 +48,21 @@ const homeModules = [
   { to: "/fesya", code: "FESYA", desc: "Youth & Enterprise" },
 ] as const;
 
-function HomeMenu() {
+function HomeLink() {
+  return (
+    <Link
+      to="/"
+      activeOptions={{ exact: true }}
+      activeProps={{ className: "text-brand-green" }}
+      inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+      className="text-sm font-medium transition-colors"
+    >
+      Home Page
+    </Link>
+  );
+}
+
+function WingsMenu() {
   const [open, setOpen] = useState(false);
   return (
     <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
@@ -62,7 +73,7 @@ function HomeMenu() {
         aria-expanded={open}
         className="text-sm font-medium transition-colors inline-flex items-center gap-1 text-brand-ink/60 hover:text-brand-ink"
       >
-        Home Page
+        Wings
         <span aria-hidden className="text-[10px] opacity-60">
           ▾
         </span>
@@ -73,13 +84,6 @@ function HomeMenu() {
         }`}
       >
         <div className="bg-brand-paper/95 backdrop-blur-xl ring-1 ring-black/10 rounded-2xl shadow-2xl shadow-brand-ink/15 p-2">
-          <Link
-            to="/"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm transition-colors"
-          >
-            <p className="text-sm font-medium text-brand-ink/80">Home Page</p>
-          </Link>
           {homeModules.map((m) => (
             <Link
               key={m.to}
@@ -104,6 +108,7 @@ function HomeMenu() {
     </div>
   );
 }
+
 
 function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
