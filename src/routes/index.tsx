@@ -42,11 +42,6 @@ const navLinks = [
   { to: "/about", label: "About Us" },
 ] as const;
 
-const homeModules = [
-  { to: "/fea", code: "FEA", desc: "Group of Companies" },
-  { to: "/feswa", code: "FESWA", desc: "Social Welfare Federation" },
-  { to: "/fesya", code: "FESYA", desc: "Youth & Enterprise" },
-] as const;
 
 function HomeLink() {
   return (
@@ -62,52 +57,20 @@ function HomeLink() {
   );
 }
 
-function WingsMenu() {
-  const [open, setOpen] = useState(false);
+function WingsLink() {
   return (
-    <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-haspopup="true"
-        aria-expanded={open}
-        className="text-sm font-medium transition-colors inline-flex items-center gap-1 text-brand-ink/60 hover:text-brand-ink"
-      >
-        Wings
-        <span aria-hidden className="text-[10px] opacity-60">
-          ▾
-        </span>
-      </button>
-      <div
-        className={`absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 transition-all duration-200 z-50 ${
-          open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-1"
-        }`}
-      >
-        <div className="bg-brand-paper/95 backdrop-blur-xl ring-1 ring-black/10 rounded-2xl shadow-2xl shadow-brand-ink/15 p-2">
-          {homeModules.map((m) => (
-            <Link
-              key={m.to}
-              to={m.to}
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl hover:bg-brand-paper-warm focus:bg-brand-paper-warm focus:outline-none transition-colors group/item"
-            >
-              <div>
-                <p className="font-serif text-lg font-semibold text-brand-green leading-none">{m.code}</p>
-                <p className="text-xs text-brand-ink/55 mt-1">{m.desc}</p>
-              </div>
-              <span
-                aria-hidden
-                className="text-brand-saffron opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all"
-              >
-                →
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+    <Link
+      to="/wings"
+      activeOptions={{ exact: true }}
+      activeProps={{ className: "text-brand-green" }}
+      inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+      className="text-sm font-medium transition-colors"
+    >
+      Wings
+    </Link>
   );
 }
+
 
 
 function Nav() {
@@ -132,7 +95,7 @@ function Nav() {
               {item.label}
             </Link>
           ))}
-          <WingsMenu />
+          <WingsLink />
           <Link
             to="/about-founder"
             activeOptions={{ exact: true }}
@@ -220,17 +183,13 @@ function Nav() {
                 {item.label}
               </Link>
             ))}
-            <p className="py-2.5 text-sm font-medium text-brand-ink/80">Wings</p>
-            {homeModules.map((m) => (
-              <Link
-                key={m.to}
-                to={m.to}
-                onClick={close}
-                className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green"
-              >
-                <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
-              </Link>
-            ))}
+            <Link
+              to="/wings"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              Wings
+            </Link>
             <Link
               to="/about-founder"
               onClick={close}

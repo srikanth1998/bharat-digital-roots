@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WingsRouteImport } from './routes/wings'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as MembershipRouteImport } from './routes/membership'
@@ -30,6 +31,11 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
+const WingsRoute = WingsRouteImport.update({
+  id: '/wings',
+  path: '/wings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
   path: '/unsubscribe',
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/membership': typeof MembershipRoute
   '/set-password': typeof SetPasswordRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/wings': typeof WingsRoute
   '/account': typeof AuthenticatedAccountRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin-messages': typeof AuthenticatedAdminMessagesRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/membership': typeof MembershipRoute
   '/set-password': typeof SetPasswordRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/wings': typeof WingsRoute
   '/account': typeof AuthenticatedAccountRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin-messages': typeof AuthenticatedAdminMessagesRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/membership': typeof MembershipRoute
   '/set-password': typeof SetPasswordRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/wings': typeof WingsRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/admin-messages': typeof AuthenticatedAdminMessagesRoute
@@ -213,6 +222,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/set-password'
     | '/unsubscribe'
+    | '/wings'
     | '/account'
     | '/admin'
     | '/admin-messages'
@@ -234,6 +244,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/set-password'
     | '/unsubscribe'
+    | '/wings'
     | '/account'
     | '/admin'
     | '/admin-messages'
@@ -256,6 +267,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/set-password'
     | '/unsubscribe'
+    | '/wings'
     | '/_authenticated/account'
     | '/_authenticated/admin'
     | '/_authenticated/admin-messages'
@@ -279,6 +291,7 @@ export interface RootRouteChildren {
   MembershipRoute: typeof MembershipRoute
   SetPasswordRoute: typeof SetPasswordRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  WingsRoute: typeof WingsRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -287,6 +300,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wings': {
+      id: '/wings'
+      path: '/wings'
+      fullPath: '/wings'
+      preLoaderRoute: typeof WingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/unsubscribe': {
       id: '/unsubscribe'
       path: '/unsubscribe'
@@ -459,6 +479,7 @@ const rootRouteChildren: RootRouteChildren = {
   MembershipRoute: MembershipRoute,
   SetPasswordRoute: SetPasswordRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  WingsRoute: WingsRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
