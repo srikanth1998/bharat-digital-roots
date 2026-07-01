@@ -311,11 +311,11 @@ function AboutPage() {
               Our work is centered around seven key areas of community transformation.
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-200/70 ring-1 ring-zinc-950/5 rounded-2xl overflow-hidden">
+          <div className="grid md:grid-cols-2 gap-6">
             {pillars.map((p, i) => (
               <div
                 key={p.title}
-                className="bg-brand-paper p-8 lg:p-10 space-y-5 hover:bg-brand-paper-warm/40 transition-colors"
+                className="bg-brand-paper rounded-2xl ring-1 ring-zinc-950/5 p-8 lg:p-10 space-y-5 hover:bg-brand-paper-warm/40 transition-colors"
               >
                 <div className="flex items-center justify-between">
                   <div className={`size-10 ${p.bg} rounded-full flex items-center justify-center`}>
@@ -325,13 +325,29 @@ function AboutPage() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="font-serif text-2xl font-medium tracking-tight">
-                  {p.title}
-                  <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
-                    {p.tag}
-                  </span>
-                </h3>
-                <p className="text-sm leading-relaxed text-brand-ink/60 max-w-[40ch] text-pretty">{p.body}</p>
+                <div>
+                  <h3 className="font-serif text-2xl font-medium tracking-tight">
+                    {p.title}
+                    <span className="ml-2 align-middle text-[10px] font-sans font-semibold uppercase tracking-[0.15em] text-brand-ink/50 bg-brand-paper-warm/80 ring-1 ring-zinc-950/10 rounded-full px-2 py-0.5">
+                      {p.tag}
+                    </span>
+                  </h3>
+                  <p className="mt-2 font-medium text-brand-green/80 text-sm lg:text-base">{p.subtitle}</p>
+                </div>
+                <p className="text-sm leading-relaxed text-brand-ink/60 text-pretty">{p.body}</p>
+                <div className="pt-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-brand-ink/40 mb-3">
+                    {p.itemLabel}
+                  </p>
+                  <ul className="grid sm:grid-cols-2 gap-x-4 gap-y-2">
+                    {p.items.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm text-brand-ink/70">
+                        <span aria-hidden className="mt-1.5 size-1.5 rounded-full bg-brand-ink/20 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
