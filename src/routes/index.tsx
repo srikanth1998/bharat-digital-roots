@@ -100,7 +100,7 @@ function Nav() {
               {item.label}
             </Link>
           ))}
-          <WingsMenu />
+          <WingsLink />
           <Link
             to="/about-founder"
             activeOptions={{ exact: true }}
