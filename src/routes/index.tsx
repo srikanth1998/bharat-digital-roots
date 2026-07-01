@@ -119,7 +119,7 @@ function Nav() {
       <div className="max-w-7xl mx-auto px-6 h-36 md:h-44 flex items-center justify-between gap-6">
         <Logo />
         <div className="hidden md:flex items-center gap-7">
-          <HomeMenu />
+          <HomeLink />
           {navLinks.map((item) => (
             <Link
               key={item.to}
@@ -132,6 +132,34 @@ function Nav() {
               {item.label}
             </Link>
           ))}
+          <WingsMenu />
+          <Link
+            to="/about-founder"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "text-brand-green" }}
+            inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+            className="text-sm font-medium transition-colors"
+          >
+            About Founder
+          </Link>
+          <Link
+            to="/contact"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "text-brand-green" }}
+            inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+            className="text-sm font-medium transition-colors"
+          >
+            Contact Us
+          </Link>
+          <Link
+            to="/membership"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "text-brand-green" }}
+            inactiveProps={{ className: "text-brand-ink/60 hover:text-brand-ink" }}
+            className="text-sm font-medium transition-colors"
+          >
+            Membership Registration
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
