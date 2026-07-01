@@ -188,17 +188,13 @@ function Nav() {
                 {item.label}
               </Link>
             ))}
-            <p className="py-2.5 text-sm font-medium text-brand-ink/80">Wings</p>
-            {homeModules.map((m) => (
-              <Link
-                key={m.to}
-                to={m.to}
-                onClick={close}
-                className="py-2.5 pl-4 text-sm text-brand-ink/70 hover:text-brand-green"
-              >
-                <span className="font-semibold text-brand-green">{m.code}</span> · {m.desc}
-              </Link>
-            ))}
+            <Link
+              to="/wings"
+              onClick={close}
+              className="py-2.5 text-sm font-medium text-brand-ink/80 hover:text-brand-green"
+            >
+              Wings
+            </Link>
             <Link
               to="/about-founder"
               onClick={close}
