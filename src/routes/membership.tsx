@@ -122,8 +122,7 @@ function Membership() {
             <div className="p-10 rounded-2xl bg-brand-green text-brand-paper">
               <p className="font-serif text-3xl">Thank you — your registration is submitted.</p>
               <p className="mt-3 text-brand-paper/80">
-                Your application is now <span className="font-semibold">waiting for admin approval</span>.
-                Once an administrator reviews and approves it, we'll email you your Member ID and login details.
+                Your application is now waiting for caucus approval. Once an incharge reviews and approves it, we'll email you your Member ID and login details.
               </p>
               <p className="mt-4 text-sm text-brand-paper/70">
                 Your reference Member ID is <span className="font-mono font-semibold">{done.memberCode}</span>.
