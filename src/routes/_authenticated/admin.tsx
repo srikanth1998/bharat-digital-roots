@@ -1,8 +1,8 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Fragment, useMemo, useState } from "react";
-import { getAllMembers, getMyRole } from "@/lib/members.functions";
+import { getAllMembers, getMyRole, approveMember, rejectMember } from "@/lib/members.functions";
 import { planDuration, planNameShort } from "@/lib/plans";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -15,23 +15,69 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: Admin,
 });
 
+type Tab = "pending" | "approved" | "rejected" | "all";
+
 function Admin() {
+  const qc = useQueryClient();
   const fetchAll = useServerFn(getAllMembers);
+  const approve = useServerFn(approveMember);
+  const reject = useServerFn(rejectMember);
   const q = useQuery({ queryKey: ["all-members"], queryFn: () => fetchAll() });
 
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [tab, setTab] = useState<Tab>("pending");
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  const rows = q.data ?? [];
+  const counts = useMemo(() => ({
+    pending: rows.filter((r) => r.status === "pending").length,
+    approved: rows.filter((r) => r.status === "approved").length,
+    rejected: rows.filter((r) => r.status === "rejected").length,
+    all: rows.length,
+  }), [rows]);
 
   const filtered = useMemo(() => {
-    const rows = q.data ?? [];
     const s = search.trim().toLowerCase();
-    if (!s) return rows;
-    return rows.filter((r) =>
-      [r.full_name, r.email, r.member_code, r.mobile, r.district, r.state]
-        .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(s)),
-    );
-  }, [q.data, search]);
+    return rows
+      .filter((r) => (tab === "all" ? true : r.status === tab))
+      .filter((r) =>
+        !s
+          ? true
+          : [r.full_name, r.email, r.member_code, r.mobile, r.district, r.state]
+              .filter(Boolean)
+              .some((v) => String(v).toLowerCase().includes(s)),
+      );
+  }, [rows, search, tab]);
+
+  async function handleApprove(id: string) {
+    setBusyId(id); setErr(null); setMsg(null);
+    try {
+      const res = await approve({ data: { memberId: id } });
+      setMsg(`Approved ${res.email}. A welcome email with temporary password has been sent.`);
+      await qc.invalidateQueries({ queryKey: ["all-members"] });
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function handleReject(id: string) {
+    if (!confirm("Reject this registration?")) return;
+    setBusyId(id); setErr(null); setMsg(null);
+    try {
+      await reject({ data: { memberId: id } });
+      setMsg("Registration rejected.");
+      await qc.invalidateQueries({ queryKey: ["all-members"] });
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-brand-paper">
@@ -43,15 +89,13 @@ function Admin() {
             </Link>
             <h1 className="mt-4 font-serif text-4xl font-medium tracking-tight">Members</h1>
             <p className="mt-1 text-brand-ink/60">
-              {q.data ? `${q.data.length} total · ${filtered.length} shown` : "Loading…"}
+              {q.data ? `${counts.all} total · ${filtered.length} shown` : "Loading…"}
             </p>
             <div className="mt-3 flex gap-3 text-sm">
               <span className="text-brand-ink font-semibold">Members</span>
               <span className="text-brand-ink/30">·</span>
               <Link to="/admin-messages" className="text-brand-green/80 hover:text-brand-green underline-offset-4 hover:underline">Messages</Link>
             </div>
-            <p className="mt-1 text-xs text-brand-ink/50">Click a member to see their full registration details.</p>
-
           </div>
           <input
             type="search"
@@ -62,11 +106,29 @@ function Admin() {
           />
         </div>
 
+        <div className="mt-6 flex flex-wrap gap-2">
+          {(["pending", "approved", "rejected", "all"] as Tab[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors ${
+                tab === t
+                  ? "bg-brand-green text-brand-paper"
+                  : "bg-white text-brand-ink/70 ring-1 ring-brand-ink/10 hover:ring-brand-green/40"
+              }`}
+            >
+              {t} ({counts[t]})
+            </button>
+          ))}
+        </div>
+
+        {msg && <p className="mt-4 text-sm text-brand-green">{msg}</p>}
+        {err && <p className="mt-4 text-sm text-red-600">{err}</p>}
         {q.error && (
           <p className="mt-6 text-red-600">Could not load members: {(q.error as Error).message}</p>
         )}
 
-        <div className="mt-8 overflow-x-auto rounded-2xl ring-1 ring-brand-ink/10 bg-white">
+        <div className="mt-6 overflow-x-auto rounded-2xl ring-1 ring-brand-ink/10 bg-white">
           <table className="min-w-full text-sm">
             <thead className="bg-brand-paper-warm/40 text-left text-[11px] uppercase tracking-[0.15em] text-brand-ink/60">
               <tr>
@@ -75,8 +137,8 @@ function Admin() {
                 <th className="px-4 py-3 font-semibold">Email</th>
                 <th className="px-4 py-3 font-semibold">Mobile</th>
                 <th className="px-4 py-3 font-semibold">Plan</th>
-                <th className="px-4 py-3 font-semibold">District</th>
-                <th className="px-4 py-3 font-semibold">Joined</th>
+                <th className="px-4 py-3 font-semibold">Status</th>
+                <th className="px-4 py-3 font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -106,9 +168,30 @@ function Admin() {
                           {planNameShort(m.plan_id)}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-brand-ink/70">{m.district}, {m.state}</td>
-                      <td className="px-4 py-3 text-brand-ink/70">
-                        {new Date(m.joined_at).toLocaleDateString()}
+                      <td className="px-4 py-3">
+                        <StatusPill status={m.status} />
+                      </td>
+                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                        {m.status === "pending" ? (
+                          <div className="flex gap-2">
+                            <button
+                              disabled={busyId === m.id}
+                              onClick={() => handleApprove(m.id)}
+                              className="px-3 py-1 rounded-full text-xs font-semibold bg-brand-green text-brand-paper hover:bg-brand-green-deep disabled:opacity-60"
+                            >
+                              {busyId === m.id ? "…" : "Approve"}
+                            </button>
+                            <button
+                              disabled={busyId === m.id}
+                              onClick={() => handleReject(m.id)}
+                              className="px-3 py-1 rounded-full text-xs font-semibold bg-white text-red-600 ring-1 ring-red-200 hover:bg-red-50 disabled:opacity-60"
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-brand-ink/40">—</span>
+                        )}
                       </td>
                     </tr>
                     {open && (
@@ -118,12 +201,13 @@ function Admin() {
                             <Detail label="Parent / Guardian" value={m.parent_name} />
                             <Detail label="Alt mobile" value={m.alt_mobile} />
                             <Detail label="Alt email" value={m.alt_email} />
-                            <Detail label="Amount paid" value={`₹${m.amount_inr}`} />
+                            <Detail label="Submitted" value={new Date(m.joined_at).toLocaleDateString()} />
                             <Detail label="Address" value={m.address} className="col-span-2" />
                             <Detail label="Town / Village" value={m.town} />
+                            <Detail label="District / State" value={`${m.district}, ${m.state}`} />
                             <Detail label="Country" value={m.country} />
-                            <Detail label="Valid until" value={m.expires_at ? new Date(m.expires_at).toLocaleDateString() : "Lifetime"} />
                             <Detail label="Duration" value={planDuration(m.plan_id)} />
+                            <Detail label="Valid until" value={m.expires_at ? new Date(m.expires_at).toLocaleDateString() : (m.status === "approved" ? "Lifetime" : "—")} />
                           </div>
                         </td>
                       </tr>
@@ -143,6 +227,19 @@ function Admin() {
         </div>
       </div>
     </div>
+  );
+}
+
+function StatusPill({ status }: { status: "pending" | "approved" | "rejected" }) {
+  const styles: Record<string, string> = {
+    pending: "bg-amber-100 text-amber-800",
+    approved: "bg-emerald-100 text-emerald-800",
+    rejected: "bg-red-100 text-red-700",
+  };
+  return (
+    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${styles[status]}`}>
+      {status}
+    </span>
   );
 }
 

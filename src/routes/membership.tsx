@@ -1,28 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { countries } from "@/data/locations";
-import { createRazorpayOrder, verifyRazorpayPayment, checkEmailAvailable } from "@/lib/razorpay.functions";
-import { type PlanId } from "@/lib/plans";
-import { PLAN_PRICES_INR } from "@/lib/plans";
-
-declare global {
-  interface Window {
-    Razorpay?: new (options: Record<string, unknown>) => { open: () => void };
-  }
-}
-
-function loadRazorpayScript(): Promise<boolean> {
-  return new Promise((resolve) => {
-    if (typeof window === "undefined") return resolve(false);
-    if (window.Razorpay) return resolve(true);
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-}
+import { submitMembership } from "@/lib/members.functions";
+import { type PlanId, PLAN_PRICES_INR } from "@/lib/plans";
 
 export const Route = createFileRoute("/membership")({
   head: () => ({
@@ -71,91 +52,49 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
   },
 ];
 
-
-
 function Membership() {
-  
   const [planId, setPlanId] = useState<PlanId>("active_1year");
-  const [done, setDone] = useState<null | { memberCode: string; tempPassword: string; email: string }>(null);
+  const [done, setDone] = useState<null | { memberCode: string }>(null);
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
   const [district, setDistrict] = useState("");
   const [town, setTown] = useState("");
   const [address, setAddress] = useState("");
-  const [paying, setPaying] = useState(false);
-  const [payError, setPayError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const createOrder = useServerFn(createRazorpayOrder);
-  const verifyPayment = useServerFn(verifyRazorpayPayment);
-  const checkEmail = useServerFn(checkEmailAvailable);
-
-  useEffect(() => { void loadRazorpayScript(); }, []);
+  const submit = useServerFn(submitMembership);
 
   const selectedPlan = plans.find((p) => p.id === planId)!;
 
-  async function handlePayment(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setPayError(null);
-    setPaying(true);
+    setError(null);
+    setSubmitting(true);
     const form = e.currentTarget;
     try {
-      const ok = await loadRazorpayScript();
-      if (!ok || !window.Razorpay) throw new Error("Could not load Razorpay. Check your connection.");
-
       const fd = new FormData(form);
-      const profile = {
-        fullName: String(fd.get("fullName") || "").trim(),
-        parentName: String(fd.get("parentName") || "").trim(),
-        mobile: String(fd.get("mobile") || "").trim(),
-        altMobile: String(fd.get("altMobile") || "").trim(),
-        email: String(fd.get("email") || "").trim(),
-        altEmail: String(fd.get("altEmail") || "").trim(),
-        address: address.trim(),
-        country: country.trim(),
-        state: stateName.trim(),
-        district: district.trim(),
-        town: town.trim(),
-      };
-
-      // Block known-registered emails before opening Razorpay checkout
-      const { available } = await checkEmail({ data: { email: profile.email } });
-      if (!available) {
-        throw new Error("This email is already registered. Please log in instead.");
-      }
-
-      const order = await createOrder({ data: { planId } });
-
-      const rzp = new window.Razorpay({
-        key: order.keyId,
-        amount: order.amount,
-        currency: order.currency,
-        order_id: order.orderId,
-        name: "Feathers Forum",
-        description: `${selectedPlan.name} — ${selectedPlan.duration}`,
-        prefill: { name: profile.fullName, email: profile.email, contact: profile.mobile },
-        theme: { color: "#0a6b3b" },
-        handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
-          try {
-            const result = await verifyPayment({
-              data: {
-                ...response,
-                planId,
-                profile,
-              },
-            });
-            setDone({ memberCode: result.memberCode, tempPassword: result.tempPassword, email: result.email });
-          } catch (err) {
-            setPayError(err instanceof Error ? err.message : "Payment verification failed");
-          } finally {
-            setPaying(false);
-          }
+      const result = await submit({
+        data: {
+          fullName: String(fd.get("fullName") || "").trim(),
+          parentName: String(fd.get("parentName") || "").trim(),
+          mobile: String(fd.get("mobile") || "").trim(),
+          altMobile: String(fd.get("altMobile") || "").trim(),
+          email: String(fd.get("email") || "").trim(),
+          altEmail: String(fd.get("altEmail") || "").trim(),
+          address: address.trim(),
+          country: country.trim(),
+          state: stateName.trim(),
+          district: district.trim(),
+          town: town.trim(),
+          planId,
         },
-        modal: { ondismiss: () => setPaying(false) },
       });
-      rzp.open();
+      setDone({ memberCode: result.memberCode });
     } catch (err) {
-      setPayError(err instanceof Error ? err.message : "Payment could not be started");
-      setPaying(false);
+      setError(err instanceof Error ? err.message : "Could not submit registration");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -175,49 +114,34 @@ function Membership() {
           Membership <span className="italic text-brand-green">Registration.</span>
         </h1>
         <p className="mt-6 text-lg text-brand-ink/70 max-w-xl">
-          Choose an annual plan or a lifetime membership and become part of the Feathers Forum family.
+          Fill in your details below. Your registration will be reviewed by our team, and once approved you'll receive an email with your login details.
         </p>
 
         {done ? (
           <div className="mt-16 space-y-6">
             <div className="p-10 rounded-2xl bg-brand-green text-brand-paper">
-              <p className="font-serif text-3xl">Welcome to Feathers Forum.</p>
+              <p className="font-serif text-3xl">Thank you — your registration is submitted.</p>
               <p className="mt-3 text-brand-paper/80">
-                Your {selectedPlan.name.toLowerCase()} (₹{selectedPlan.price}) is confirmed and valid for {selectedPlan.duration.toLowerCase()}. Your Member ID is{" "}
-                <span className="font-mono font-semibold">{done.memberCode}</span>.
+                Your application is now <span className="font-semibold">waiting for admin approval</span>.
+                Once an administrator reviews and approves it, we'll email you your Member ID and login details.
+              </p>
+              <p className="mt-4 text-sm text-brand-paper/70">
+                Your reference Member ID is <span className="font-mono font-semibold">{done.memberCode}</span>.
+                Please keep it for your records.
               </p>
             </div>
-            <div className="p-8 rounded-2xl bg-brand-paper-warm ring-1 ring-brand-saffron/30">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-brand-saffron font-semibold">
-                Save these login details
-              </p>
-              <p className="mt-2 text-sm text-brand-ink/70">
-                Use these to sign in for the first time. You'll be asked to set your own password right after.
-              </p>
-              <dl className="mt-5 grid sm:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <dt className="text-brand-ink/50 text-xs uppercase tracking-wider">Email</dt>
-                  <dd className="mt-1 font-mono text-brand-ink">{done.email}</dd>
-                </div>
-                <div>
-                  <dt className="text-brand-ink/50 text-xs uppercase tracking-wider">Temporary password</dt>
-                  <dd className="mt-1 font-mono text-brand-ink select-all">{done.tempPassword}</dd>
-                </div>
-              </dl>
-              <Link
-                to="/login"
-                className="mt-6 inline-block bg-brand-green text-brand-paper px-6 py-2.5 rounded-full text-sm font-medium hover:bg-brand-green-deep transition-colors"
-              >
-                Go to login →
-              </Link>
-            </div>
+            <Link
+              to="/"
+              className="inline-block bg-brand-paper-warm text-brand-ink px-6 py-2.5 rounded-full text-sm font-medium hover:bg-brand-paper-warm/70 transition-colors ring-1 ring-brand-ink/10"
+            >
+              ← Back to home
+            </Link>
           </div>
         ) : (
           <form
-            onSubmit={handlePayment}
+            onSubmit={handleSubmit}
             className="mt-12 space-y-10 bg-brand-paper-warm/50 p-8 md:p-10 rounded-2xl ring-1 ring-black/5"
           >
-
             <Section title="Personal Information" number="01">
               <div className="grid md:grid-cols-2 gap-6">
                 <Field label="Full Name" name="fullName" required />
@@ -226,7 +150,6 @@ function Membership() {
                 <Field label="Alternate Mobile Number" name="altMobile" type="tel" />
                 <Field label="Primary Email ID" name="email" type="email" required />
                 <Field label="Secondary Email ID" name="altEmail" type="email" />
-
               </div>
             </Section>
 
@@ -308,7 +231,7 @@ function Membership() {
               </div>
             </Section>
 
-            <Section title="Choose Your Plan" number="03">
+            <Section title="Choose Your Membership" number="03">
               <div className="grid md:grid-cols-2 gap-4">
                 {plans.map((p) => {
                   const active = planId === p.id;
@@ -325,10 +248,7 @@ function Membership() {
                     >
                       <div className="flex items-baseline justify-between">
                         <span className="font-serif text-xl">{p.name}</span>
-                        <div className="text-right">
-                          <span className="font-mono text-2xl">₹{p.price}</span>
-                          <span className={`block text-xs font-medium ${active ? "text-brand-paper/70" : "text-brand-ink/50"}`}>{p.duration}</span>
-                        </div>
+                        <span className={`text-xs font-medium ${active ? "text-brand-paper/70" : "text-brand-ink/50"}`}>{p.duration}</span>
                       </div>
                       <p className={`mt-1 text-sm ${active ? "text-brand-paper/80" : "text-brand-ink/60"}`}>{p.tagline}</p>
                       <ul className={`mt-4 space-y-1.5 text-sm ${active ? "text-brand-paper/90" : "text-brand-ink/70"}`}>
@@ -347,20 +267,22 @@ function Membership() {
 
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-5 rounded-xl bg-brand-paper ring-1 ring-brand-ink/10">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Total payable</p>
-                <p className="mt-1 font-serif text-2xl text-brand-ink">
-                  ₹{selectedPlan.price}.00 <span className="text-sm text-brand-ink/60">/ {selectedPlan.duration} · {selectedPlan.name}</span>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Selected membership</p>
+                <p className="mt-1 font-serif text-xl text-brand-ink">
+                  {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span>
                 </p>
-                {payError && <p className="mt-2 text-sm text-red-600">{payError}</p>}
+                {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
               </div>
-              <button type="submit" disabled={paying} className="bg-brand-saffron text-white px-8 py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
-                {paying ? "Processing…" : `Pay ₹${selectedPlan.price} & Submit`}
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-brand-saffron text-white px-8 py-3.5 rounded-full font-medium hover:shadow-xl hover:shadow-brand-saffron/20 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {submitting ? "Submitting…" : "Submit for Approval"}
               </button>
             </div>
-
           </form>
         )}
-
       </div>
     </div>
   );
@@ -388,5 +310,4 @@ function Field({ label, type = "text", required = false, name }: { label: string
       <input id={id} name={name} type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
     </div>
   );
-
 }

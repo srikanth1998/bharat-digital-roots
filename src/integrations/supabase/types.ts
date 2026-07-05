@@ -131,15 +131,16 @@ export type Database = {
           razorpay_order_id: string | null
           razorpay_payment_id: string | null
           state: string
+          status: string
           town: string
           updated_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           address: string
           alt_email?: string | null
           alt_mobile?: string | null
-          amount_inr: number
+          amount_inr?: number
           country: string
           created_at?: string
           district: string
@@ -155,9 +156,10 @@ export type Database = {
           razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
           state: string
+          status?: string
           town: string
           updated_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           address?: string
@@ -179,9 +181,10 @@ export type Database = {
           razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
           state?: string
+          status?: string
           town?: string
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
