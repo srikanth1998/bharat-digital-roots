@@ -28,7 +28,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.passive_1year,
     duration: "1 year",
     tagline: "For supporters & well-wishers",
-    perks: ["FEA discount card valid for 1 year ", "Memebership valid for 1 year ", "lifetime supporter recognition"],
+    perks: ["FEA discount card valid for 1 year ", "Memebership valid for 1 year ", "Valid for one year"],
   },
   {
     id: "passive_lifetime",
@@ -44,7 +44,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.active_1year,
     duration: "1 year",
     tagline: "For changemakers on the ground",
-    perks: ["Participation in chapters", "Chance caucus membership", "Valid for 1 year"],
+    perks: ["Participation in chapters", "Chance Caucus membership", "Valid for 1 year"],
   },
   {
     id: "active_lifetime",
@@ -52,7 +52,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.active_lifetime,
     duration: "Lifetime",
     tagline: "For lifelong changemakers",
-    perks: ["Lifetime Participation in chapters", "Life time chance caucus memebrship", "No annual renewal"],
+    perks: ["Lifetime Participation in chapters", "Life time chance Caucus memebrship", "No annual renewal"],
   },
 ];
 
