@@ -19,22 +19,6 @@ export const Route = createFileRoute("/membership")({
 
 const plans: { id: PlanId; name: string; price: number; duration: string; tagline: string; perks: string[] }[] = [
   {
-    id: "active_1year",
-    name: "Active Membership",
-    price: PLAN_PRICES_INR.active_1year,
-    duration: "1 year",
-    tagline: "For changemakers on the ground",
-    perks: ["Voting rights in chapter", "Event participation", "Member ID card", "Valid for 1 year"],
-  },
-  {
-    id: "active_lifetime",
-    name: "Active Membership",
-    price: PLAN_PRICES_INR.active_lifetime,
-    duration: "Lifetime",
-    tagline: "For lifelong changemakers",
-    perks: ["Lifetime voting rights", "Lifetime event access", "Member ID card", "No annual renewal"],
-  },
-  {
     id: "passive_1year",
     name: "Passive Membership",
     price: PLAN_PRICES_INR.passive_1year,
@@ -50,7 +34,24 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     tagline: "For lifelong supporters",
     perks: ["Lifetime supporter recognition", "Lifetime impact updates", "Member ID card", "No annual renewal"],
   },
+  {
+    id: "active_1year",
+    name: "Active Membership",
+    price: PLAN_PRICES_INR.active_1year,
+    duration: "1 year",
+    tagline: "For changemakers on the ground",
+    perks: ["Voting rights in chapter", "Event participation", "Member ID card", "Valid for 1 year"],
+  },
+  {
+    id: "active_lifetime",
+    name: "Active Membership",
+    price: PLAN_PRICES_INR.active_lifetime,
+    duration: "Lifetime",
+    tagline: "For lifelong changemakers",
+    perks: ["Lifetime voting rights", "Lifetime event access", "Member ID card", "No annual renewal"],
+  },
 ];
+
 
 function Membership() {
   const [planId, setPlanId] = useState<PlanId>("active_1year");
