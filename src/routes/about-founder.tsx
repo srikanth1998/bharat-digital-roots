@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import founderAsset from "@/assets/founder-akr-kali.jpg.asset.json";
+import founderAsset from "@/assets/founder-akr-kali.png.asset.json";
 
 function FounderImage({ src }: { src: string }) {
   const [errored, setErrored] = useState(false);
@@ -16,7 +16,7 @@ function FounderImage({ src }: { src: string }) {
       <div
         role="img"
         aria-label="Anand Kumar Kali, Founder of Feathers Community Forum"
-        className="w-full aspect-[3/4] rounded-2xl ring-1 ring-black/5 bg-brand-green/10 flex items-center justify-center"
+        className="w-full aspect-[4/3] rounded-2xl ring-1 ring-black/5 bg-brand-green/10 flex items-center justify-center"
       >
         <span className="font-serif text-7xl text-brand-green/70 select-none">AK</span>
       </div>
@@ -27,7 +27,7 @@ function FounderImage({ src }: { src: string }) {
       ref={ref}
       src={src}
       alt="Anand Kumar Kali, Founder of Feathers Community Forum"
-      className="w-full aspect-[3/4] object-cover rounded-2xl ring-1 ring-black/5"
+      className="w-full aspect-[4/3] object-cover rounded-2xl ring-1 ring-black/5"
       onError={() => setErrored(true)}
     />
   );
