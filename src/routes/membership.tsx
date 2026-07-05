@@ -9,7 +9,11 @@ export const Route = createFileRoute("/membership")({
   head: () => ({
     meta: [
       { title: "Membership Registration — Feathers Forum" },
-      { name: "description", content: "Join the Feathers Forum movement — register as a member and become part of a community empowering Bharat." },
+      {
+        name: "description",
+        content:
+          "Join the Feathers Forum movement — register as a member and become part of a community empowering Bharat.",
+      },
       { property: "og:title", content: "Membership Registration — Feathers Forum" },
       { property: "og:description", content: "Become part of a movement empowering Bharat." },
     ],
@@ -24,7 +28,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.passive_1year,
     duration: "1 year",
     tagline: "For supporters & well-wishers",
-    perks: ["Supporter recognition", "Quarterly impact reports", "Member ID card", "Valid for 1 year"],
+    perks: ["FEA discount card valid for 1 year ", "Memebership valid for 1 year ", "lifetime supporter recognition"],
   },
   {
     id: "passive_lifetime",
@@ -32,7 +36,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.passive_lifetime,
     duration: "Lifetime",
     tagline: "For lifelong supporters",
-    perks: ["Lifetime supporter recognition", "Lifetime impact updates", "Member ID card", "No annual renewal"],
+    perks: ["Lifetime supporter recognition", "Lifetime validity", "FEA lifetime discount card "],
   },
   {
     id: "active_1year",
@@ -40,7 +44,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.active_1year,
     duration: "1 year",
     tagline: "For changemakers on the ground",
-    perks: ["Voting rights in chapter", "Event participation", "Member ID card", "Valid for 1 year"],
+    perks: ["Participation in chapters", "Chance caucus membership", "Valid for 1 year"],
   },
   {
     id: "active_lifetime",
@@ -48,10 +52,9 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.active_lifetime,
     duration: "Lifetime",
     tagline: "For lifelong changemakers",
-    perks: ["Lifetime voting rights", "Lifetime event access", "Member ID card", "No annual renewal"],
+    perks: ["Lifetime Participation in chapters", "Life time chance caucus memebrship", "No annual renewal"],
   },
 ];
-
 
 function Membership() {
   const [planId, setPlanId] = useState<PlanId>("passive_1year");
@@ -100,22 +103,31 @@ function Membership() {
   }
 
   const selectedCountry = useMemo(() => countries.find((c) => c.name === country), [country]);
-  const selectedState = useMemo(() => selectedCountry?.states.find((s) => s.name === stateName), [selectedCountry, stateName]);
+  const selectedState = useMemo(
+    () => selectedCountry?.states.find((s) => s.name === stateName),
+    [selectedCountry, stateName],
+  );
   const districts = selectedState?.districts ?? [];
-  const inputCls = "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
+  const inputCls =
+    "mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors";
   const selectCls = inputCls + " appearance-none cursor-pointer";
   const labelCls = "text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold";
 
   return (
     <div className="min-h-screen bg-brand-paper">
       <div className="max-w-4xl mx-auto px-6 py-24">
-        <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
-        <span className="mt-10 block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">Join the Movement</span>
+        <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">
+          ← Back to home
+        </Link>
+        <span className="mt-10 block text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-saffron">
+          Join the Movement
+        </span>
         <h1 className="mt-4 font-serif text-4xl md:text-6xl font-medium tracking-tight text-balance">
           Membership <span className="italic text-brand-green">Registration.</span>
         </h1>
         <p className="mt-6 text-lg text-brand-ink/70 max-w-xl">
-          Fill in your details below. Your registration will be reviewed by our team, and once approved you'll receive an email with your login details.
+          Fill in your details below. Your registration will be reviewed by our team, and once approved you'll receive
+          an email with your login details.
         </p>
 
         {done ? (
@@ -123,11 +135,12 @@ function Membership() {
             <div className="p-10 rounded-2xl bg-brand-green text-brand-paper">
               <p className="font-serif text-3xl">Thank you — your registration is submitted.</p>
               <p className="mt-3 text-brand-paper/80">
-                Your application is now waiting for caucus approval. Once an incharge reviews and approves it, we'll email you your Member ID and login details.
+                Your application is now waiting for caucus approval. Once an incharge reviews and approves it, we'll
+                email you your Member ID and login details.
               </p>
               <p className="mt-4 text-sm text-brand-paper/70">
-                Your reference Member ID is <span className="font-mono font-semibold">{done.memberCode}</span>.
-                Please keep it for your records.
+                Your reference Member ID is <span className="font-mono font-semibold">{done.memberCode}</span>. Please
+                keep it for your records.
               </p>
             </div>
             <Link
@@ -156,7 +169,9 @@ function Membership() {
             <Section title="Address Details" number="02">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <label htmlFor="mem-address" className={labelCls}>Address <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-address" className={labelCls}>
+                    Address <span className="text-brand-saffron">*</span>
+                  </label>
                   <input
                     id="mem-address"
                     required
@@ -166,34 +181,59 @@ function Membership() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="mem-country" className={labelCls}>Country <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-country" className={labelCls}>
+                    Country <span className="text-brand-saffron">*</span>
+                  </label>
                   <select
                     id="mem-country"
                     required
                     value={country}
-                    onChange={(e) => { setCountry(e.target.value); setStateName(""); setDistrict(""); }}
+                    onChange={(e) => {
+                      setCountry(e.target.value);
+                      setStateName("");
+                      setDistrict("");
+                    }}
                     className={selectCls}
                   >
-                    <option value="" disabled>Select country</option>
-                    {countries.map((c) => <option key={c.name} value={c.name}>{c.name}</option>)}
+                    <option value="" disabled>
+                      Select country
+                    </option>
+                    {countries.map((c) => (
+                      <option key={c.name} value={c.name}>
+                        {c.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="mem-state" className={labelCls}>State <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-state" className={labelCls}>
+                    State <span className="text-brand-saffron">*</span>
+                  </label>
                   <select
                     id="mem-state"
                     required
                     value={stateName}
-                    onChange={(e) => { setStateName(e.target.value); setDistrict(""); }}
+                    onChange={(e) => {
+                      setStateName(e.target.value);
+                      setDistrict("");
+                    }}
                     disabled={!selectedCountry || selectedCountry.states.length === 0}
                     className={selectCls + " disabled:opacity-40"}
                   >
-                    <option value="" disabled>{selectedCountry?.states.length ? "Select state" : "—"}</option>
-                    {selectedCountry?.states.map((s) => <option key={s.name} value={s.name}>{s.name}</option>)}
+                    <option value="" disabled>
+                      {selectedCountry?.states.length ? "Select state" : "—"}
+                    </option>
+                    {selectedCountry?.states.map((s) => (
+                      <option key={s.name} value={s.name}>
+                        {s.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="mem-district" className={labelCls}>District <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-district" className={labelCls}>
+                    District <span className="text-brand-saffron">*</span>
+                  </label>
                   {districts.length > 0 ? (
                     <select
                       id="mem-district"
@@ -203,8 +243,14 @@ function Membership() {
                       disabled={!stateName}
                       className={selectCls + " disabled:opacity-40"}
                     >
-                      <option value="" disabled>Select district</option>
-                      {districts.map((d) => <option key={d} value={d}>{d}</option>)}
+                      <option value="" disabled>
+                        Select district
+                      </option>
+                      {districts.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
                     </select>
                   ) : (
                     <input
@@ -219,7 +265,9 @@ function Membership() {
                   )}
                 </div>
                 <div>
-                  <label htmlFor="mem-town" className={labelCls}>Town / Village (Place) <span className="text-brand-saffron">*</span></label>
+                  <label htmlFor="mem-town" className={labelCls}>
+                    Town / Village (Place) <span className="text-brand-saffron">*</span>
+                  </label>
                   <input
                     id="mem-town"
                     required
@@ -248,11 +296,19 @@ function Membership() {
                     >
                       <div className="flex items-baseline justify-between">
                         <span className="font-serif text-xl">{p.name}</span>
-                        <span className={`text-xs font-medium ${active ? "text-brand-paper/70" : "text-brand-ink/50"}`}>{p.duration}</span>
+                        <span className={`text-xs font-medium ${active ? "text-brand-paper/70" : "text-brand-ink/50"}`}>
+                          {p.duration}
+                        </span>
                       </div>
-                      <p className={`mt-1 text-sm ${active ? "text-brand-paper/80" : "text-brand-ink/60"}`}>{p.tagline}</p>
-                      <p className={`mt-3 font-serif text-2xl ${active ? "text-brand-saffron" : "text-brand-green"}`}>₹{p.price.toLocaleString("en-IN")}</p>
-                      <ul className={`mt-4 space-y-1.5 text-sm ${active ? "text-brand-paper/90" : "text-brand-ink/70"}`}>
+                      <p className={`mt-1 text-sm ${active ? "text-brand-paper/80" : "text-brand-ink/60"}`}>
+                        {p.tagline}
+                      </p>
+                      <p className={`mt-3 font-serif text-2xl ${active ? "text-brand-saffron" : "text-brand-green"}`}>
+                        ₹{p.price.toLocaleString("en-IN")}
+                      </p>
+                      <ul
+                        className={`mt-4 space-y-1.5 text-sm ${active ? "text-brand-paper/90" : "text-brand-ink/70"}`}
+                      >
                         {p.perks.map((perk) => (
                           <li key={perk} className="flex gap-2">
                             <span className={active ? "text-brand-saffron" : "text-brand-green"}>✓</span>
@@ -268,9 +324,12 @@ function Membership() {
 
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-5 rounded-xl bg-brand-paper ring-1 ring-brand-ink/10">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Selected membership</p>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
+                  Selected membership
+                </p>
                 <p className="mt-1 font-serif text-xl text-brand-ink">
-                  {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span> · <span className="text-brand-green">₹{selectedPlan.price.toLocaleString("en-IN")}</span>
+                  {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span> ·{" "}
+                  <span className="text-brand-green">₹{selectedPlan.price.toLocaleString("en-IN")}</span>
                 </p>
                 {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
               </div>
@@ -301,14 +360,30 @@ function Section({ title, number, children }: { title: string; number: string; c
   );
 }
 
-function Field({ label, type = "text", required = false, name }: { label: string; type?: string; required?: boolean; name?: string }) {
+function Field({
+  label,
+  type = "text",
+  required = false,
+  name,
+}: {
+  label: string;
+  type?: string;
+  required?: boolean;
+  name?: string;
+}) {
   const id = name ?? label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <div>
       <label htmlFor={id} className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
         {label} {required && <span className="text-brand-saffron">*</span>}
       </label>
-      <input id={id} name={name} type={type} required={required} className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors" />
+      <input
+        id={id}
+        name={name}
+        type={type}
+        required={required}
+        className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors"
+      />
     </div>
   );
 }
