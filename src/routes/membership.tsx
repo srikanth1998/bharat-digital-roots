@@ -54,7 +54,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
 
 
 function Membership() {
-  const [planId, setPlanId] = useState<PlanId>("active_1year");
+  const [planId, setPlanId] = useState<PlanId>("passive_1year");
   const [done, setDone] = useState<null | { memberCode: string }>(null);
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
