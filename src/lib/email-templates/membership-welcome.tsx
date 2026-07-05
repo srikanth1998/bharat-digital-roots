@@ -59,7 +59,7 @@ const Email = ({
           <Text style={kicker}>FEATHERS FORUM</Text>
           <Heading style={h1}>Welcome, {fullName}.</Heading>
           <Text style={lead}>
-            Your payment is confirmed and your membership is now active
+            Your membership registration has been approved and is now active
             {isLifetime ? ' for a lifetime' : ' for one year'}.
             Below is your digital Member ID card — keep this email safe.
           </Text>
@@ -84,13 +84,12 @@ const Email = ({
             </Row>
           </Section>
 
-          {/* Payment details */}
-          <Heading as="h3" style={h3}>Payment details</Heading>
+          {/* Membership details */}
+          <Heading as="h3" style={h3}>Membership details</Heading>
           <Section style={kv}>
             <KV label="Plan" value={planName} />
-            <KV label="Amount paid" value={`₹${amountInr.toFixed(2)} INR`} />
-            <KV label="Payment ID" value={razorpayPaymentId} mono />
-            <KV label="Order ID" value={razorpayOrderId} mono />
+            <KV label="Member ID" value={memberCode} mono />
+            <KV label="Valid till" value={validTill} />
           </Section>
 
           {/* Login credentials */}
