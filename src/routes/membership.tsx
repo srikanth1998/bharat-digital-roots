@@ -251,6 +251,7 @@ function Membership() {
                         <span className={`text-xs font-medium ${active ? "text-brand-paper/70" : "text-brand-ink/50"}`}>{p.duration}</span>
                       </div>
                       <p className={`mt-1 text-sm ${active ? "text-brand-paper/80" : "text-brand-ink/60"}`}>{p.tagline}</p>
+                      <p className={`mt-3 font-serif text-2xl ${active ? "text-brand-saffron" : "text-brand-green"}`}>₹{p.price.toLocaleString("en-IN")}</p>
                       <ul className={`mt-4 space-y-1.5 text-sm ${active ? "text-brand-paper/90" : "text-brand-ink/70"}`}>
                         {p.perks.map((perk) => (
                           <li key={perk} className="flex gap-2">
