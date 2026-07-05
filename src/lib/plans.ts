@@ -11,9 +11,9 @@ export type PlanId = (typeof PLAN_IDS)[number];
 
 export const PLAN_PRICES_INR: Record<PlanId, number> = {
   active_1year: 500,
-  active_lifetime: 6000,
-  passive_1year: 100,
-  passive_lifetime: 1200,
+  active_lifetime: 5000,
+  passive_1year: 200,
+  passive_lifetime: 2000,
 };
 
 export const isPlanId = (value: string): value is PlanId => {
