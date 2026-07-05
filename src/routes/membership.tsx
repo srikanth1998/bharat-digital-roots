@@ -19,22 +19,6 @@ export const Route = createFileRoute("/membership")({
 
 const plans: { id: PlanId; name: string; price: number; duration: string; tagline: string; perks: string[] }[] = [
   {
-    id: "active_1year",
-    name: "Active Membership",
-    price: PLAN_PRICES_INR.active_1year,
-    duration: "1 year",
-    tagline: "For changemakers on the ground",
-    perks: ["Voting rights in chapter", "Event participation", "Member ID card", "Valid for 1 year"],
-  },
-  {
-    id: "active_lifetime",
-    name: "Active Membership",
-    price: PLAN_PRICES_INR.active_lifetime,
-    duration: "Lifetime",
-    tagline: "For lifelong changemakers",
-    perks: ["Lifetime voting rights", "Lifetime event access", "Member ID card", "No annual renewal"],
-  },
-  {
     id: "passive_1year",
     name: "Passive Membership",
     price: PLAN_PRICES_INR.passive_1year,
@@ -50,10 +34,27 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     tagline: "For lifelong supporters",
     perks: ["Lifetime supporter recognition", "Lifetime impact updates", "Member ID card", "No annual renewal"],
   },
+  {
+    id: "active_1year",
+    name: "Active Membership",
+    price: PLAN_PRICES_INR.active_1year,
+    duration: "1 year",
+    tagline: "For changemakers on the ground",
+    perks: ["Voting rights in chapter", "Event participation", "Member ID card", "Valid for 1 year"],
+  },
+  {
+    id: "active_lifetime",
+    name: "Active Membership",
+    price: PLAN_PRICES_INR.active_lifetime,
+    duration: "Lifetime",
+    tagline: "For lifelong changemakers",
+    perks: ["Lifetime voting rights", "Lifetime event access", "Member ID card", "No annual renewal"],
+  },
 ];
 
+
 function Membership() {
-  const [planId, setPlanId] = useState<PlanId>("active_1year");
+  const [planId, setPlanId] = useState<PlanId>("passive_1year");
   const [done, setDone] = useState<null | { memberCode: string }>(null);
   const [country, setCountry] = useState("India");
   const [stateName, setStateName] = useState("");
@@ -250,6 +251,7 @@ function Membership() {
                         <span className={`text-xs font-medium ${active ? "text-brand-paper/70" : "text-brand-ink/50"}`}>{p.duration}</span>
                       </div>
                       <p className={`mt-1 text-sm ${active ? "text-brand-paper/80" : "text-brand-ink/60"}`}>{p.tagline}</p>
+                      <p className={`mt-3 font-serif text-2xl ${active ? "text-brand-saffron" : "text-brand-green"}`}>₹{p.price.toLocaleString("en-IN")}</p>
                       <ul className={`mt-4 space-y-1.5 text-sm ${active ? "text-brand-paper/90" : "text-brand-ink/70"}`}>
                         {p.perks.map((perk) => (
                           <li key={perk} className="flex gap-2">
@@ -268,7 +270,7 @@ function Membership() {
               <div>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Selected membership</p>
                 <p className="mt-1 font-serif text-xl text-brand-ink">
-                  {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span>
+                  {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span> · <span className="text-brand-green">₹{selectedPlan.price.toLocaleString("en-IN")}</span>
                 </p>
                 {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
               </div>
