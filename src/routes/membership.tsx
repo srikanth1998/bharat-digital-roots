@@ -270,7 +270,7 @@ function Membership() {
               <div>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">Selected membership</p>
                 <p className="mt-1 font-serif text-xl text-brand-ink">
-                  {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span>
+                  {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span> · <span className="text-brand-green">₹{selectedPlan.price.toLocaleString("en-IN")}</span>
                 </p>
                 {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
               </div>
