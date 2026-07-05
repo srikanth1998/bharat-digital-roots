@@ -28,7 +28,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.passive_1year,
     duration: "1 year",
     tagline: "For supporters & well-wishers",
-    perks: ["FEA discount card valid for 1 year ", "Memebership valid for 1 year ", "Valid for one year"],
+    perks: ["FEA discount card valid for 1 year"],
   },
   {
     id: "passive_lifetime",
@@ -36,7 +36,7 @@ const plans: { id: PlanId; name: string; price: number; duration: string; taglin
     price: PLAN_PRICES_INR.passive_lifetime,
     duration: "Lifetime",
     tagline: "For lifelong supporters",
-    perks: ["Lifetime supporter recognition", "Lifetime validity", "FEA lifetime discount card "],
+    perks: ["FEA lifetime discount card"],
   },
   {
     id: "active_1year",
