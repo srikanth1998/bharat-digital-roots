@@ -325,7 +325,7 @@ function Membership() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-5 rounded-xl bg-brand-paper ring-1 ring-brand-ink/10">
               <div>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-brand-ink/50 font-semibold">
-                  Selected membership
+                  For payement please reach your incharge
                 </p>
                 <p className="mt-1 font-serif text-xl text-brand-ink">
                   {selectedPlan.name} · <span className="text-brand-ink/60 text-base">{selectedPlan.duration}</span> ·{" "}
