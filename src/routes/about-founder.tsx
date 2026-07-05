@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import founderAsset from "@/assets/founder-akr-kali.jpg.asset.json";
+import founderAsset from "@/assets/founder-akr-kali.png.asset.json";
 
 function FounderImage({ src }: { src: string }) {
   const [errored, setErrored] = useState(false);
