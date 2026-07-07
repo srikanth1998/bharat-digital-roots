@@ -395,12 +395,13 @@ function Field({
   type = "text",
   required = false,
   name,
+  ...rest
 }: {
   label: string;
   type?: string;
   required?: boolean;
   name?: string;
-}) {
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "required" | "name">) {
   const id = name ?? label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <div>
@@ -412,6 +413,7 @@ function Field({
         name={name}
         type={type}
         required={required}
+        {...rest}
         className="mt-2 w-full bg-transparent border-b border-brand-ink/20 py-2 focus:outline-none focus:border-brand-green transition-colors"
       />
     </div>
