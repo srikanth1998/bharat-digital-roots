@@ -28,8 +28,8 @@ export type MemberRow = {
 const profileSchema = z.object({
   fullName: z.string().trim().min(1).max(120),
   parentName: z.string().trim().max(120).optional().default(""),
-  mobile: z.string().trim().min(5).max(20),
-  altMobile: z.string().trim().max(20).optional().default(""),
+  mobile: z.string().trim().regex(/^\+?[0-9\s-]{7,20}$/, "Invalid mobile number"),
+  altMobile: z.string().trim().regex(/^\+?[0-9\s-]{7,20}$/, "Invalid alternate mobile number").optional().or(z.literal("")).default(""),
   email: z.string().trim().email().max(160),
   altEmail: z.string().trim().email().max(160).optional().or(z.literal("")).default(""),
   address: z.string().trim().min(1).max(400),
