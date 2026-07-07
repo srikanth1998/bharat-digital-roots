@@ -170,8 +170,27 @@ function Membership() {
               <div className="grid md:grid-cols-2 gap-6">
                 <Field label="Full Name" name="fullName" required />
                 <Field label="Father / Mother Name" name="parentName" required />
-                <Field label="Primary Mobile Number" name="mobile" type="tel" required />
-                <Field label="Alternate Mobile Number" name="altMobile" type="tel" />
+                <Field
+                  label="Primary Mobile Number"
+                  name="mobile"
+                  type="tel"
+                  required
+                  inputMode="tel"
+                  pattern="^\+?[0-9\s-]{7,20}$"
+                  title="Enter 7–15 digits, optional leading +"
+                  maxLength={20}
+                  autoComplete="tel"
+                />
+                <Field
+                  label="Alternate Mobile Number"
+                  name="altMobile"
+                  type="tel"
+                  inputMode="tel"
+                  pattern="^\+?[0-9\s-]{7,20}$"
+                  title="Enter 7–15 digits, optional leading +"
+                  maxLength={20}
+                  autoComplete="tel"
+                />
                 <Field label="Primary Email ID" name="email" type="email" required />
                 <Field label="Secondary Email ID" name="altEmail" type="email" />
               </div>
