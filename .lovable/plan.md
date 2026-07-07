@@ -1,57 +1,18 @@
-## Goal
+# Rebrand member ID prefix: VNY → FFM
 
-After payment, the member gets an account auto-created. They receive an email with their ID card image + a temporary password. They log in, are forced to change the password, then land in their member area. Admins (emails you designate) see a list of all members with search.
+The `VNY-` string is hardcoded in the database function that mints member codes and in the welcome email template. Update both, and rewrite existing rows.
 
-## What I'll build
+## Changes
 
-### 1. Database (migration)
-- `members` table — all fields from the membership form (name, mobile, address, country/state/district, plan, amount, payment IDs, `member_code` like `VNY-A-2026-0001`, `created_at`). Linked to `auth.users` via `user_id`.
-- `user_roles` table + `app_role` enum (`admin`, `member`) + `has_role()` security-definer function (standard Lovable pattern, no recursive RLS).
-- RLS: members read/update only their own row; admins read all.
+### 1. Database migration (new SQL file under `supabase/migrations/`)
+- Replace `public.generate_member_code(...)` so it returns `'FFM-' || prefix || '-' || yr || '-' || lpad(n::text, 4, '0')` instead of `'VNY-...'`.
+- Backfill existing rows: `UPDATE public.members SET member_code = REPLACE(member_code, 'VNY-', 'FFM-') WHERE member_code LIKE 'VNY-%';` (and the same on any other table storing the code, e.g. `member_id_cards` if present — the migration will guard with `IF EXISTS`).
 
-### 2. Payment + signup flow (server)
-Update `verifyRazorpayPayment` to:
-1. Verify signature (already done).
-2. Generate temp password + member code.
-3. Create the auth user with `supabaseAdmin.auth.admin.createUser` (email_confirm=true, `must_change_password: true` in metadata).
-4. Insert the `members` row with all form data.
-5. Enqueue an email to the member: welcome + member code + temp password + login link. (ID card as inline rendered card in the email; PDF/image attachment is not supported by Lovable Emails — the card is rendered with HTML/CSS in the email body, and a downloadable version is available in the member portal.)
+### 2. Email template — `src/lib/email-templates/membership-welcome.tsx`
+- Change default `memberCode` fallback from `'VNY-X-0000-0000'` to `'FFM-X-0000-0000'`.
+- Update the sample preview code `'VNY-A-2026-0001'` → `'FFM-A-2026-0001'`.
 
-### 3. Email infrastructure
-- Set up Lovable Emails (domain delegation → infra → scaffold transactional). One-time setup; I'll guide you through the domain step in the UI.
-- Create one template: `membership-welcome` with the ID card design + credentials.
-
-### 4. Login page (`/login`)
-- Real email + password form using `supabase.auth.signInWithPassword`.
-- After sign-in, if `user_metadata.must_change_password === true` → redirect to `/set-password`.
-- Otherwise → redirect to `/account` (member) or `/admin` (admin).
-
-### 5. `/set-password` (forced first-time change)
-- Simple form, calls `supabase.auth.updateUser({ password, data: { must_change_password: false } })`.
-
-### 6. `/account` (member home, `_authenticated/`)
-- Shows their ID card, plan, expiry (1 yr from join), member code. Download-as-image button.
-
-### 7. `/admin` (admin only, `_authenticated/_admin/`)
-- Table of all members: name, email, member code, plan, mobile, district, joined date.
-- Search box (name / email / code / mobile).
-- Gated by `has_role(auth.uid(), 'admin')`.
-
-### 8. Seed first admin
-- After deploy, tell me the email of the user who should be admin. I'll run an INSERT into `user_roles` for that user_id.
-
-## Out of scope for this round
-- PDF attachment of ID card (Lovable Emails doesn't support attachments — rendered inline in the email instead, downloadable from `/account`).
-- Forgot-password / reset-by-email link (can add next).
-- Editing member data from the admin dashboard (read-only list for now, per your "just a basic list" choice).
-- Bulk export / CSV.
-
-## Order of execution
-1. Create DB migration (members + user_roles + RLS + has_role).
-2. Set up email domain + infrastructure (needs your DNS step in the UI).
-3. Scaffold transactional email + write `membership-welcome` template.
-4. Update payment verify fn to create user + send email.
-5. Rewrite `/login`, add `/set-password`, `/account`, `/admin`.
-6. You give me the admin email → I seed the role.
-
-Approve and I'll start with step 1.
+## Notes / caveats
+- Rewriting all existing IDs means any previously issued digital cards, printed cards, or past welcome emails referencing `VNY-...` become stale. Members looking up an old ID won't find a match unless they use the new `FFM-...` version. If you have a small member base right now this is fine; if not, we may want to also store the old code as an alias — say the word and I'll add that.
+- No frontend/UI copy changes are needed beyond the email template — the prefix isn't referenced anywhere else in `src/`.
+- After the migration runs, new signups will automatically get `FFM-...` codes with no further code changes.
