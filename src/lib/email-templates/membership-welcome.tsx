@@ -29,7 +29,7 @@ interface Props {
 
 const Email = ({
   fullName = 'Member',
-  memberCode = 'VNY-X-0000-0000',
+  memberCode = 'FFM-X-0000-0000',
   email = 'member@example.com',
   tempPassword = 'temporary',
   planName = 'Active Membership',
@@ -138,7 +138,7 @@ export const template = {
   displayName: 'Membership welcome & ID card',
   previewData: {
     fullName: 'Anand Kumar',
-    memberCode: 'VNY-A-2026-0001',
+    memberCode: 'FFM-A-2026-0001',
     email: 'anand@example.com',
     tempPassword: 'a1b2c3d4e5',
     planName: 'Active Membership (1 Year)',
