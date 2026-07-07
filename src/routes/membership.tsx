@@ -74,16 +74,27 @@ function Membership() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
-    setSubmitting(true);
     const form = e.currentTarget;
+    const fd = new FormData(form);
+    const mobile = String(fd.get("mobile") || "").trim();
+    const altMobile = String(fd.get("altMobile") || "").trim();
+    const phoneRe = /^\+?[0-9]{7,15}$/;
+    if (!phoneRe.test(mobile.replace(/[\s-]/g, ""))) {
+      setError("Please enter a valid primary mobile number (7–15 digits, optional leading +).");
+      return;
+    }
+    if (altMobile && !phoneRe.test(altMobile.replace(/[\s-]/g, ""))) {
+      setError("Please enter a valid alternate mobile number (7–15 digits, optional leading +).");
+      return;
+    }
+    setSubmitting(true);
     try {
-      const fd = new FormData(form);
       const result = await submit({
         data: {
           fullName: String(fd.get("fullName") || "").trim(),
           parentName: String(fd.get("parentName") || "").trim(),
-          mobile: String(fd.get("mobile") || "").trim(),
-          altMobile: String(fd.get("altMobile") || "").trim(),
+          mobile,
+          altMobile,
           email: String(fd.get("email") || "").trim(),
           altEmail: String(fd.get("altEmail") || "").trim(),
           address: address.trim(),
