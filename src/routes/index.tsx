@@ -7,7 +7,7 @@ import feathersLogo from "@/assets/feathers-logo-black.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Feathers Community Forum — Empowering People, Building Bharat" },
+      { title: "Feathers Community Forum" },
       {
         name: "description",
         content:
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "A platform to discuss, promote, and collaborate on entrepreneurial ventures, community service, and skill-building initiatives.",
+          "Feathers Community Forum, founded by AKR Kali, is a platform for entrepreneurship, training, networking, and community service across India.",
       },
       { property: "og:image", content: heroGrain },
       { name: "twitter:image", content: heroGrain },
