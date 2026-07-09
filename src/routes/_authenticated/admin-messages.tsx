@@ -92,7 +92,7 @@ function AdminMessages() {
                     </div>
                     <div className="pt-2">
                       <a
-                        href={`mailto:${m.email}?subject=Re: your message to Vanya`}
+                        href={`mailto:${m.email}?subject=Re: your message to Feathers Community Forum`}
                         className="inline-block bg-brand-green text-brand-paper px-4 py-2 rounded-full text-xs font-medium hover:bg-brand-green-deep transition-colors"
                       >
                         Reply by email

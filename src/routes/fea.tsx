@@ -6,9 +6,9 @@ import heroImg from "@/assets/group-collab.jpg";
 export const Route = createFileRoute("/fea")({
   head: () => ({
     meta: [
-      { title: "FEA — Vanya" },
+      { title: "FEA — Feathers Community Forum" },
       { name: "description", content: "FEA: A globally recognized group of companies committed to excellence, innovation, and sustainable growth across industries." },
-      { property: "og:title", content: "FEA — Vanya" },
+      { property: "og:title", content: "FEA — Feathers Community Forum" },
       { property: "og:description", content: "Excellence, innovation, sustainability — across every industry we serve." },
       { property: "og:image", content: heroImg },
     ],

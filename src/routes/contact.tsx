@@ -9,10 +9,10 @@ import { submitContactMessage } from "@/lib/contact.functions";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Us — Vanya" },
-      { name: "description", content: "Get in touch with the Vanya Collective — partnerships, press, and community inquiries." },
-      { property: "og:title", content: "Contact Us — Vanya" },
-      { property: "og:description", content: "Reach out to the Vanya team." },
+      { title: "Contact Us — Feathers Community Forum" },
+      { name: "description", content: "Get in touch with the Feathers Community Forum — partnerships, press, and community inquiries." },
+      { property: "og:title", content: "Contact Us — Feathers Community Forum" },
+      { property: "og:description", content: "Reach out to the Feathers Community Forum team." },
     ],
   }),
   component: Contact,

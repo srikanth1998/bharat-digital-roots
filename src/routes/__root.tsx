@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Feathers Community Forum" },
       { name: "description", content: "Feathers Community Forum, founded by AKR Kali, is a platform for entrepreneurship, training, networking, and community service across India." },
-      { name: "author", content: "Vanya Collective" },
+      { name: "author", content: "Feathers Community Forum" },
       { property: "og:title", content: "Feathers Community Forum" },
       { property: "og:description", content: "Feathers Community Forum, founded by AKR Kali, is a platform for entrepreneurship, training, networking, and community service across India." },
       { property: "og:type", content: "website" },

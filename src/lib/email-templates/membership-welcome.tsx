@@ -134,7 +134,7 @@ function KV({ label, value, mono = false }: { label: string; value: string; mono
 export const template = {
   component: Email,
   subject: (data: Record<string, any>) =>
-    `Welcome to Vanya — Member ID ${data?.memberCode ?? ''}`.trim(),
+    `Welcome to Feathers Community Forum — Member ID ${data?.memberCode ?? ''}`.trim(),
   displayName: 'Membership welcome & ID card',
   previewData: {
     fullName: 'Anand Kumar',

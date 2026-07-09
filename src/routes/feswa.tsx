@@ -6,9 +6,9 @@ import heroImg from "@/assets/group-community.jpg";
 export const Route = createFileRoute("/feswa")({
   head: () => ({
     meta: [
-      { title: "FESWA — Vanya" },
+      { title: "FESWA — Feathers Community Forum" },
       { name: "description", content: "FESWA: Federation for Social Welfare & Advocacy — advancing community well-being, equity, and empowerment." },
-      { property: "og:title", content: "FESWA — Vanya" },
+      { property: "og:title", content: "FESWA — Feathers Community Forum" },
       { property: "og:description", content: "A federation championing social welfare, equity, and community empowerment." },
       { property: "og:image", content: heroImg },
     ],
