@@ -254,7 +254,7 @@ export const approveMember = createServerFn({ method: "POST" })
             "X-Connection-Api-Key": resendApiKey,
           },
           body: JSON.stringify({
-            from: "Vanya Feathers Forum <noreply@evian-flow-commerce.com>",
+            from: "Feathers Community Forum <noreply@evian-flow-commerce.com>",
             to: [member.email],
             subject,
             html,

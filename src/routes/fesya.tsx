@@ -6,9 +6,9 @@ import heroImg from "@/assets/group-youth.jpg";
 export const Route = createFileRoute("/fesya")({
   head: () => ({
     meta: [
-      { title: "FESYA — Vanya" },
+      { title: "FESYA — Feathers Community Forum" },
       { name: "description", content: "FESYA: Empowering youth and enterprise through excellence, innovation, collaboration, and sustainability." },
-      { property: "og:title", content: "FESYA — Vanya" },
+      { property: "og:title", content: "FESYA — Feathers Community Forum" },
       { property: "og:description", content: "Excellence, innovation, and sustainability — for the next generation of Bharat." },
       { property: "og:image", content: heroImg },
     ],
