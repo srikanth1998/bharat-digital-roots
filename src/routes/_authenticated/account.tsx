@@ -34,6 +34,9 @@ function Account() {
         <div className="flex items-center justify-between">
           <Link to="/" className="text-sm text-brand-green/70 hover:text-brand-green">← Back to home</Link>
           <div className="flex items-center gap-4">
+            <Link to="/forum" className="text-sm font-medium text-brand-green hover:underline">
+              Forum →
+            </Link>
             {roleQ.data?.isAdmin && (
               <Link to="/admin" className="text-sm font-medium text-brand-saffron hover:underline">
                 Admin →

@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_assignments: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          unit_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          unit_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          unit_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_assignments_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "geographic_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_messages: {
         Row: {
           address: string | null
@@ -110,12 +142,51 @@ export type Database = {
         }
         Relationships: []
       }
+      geographic_units: {
+        Row: {
+          created_at: string
+          id: string
+          level: Database["public"]["Enums"]["caucus_level"]
+          name: string
+          parent_id: string | null
+          slug: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level: Database["public"]["Enums"]["caucus_level"]
+          name: string
+          parent_id?: string | null
+          slug?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: Database["public"]["Enums"]["caucus_level"]
+          name?: string
+          parent_id?: string | null
+          slug?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "geographic_units_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "geographic_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       members: {
         Row: {
           address: string
           alt_email: string | null
           alt_mobile: string | null
           amount_inr: number
+          branch_unit_id: string | null
           country: string
           created_at: string
           district: string
@@ -141,6 +212,7 @@ export type Database = {
           alt_email?: string | null
           alt_mobile?: string | null
           amount_inr?: number
+          branch_unit_id?: string | null
           country: string
           created_at?: string
           district: string
@@ -166,6 +238,7 @@ export type Database = {
           alt_email?: string | null
           alt_mobile?: string | null
           amount_inr?: number
+          branch_unit_id?: string | null
           country?: string
           created_at?: string
           district?: string
@@ -186,7 +259,121 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "members_branch_unit_id_fkey"
+            columns: ["branch_unit_id"]
+            isOneToOne: false
+            referencedRelation: "geographic_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      policies: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string
+          id: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          created_by: string
+          id?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
         Relationships: []
+      }
+      policy_collaborators: {
+        Row: {
+          created_at: string
+          permission: string
+          policy_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          permission?: string
+          policy_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          permission?: string
+          policy_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_collaborators_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "policies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          event_location: string | null
+          event_starts_at: string | null
+          id: string
+          kind: Database["public"]["Enums"]["post_kind"]
+          title: string
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          body?: string
+          created_at?: string
+          event_location?: string | null
+          event_starts_at?: string | null
+          id?: string
+          kind: Database["public"]["Enums"]["post_kind"]
+          title: string
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          event_location?: string | null
+          event_starts_at?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["post_kind"]
+          title?: string
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "geographic_units"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       suppressed_emails: {
         Row: {
@@ -238,6 +425,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      claim_senate_president: { Args: never; Returns: undefined }
       generate_member_code: { Args: { _plan: string }; Returns: string }
       has_role: {
         Args: {
@@ -246,9 +434,48 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_senate: { Args: { _uid: string }; Returns: boolean }
+      is_senate_president: { Args: { _uid: string }; Returns: boolean }
+      unit_ancestors: {
+        Args: { _unit_id: string }
+        Returns: {
+          id: string
+        }[]
+      }
+      unit_descendants: {
+        Args: { _unit_id: string }
+        Returns: {
+          id: string
+        }[]
+      }
+      user_admin_units: {
+        Args: { _uid: string }
+        Returns: {
+          id: string
+        }[]
+      }
+      user_member_unit: { Args: { _uid: string }; Returns: string }
     }
     Enums: {
-      app_role: "admin" | "member"
+      app_role:
+        | "admin"
+        | "member"
+        | "senate_president"
+        | "senate_member"
+        | "continent_admin"
+        | "country_admin"
+        | "zone_admin"
+        | "state_admin"
+        | "district_admin"
+        | "branch_admin"
+      caucus_level:
+        | "continent"
+        | "country"
+        | "zone"
+        | "state"
+        | "district"
+        | "branch"
+      post_kind: "event" | "news" | "announcement" | "policy"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -376,7 +603,27 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "member"],
+      app_role: [
+        "admin",
+        "member",
+        "senate_president",
+        "senate_member",
+        "continent_admin",
+        "country_admin",
+        "zone_admin",
+        "state_admin",
+        "district_admin",
+        "branch_admin",
+      ],
+      caucus_level: [
+        "continent",
+        "country",
+        "zone",
+        "state",
+        "district",
+        "branch",
+      ],
+      post_kind: ["event", "news", "announcement", "policy"],
     },
   },
 } as const
