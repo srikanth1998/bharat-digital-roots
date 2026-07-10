@@ -260,15 +260,6 @@ export const listMembersInScope = createServerFn({ method: "GET" })
     return data ?? [];
   });
 
-export const setMyBranch = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ unitId: z.string().uuid() }).parse(d))
-  .handler(async ({ data, context }) => {
-    const { error } = await context.supabase
-      .from("members").update({ branch_unit_id: data.unitId }).eq("user_id", context.userId);
-    if (error) throw new Error(error.message);
-    return { ok: true };
-  });
 
 export const searchMembers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

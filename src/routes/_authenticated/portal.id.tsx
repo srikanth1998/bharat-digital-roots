@@ -1,10 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Newspaper } from "lucide-react";
 import { getMyMember } from "@/lib/members.functions";
-import { getMyRoleContext, listUnits, listPosts, setMyBranch } from "@/lib/forum.functions";
+import { getMyRoleContext, listUnits, listPosts } from "@/lib/forum.functions";
 import { planName, planNameShort } from "@/lib/plans";
 import { LoadingCard, EmptyState } from "@/components/portal/empty-state";
 
@@ -14,18 +13,15 @@ export const Route = createFileRoute("/_authenticated/portal/id")({
 });
 
 function MyId() {
-  const qc = useQueryClient();
   const fetchMember = useServerFn(getMyMember);
   const fetchCtx = useServerFn(getMyRoleContext);
   const fetchUnits = useServerFn(listUnits);
   const fetchPosts = useServerFn(listPosts);
-  const setBranch = useServerFn(setMyBranch);
   const memberQ = useQuery({ queryKey: ["my-member"], queryFn: () => fetchMember() });
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const unitsQ = useQuery({ queryKey: ["units"], queryFn: () => fetchUnits() });
   const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
 
-  const [branchSel, setBranchSel] = useState("");
 
   if (memberQ.isLoading) {
     return <div className="max-w-4xl mx-auto p-6"><LoadingCard /></div>;
@@ -96,32 +92,14 @@ function MyId() {
               </span>
               .
             </p>
-          ) : branches.length === 0 ? (
-            <p className="mt-2 text-sm text-brand-ink/60">No branches configured yet. Ask an admin to set one up.</p>
           ) : (
-            <div className="mt-3 flex gap-2">
-              <select
-                value={branchSel}
-                onChange={(e) => setBranchSel(e.target.value)}
-                className="flex-1 border border-brand-ink/20 rounded-md px-3 py-2 text-sm bg-white"
-              >
-                <option value="">Select branch…</option>
-                {branches.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
-              </select>
-              <button
-                disabled={!branchSel}
-                onClick={async () => {
-                  await setBranch({ data: { unitId: branchSel } });
-                  await qc.invalidateQueries();
-                }}
-                className="bg-brand-green text-brand-paper text-sm font-medium px-4 py-2 rounded-md hover:bg-brand-green-deep disabled:opacity-50"
-              >
-                Save
-              </button>
-            </div>
+            <p className="mt-2 text-sm text-brand-ink/60">
+              You have not been placed under a branch yet. An admin will assign you shortly.
+            </p>
           )}
         </div>
       )}
+
 
       {/* Recent + upcoming */}
       <div className="grid md:grid-cols-2 gap-6">
