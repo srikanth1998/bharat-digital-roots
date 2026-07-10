@@ -277,6 +277,34 @@ export const setMyBranch = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const searchMembers = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ query: z.string().max(120).default("") }).parse(d ?? {}))
+  .handler(async ({ data, context }) => {
+    const q = (data?.query ?? "").trim();
+    let query = context.supabase
+      .from("members")
+      .select("id, user_id, full_name, email, member_code")
+      .not("user_id", "is", null)
+      .eq("status", "approved")
+      .order("full_name")
+      .limit(20);
+    if (q) {
+      const like = `%${q.replace(/[%_]/g, "\\$&")}%`;
+      query = query.or(`full_name.ilike.${like},email.ilike.${like},member_code.ilike.${like}`);
+    }
+    const { data: rows, error } = await query;
+    if (error) throw new Error(error.message);
+    return (rows ?? []).filter((r) => r.user_id) as Array<{
+      id: string;
+      user_id: string;
+      full_name: string;
+      email: string;
+      member_code: string;
+    }>;
+  });
+
 export const LEVEL_LIST = LEVELS;
 export const POST_KINDS = KINDS;
 export const ROLE_LIST = ROLES;
+
