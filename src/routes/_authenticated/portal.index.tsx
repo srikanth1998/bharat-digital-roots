@@ -49,28 +49,6 @@ function PortalHome() {
       <p className="mt-1 text-brand-ink/60 capitalize">Signed in as {roleLabel}</p>
 
       {/* Onboarding banners */}
-      {noPresident && (
-        <div className="mt-8 rounded-xl border border-brand-saffron/40 p-5 bg-brand-saffron/5 flex items-start gap-4">
-          <Sparkles className="w-5 h-5 text-brand-saffron shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <p className="font-serif text-lg">Bootstrap the Senate</p>
-            <p className="mt-1 text-sm text-brand-ink/70">No Senate President exists yet. Claim the role to configure the forum.</p>
-            <button
-              onClick={async () => {
-                try {
-                  await claim();
-                  await qc.invalidateQueries();
-                } catch (e) {
-                  alert((e as Error).message);
-                }
-              }}
-              className="mt-3 bg-brand-green text-brand-paper text-xs font-semibold px-4 py-2 rounded-full hover:bg-brand-green-deep"
-            >
-              Claim Senate President
-            </button>
-          </div>
-        </div>
-      )}
 
       {ctx.memberCode && !ctx.memberUnitId && (
         <div className="mt-6 rounded-xl border border-brand-ink/10 p-5 bg-white flex items-start gap-4">
