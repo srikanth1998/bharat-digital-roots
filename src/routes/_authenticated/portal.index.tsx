@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { IdCard, MessagesSquare, Users, ScrollText, Network, Sparkles } from "lucide-react";
-import { getMyRoleContext, claimSenatePresident, listPosts } from "@/lib/forum.functions";
+import { useQuery } from "@tanstack/react-query";
+import { IdCard, MessagesSquare, Users, ScrollText, Network } from "lucide-react";
+import { getMyRoleContext, listPosts } from "@/lib/forum.functions";
 import { LoadingCard } from "@/components/portal/empty-state";
 
 export const Route = createFileRoute("/_authenticated/portal/")({
