@@ -1,10 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Newspaper } from "lucide-react";
 import { getMyMember } from "@/lib/members.functions";
-import { getMyRoleContext, listUnits, listPosts, setMyBranch } from "@/lib/forum.functions";
+import { getMyRoleContext, listUnits, listPosts } from "@/lib/forum.functions";
 import { planName, planNameShort } from "@/lib/plans";
 import { LoadingCard, EmptyState } from "@/components/portal/empty-state";
 
@@ -14,18 +13,15 @@ export const Route = createFileRoute("/_authenticated/portal/id")({
 });
 
 function MyId() {
-  const qc = useQueryClient();
   const fetchMember = useServerFn(getMyMember);
   const fetchCtx = useServerFn(getMyRoleContext);
   const fetchUnits = useServerFn(listUnits);
   const fetchPosts = useServerFn(listPosts);
-  const setBranch = useServerFn(setMyBranch);
   const memberQ = useQuery({ queryKey: ["my-member"], queryFn: () => fetchMember() });
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const unitsQ = useQuery({ queryKey: ["units"], queryFn: () => fetchUnits() });
   const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
 
-  const [branchSel, setBranchSel] = useState("");
 
   if (memberQ.isLoading) {
     return <div className="max-w-4xl mx-auto p-6"><LoadingCard /></div>;
