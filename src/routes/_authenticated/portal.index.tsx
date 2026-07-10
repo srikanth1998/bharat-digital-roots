@@ -11,10 +11,8 @@ export const Route = createFileRoute("/_authenticated/portal/")({
 });
 
 function PortalHome() {
-  const qc = useQueryClient();
   const fetchCtx = useServerFn(getMyRoleContext);
   const fetchPosts = useServerFn(listPosts);
-  const claim = useServerFn(claimSenatePresident);
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
 
@@ -41,7 +39,6 @@ function PortalHome() {
   const totalPosts = postsQ.data?.length ?? 0;
 
   const isCaucusAdmin = ctx.adminAssignments.some((a) => a.unit_id);
-  const noPresident = !ctx.isSenatePresident && !ctx.isSenateMember && ctx.adminAssignments.length === 0;
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
