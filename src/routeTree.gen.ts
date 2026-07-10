@@ -24,11 +24,19 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as AuthenticatedForumRouteImport } from './routes/_authenticated/forum'
 import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin-messages'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedPortalIndexRouteImport } from './routes/_authenticated/portal.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as AuthenticatedPortalUnitsRouteImport } from './routes/_authenticated/portal.units'
+import { Route as AuthenticatedPortalPoliciesRouteImport } from './routes/_authenticated/portal.policies'
+import { Route as AuthenticatedPortalMessagesRouteImport } from './routes/_authenticated/portal.messages'
+import { Route as AuthenticatedPortalMembersRouteImport } from './routes/_authenticated/portal.members'
+import { Route as AuthenticatedPortalIdRouteImport } from './routes/_authenticated/portal.id'
+import { Route as AuthenticatedPortalForumRouteImport } from './routes/_authenticated/portal.forum'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
@@ -106,6 +114,11 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedForumRoute = AuthenticatedForumRouteImport.update({
   id: '/forum',
   path: '/forum',
@@ -127,11 +140,52 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPortalIndexRoute =
+  AuthenticatedPortalIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPortalUnitsRoute =
+  AuthenticatedPortalUnitsRouteImport.update({
+    id: '/units',
+    path: '/units',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalPoliciesRoute =
+  AuthenticatedPortalPoliciesRouteImport.update({
+    id: '/policies',
+    path: '/policies',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalMessagesRoute =
+  AuthenticatedPortalMessagesRouteImport.update({
+    id: '/messages',
+    path: '/messages',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalMembersRoute =
+  AuthenticatedPortalMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalIdRoute = AuthenticatedPortalIdRouteImport.update({
+  id: '/id',
+  path: '/id',
+  getParentRoute: () => AuthenticatedPortalRoute,
+} as any)
+const AuthenticatedPortalForumRoute =
+  AuthenticatedPortalForumRouteImport.update({
+    id: '/forum',
+    path: '/forum',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -163,8 +217,16 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/admin-messages': typeof AuthenticatedAdminMessagesRoute
   '/forum': typeof AuthenticatedForumRoute
+  '/portal': typeof AuthenticatedPortalRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/portal/forum': typeof AuthenticatedPortalForumRoute
+  '/portal/id': typeof AuthenticatedPortalIdRoute
+  '/portal/members': typeof AuthenticatedPortalMembersRoute
+  '/portal/messages': typeof AuthenticatedPortalMessagesRoute
+  '/portal/policies': typeof AuthenticatedPortalPoliciesRoute
+  '/portal/units': typeof AuthenticatedPortalUnitsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/portal/': typeof AuthenticatedPortalIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
@@ -187,7 +249,14 @@ export interface FileRoutesByTo {
   '/admin-messages': typeof AuthenticatedAdminMessagesRoute
   '/forum': typeof AuthenticatedForumRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/portal/forum': typeof AuthenticatedPortalForumRoute
+  '/portal/id': typeof AuthenticatedPortalIdRoute
+  '/portal/members': typeof AuthenticatedPortalMembersRoute
+  '/portal/messages': typeof AuthenticatedPortalMessagesRoute
+  '/portal/policies': typeof AuthenticatedPortalPoliciesRoute
+  '/portal/units': typeof AuthenticatedPortalUnitsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/portal': typeof AuthenticatedPortalIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
@@ -211,8 +280,16 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/admin-messages': typeof AuthenticatedAdminMessagesRoute
   '/_authenticated/forum': typeof AuthenticatedForumRoute
+  '/_authenticated/portal': typeof AuthenticatedPortalRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/_authenticated/portal/forum': typeof AuthenticatedPortalForumRoute
+  '/_authenticated/portal/id': typeof AuthenticatedPortalIdRoute
+  '/_authenticated/portal/members': typeof AuthenticatedPortalMembersRoute
+  '/_authenticated/portal/messages': typeof AuthenticatedPortalMessagesRoute
+  '/_authenticated/portal/policies': typeof AuthenticatedPortalPoliciesRoute
+  '/_authenticated/portal/units': typeof AuthenticatedPortalUnitsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/_authenticated/portal/': typeof AuthenticatedPortalIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
@@ -236,8 +313,16 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin-messages'
     | '/forum'
+    | '/portal'
     | '/email/unsubscribe'
+    | '/portal/forum'
+    | '/portal/id'
+    | '/portal/members'
+    | '/portal/messages'
+    | '/portal/policies'
+    | '/portal/units'
     | '/lovable/email/suppression'
+    | '/portal/'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
   fileRoutesByTo: FileRoutesByTo
@@ -260,7 +345,14 @@ export interface FileRouteTypes {
     | '/admin-messages'
     | '/forum'
     | '/email/unsubscribe'
+    | '/portal/forum'
+    | '/portal/id'
+    | '/portal/members'
+    | '/portal/messages'
+    | '/portal/policies'
+    | '/portal/units'
     | '/lovable/email/suppression'
+    | '/portal'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
   id:
@@ -283,8 +375,16 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/admin-messages'
     | '/_authenticated/forum'
+    | '/_authenticated/portal'
     | '/email/unsubscribe'
+    | '/_authenticated/portal/forum'
+    | '/_authenticated/portal/id'
+    | '/_authenticated/portal/members'
+    | '/_authenticated/portal/messages'
+    | '/_authenticated/portal/policies'
+    | '/_authenticated/portal/units'
     | '/lovable/email/suppression'
+    | '/_authenticated/portal/'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
   fileRoutesById: FileRoutesById
@@ -417,6 +517,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/portal': {
+      id: '/_authenticated/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof AuthenticatedPortalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/forum': {
       id: '/_authenticated/forum'
       path: '/forum'
@@ -445,12 +552,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal/': {
+      id: '/_authenticated/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof AuthenticatedPortalIndexRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
       fullPath: '/lovable/email/suppression'
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/portal/units': {
+      id: '/_authenticated/portal/units'
+      path: '/units'
+      fullPath: '/portal/units'
+      preLoaderRoute: typeof AuthenticatedPortalUnitsRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/policies': {
+      id: '/_authenticated/portal/policies'
+      path: '/policies'
+      fullPath: '/portal/policies'
+      preLoaderRoute: typeof AuthenticatedPortalPoliciesRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/messages': {
+      id: '/_authenticated/portal/messages'
+      path: '/messages'
+      fullPath: '/portal/messages'
+      preLoaderRoute: typeof AuthenticatedPortalMessagesRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/members': {
+      id: '/_authenticated/portal/members'
+      path: '/members'
+      fullPath: '/portal/members'
+      preLoaderRoute: typeof AuthenticatedPortalMembersRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/id': {
+      id: '/_authenticated/portal/id'
+      path: '/id'
+      fullPath: '/portal/id'
+      preLoaderRoute: typeof AuthenticatedPortalIdRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/forum': {
+      id: '/_authenticated/portal/forum'
+      path: '/forum'
+      fullPath: '/portal/forum'
+      preLoaderRoute: typeof AuthenticatedPortalForumRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
     }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
@@ -469,11 +625,35 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedPortalRouteChildren {
+  AuthenticatedPortalForumRoute: typeof AuthenticatedPortalForumRoute
+  AuthenticatedPortalIdRoute: typeof AuthenticatedPortalIdRoute
+  AuthenticatedPortalMembersRoute: typeof AuthenticatedPortalMembersRoute
+  AuthenticatedPortalMessagesRoute: typeof AuthenticatedPortalMessagesRoute
+  AuthenticatedPortalPoliciesRoute: typeof AuthenticatedPortalPoliciesRoute
+  AuthenticatedPortalUnitsRoute: typeof AuthenticatedPortalUnitsRoute
+  AuthenticatedPortalIndexRoute: typeof AuthenticatedPortalIndexRoute
+}
+
+const AuthenticatedPortalRouteChildren: AuthenticatedPortalRouteChildren = {
+  AuthenticatedPortalForumRoute: AuthenticatedPortalForumRoute,
+  AuthenticatedPortalIdRoute: AuthenticatedPortalIdRoute,
+  AuthenticatedPortalMembersRoute: AuthenticatedPortalMembersRoute,
+  AuthenticatedPortalMessagesRoute: AuthenticatedPortalMessagesRoute,
+  AuthenticatedPortalPoliciesRoute: AuthenticatedPortalPoliciesRoute,
+  AuthenticatedPortalUnitsRoute: AuthenticatedPortalUnitsRoute,
+  AuthenticatedPortalIndexRoute: AuthenticatedPortalIndexRoute,
+}
+
+const AuthenticatedPortalRouteWithChildren =
+  AuthenticatedPortalRoute._addFileChildren(AuthenticatedPortalRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAdminMessagesRoute: typeof AuthenticatedAdminMessagesRoute
   AuthenticatedForumRoute: typeof AuthenticatedForumRoute
+  AuthenticatedPortalRoute: typeof AuthenticatedPortalRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -481,6 +661,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAdminMessagesRoute: AuthenticatedAdminMessagesRoute,
   AuthenticatedForumRoute: AuthenticatedForumRoute,
+  AuthenticatedPortalRoute: AuthenticatedPortalRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
