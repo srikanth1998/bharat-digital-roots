@@ -54,17 +54,12 @@ function PortalHome() {
         <div className="mt-6 rounded-xl border border-brand-ink/10 p-5 bg-white flex items-start gap-4">
           <Network className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="font-serif text-lg">Pick your branch</p>
-            <p className="mt-1 text-sm text-brand-ink/70">Assign yourself to a Caucus branch to see posts and events for your area.</p>
-            <Link
-              to="/portal/id"
-              className="mt-3 inline-block bg-brand-green text-brand-paper text-xs font-semibold px-4 py-2 rounded-full hover:bg-brand-green-deep"
-            >
-              Update branch
-            </Link>
+            <p className="font-serif text-lg">Awaiting branch placement</p>
+            <p className="mt-1 text-sm text-brand-ink/70">An admin will place you under a Caucus branch. You'll see posts and events for your area once assigned.</p>
           </div>
         </div>
       )}
+
 
       {/* Quick links */}
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
