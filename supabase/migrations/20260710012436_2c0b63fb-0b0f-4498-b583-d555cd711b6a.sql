@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS public.claim_senate_president();

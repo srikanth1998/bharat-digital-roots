@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { IdCard, MessagesSquare, Users, ScrollText, Network, Sparkles } from "lucide-react";
-import { getMyRoleContext, claimSenatePresident, listPosts } from "@/lib/forum.functions";
+import { useQuery } from "@tanstack/react-query";
+import { IdCard, MessagesSquare, Users, ScrollText, Network } from "lucide-react";
+import { getMyRoleContext, listPosts } from "@/lib/forum.functions";
 import { LoadingCard } from "@/components/portal/empty-state";
 
 export const Route = createFileRoute("/_authenticated/portal/")({
@@ -11,10 +11,8 @@ export const Route = createFileRoute("/_authenticated/portal/")({
 });
 
 function PortalHome() {
-  const qc = useQueryClient();
   const fetchCtx = useServerFn(getMyRoleContext);
   const fetchPosts = useServerFn(listPosts);
-  const claim = useServerFn(claimSenatePresident);
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
 
@@ -41,7 +39,6 @@ function PortalHome() {
   const totalPosts = postsQ.data?.length ?? 0;
 
   const isCaucusAdmin = ctx.adminAssignments.some((a) => a.unit_id);
-  const noPresident = !ctx.isSenatePresident && !ctx.isSenateMember && ctx.adminAssignments.length === 0;
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
@@ -52,28 +49,6 @@ function PortalHome() {
       <p className="mt-1 text-brand-ink/60 capitalize">Signed in as {roleLabel}</p>
 
       {/* Onboarding banners */}
-      {noPresident && (
-        <div className="mt-8 rounded-xl border border-brand-saffron/40 p-5 bg-brand-saffron/5 flex items-start gap-4">
-          <Sparkles className="w-5 h-5 text-brand-saffron shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <p className="font-serif text-lg">Bootstrap the Senate</p>
-            <p className="mt-1 text-sm text-brand-ink/70">No Senate President exists yet. Claim the role to configure the forum.</p>
-            <button
-              onClick={async () => {
-                try {
-                  await claim();
-                  await qc.invalidateQueries();
-                } catch (e) {
-                  alert((e as Error).message);
-                }
-              }}
-              className="mt-3 bg-brand-green text-brand-paper text-xs font-semibold px-4 py-2 rounded-full hover:bg-brand-green-deep"
-            >
-              Claim Senate President
-            </button>
-          </div>
-        </div>
-      )}
 
       {ctx.memberCode && !ctx.memberUnitId && (
         <div className="mt-6 rounded-xl border border-brand-ink/10 p-5 bg-white flex items-start gap-4">

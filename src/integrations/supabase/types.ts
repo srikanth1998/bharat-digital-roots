@@ -425,7 +425,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      claim_senate_president: { Args: never; Returns: undefined }
       generate_member_code: { Args: { _plan: string }; Returns: string }
       has_role: {
         Args: {

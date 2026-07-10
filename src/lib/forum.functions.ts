@@ -44,13 +44,6 @@ export const getMyRoleContext = createServerFn({ method: "GET" })
     };
   });
 
-export const claimSenatePresident = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { error } = await context.supabase.rpc("claim_senate_president");
-    if (error) throw new Error(error.message);
-    return { ok: true };
-  });
 
 export const listUnits = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
