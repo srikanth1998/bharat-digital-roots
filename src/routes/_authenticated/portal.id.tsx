@@ -92,32 +92,14 @@ function MyId() {
               </span>
               .
             </p>
-          ) : branches.length === 0 ? (
-            <p className="mt-2 text-sm text-brand-ink/60">No branches configured yet. Ask an admin to set one up.</p>
           ) : (
-            <div className="mt-3 flex gap-2">
-              <select
-                value={branchSel}
-                onChange={(e) => setBranchSel(e.target.value)}
-                className="flex-1 border border-brand-ink/20 rounded-md px-3 py-2 text-sm bg-white"
-              >
-                <option value="">Select branch…</option>
-                {branches.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
-              </select>
-              <button
-                disabled={!branchSel}
-                onClick={async () => {
-                  await setBranch({ data: { unitId: branchSel } });
-                  await qc.invalidateQueries();
-                }}
-                className="bg-brand-green text-brand-paper text-sm font-medium px-4 py-2 rounded-md hover:bg-brand-green-deep disabled:opacity-50"
-              >
-                Save
-              </button>
-            </div>
+            <p className="mt-2 text-sm text-brand-ink/60">
+              You have not been placed under a branch yet. An admin will assign you shortly.
+            </p>
           )}
         </div>
       )}
+
 
       {/* Recent + upcoming */}
       <div className="grid md:grid-cols-2 gap-6">
